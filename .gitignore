@@ -1,0 +1,12 @@
+#java specific files
+*.class
+*.jar
+*.war
+*.ear
+/target/
+
+
+#IDE specific files
+.settings
+.project
+.classpath
