@@ -7,11 +7,53 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>resturant-service</artifactId>
+	<packaging>ejb</packaging>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>hu.schonherz.snowwhite</groupId>
+			<artifactId>resturant-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>hu.schonherz.snowwhite</groupId>
+			<artifactId>resturant-service-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<ejbVersion>3.1</ejbVersion>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

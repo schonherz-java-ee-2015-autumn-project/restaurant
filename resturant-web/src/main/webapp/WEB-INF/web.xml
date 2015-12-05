@@ -28,7 +28,6 @@
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
-
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -47,8 +46,13 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<ejb-local-ref>
+		<ejb-ref-name>ejb.UserServiceLocal</ejb-ref-name>
+		<local>hu.schonherz.restaurant.service.UserServiceLocal</local>
+	</ejb-local-ref>
+
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
-
 </web-app>
