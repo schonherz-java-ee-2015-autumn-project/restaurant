@@ -10,14 +10,14 @@
 <f:view>
 	<h:head>
 		<title><ui:insert name="pageTitle"></ui:insert></title>
-		<h:outputScript library="default" src="js/jquery.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery-migrate-1.1.1.js"></h:outputScript>
-		<h:outputScript library="default" src="js/superfish.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery.equalheights.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery.easing.1.3.js"></h:outputScript>
-		<h:outputScript library="default" src="js/camera.js"></h:outputScript>
-		<h:outputStylesheet rel="stylesheet" href="css/style.css" />
-		<h:outputStylesheet rel="stylesheet" href="css/camera.css" />
+		<h:outputScript library="default" name="js/jquery.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery-migrate-1.1.1.js"></h:outputScript>
+		<h:outputScript library="default" name="js/superfish.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery.equalheights.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery.easing.1.3.js"></h:outputScript>
+		<h:outputScript library="default" name="js/camera.js"></h:outputScript>
+		<h:outputStylesheet library="default" name="css/style.css" />
+		<h:outputStylesheet library="default" name="css/camera.css" />
 		<f:verbatim>
 			<script>
 				$(document).ready(function() {
@@ -34,14 +34,15 @@
 				});
 			</script>
 		</f:verbatim>
+		<ui:insert name="head-extra" />
 	</h:head>
 	<h:body>
 		<header>
 		<div class="container_12">
 			<div class="grid_12">
 				<h1>
-					<a href="#{request.contextPath}/index.html"><img
-						src="#{request.contextPath}/images/logo.png" alt="" /></a>
+					<a href="#{request.contextPath}/index.html"> <h:graphicImage
+							library="default" name="images/logo.png" /></a>
 				</h1>
 				<div class="menu_block">
 					<nav>
@@ -67,8 +68,8 @@
 					<a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a>
 				</div>
 				<div class="copy">
-					Web Design &copy; 2015 | Design
-					by: <a href="#{out.creatorlink}"><h:ouputText value="#{out.creatorlink}"></h:ouputText></a>
+					Web Design &copy; 2015 | Design by: <a href="#{out.creatorlink}"><h:outputText
+							value="#{out.creatorlink}"></h:outputText></a>
 				</div>
 			</div>
 		</div>

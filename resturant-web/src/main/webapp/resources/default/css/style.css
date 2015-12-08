@@ -4,9 +4,9 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700);
 /*       'Open Sans Condensed', sans-serif*/
 
-@import "../css/reset.css";
-@import "../css/grid.css";
-@import "../css/superfish.css";
+@import "#{resource['default/css/reset.css']}";
+@import "#{resource['default/css/grid.css']}";
+@import "#{resource['default/css/superfish.css']}";
 
 input {
 	outline:  none !important;
@@ -73,7 +73,7 @@ h3 {
 	line-height: 33px;
 	padding-top: 62px;
 	margin-bottom: 24px;
-	background: url(../images/h3_bg.png) 0 74px repeat-x;
+	background: url("#{resource['default/images/h3_bg.png']}") 0 74px repeat-x;
 }
 
 h3.head1 {
@@ -534,7 +534,7 @@ footer a:hover {
 .socials a {
 	float: left;
 	display: block;
-	background: url(../images/socials.png) 0 0 no-repeat;
+	background: url("#{resource['default/images/socials.png']}") 0 0 no-repeat;
 	width: 35px;
 	height: 35px;
 }
