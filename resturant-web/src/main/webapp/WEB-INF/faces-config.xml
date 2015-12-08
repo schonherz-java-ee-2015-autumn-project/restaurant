@@ -15,13 +15,6 @@
         <locale-config>
         	<default-locale>en</default-locale>
         </locale-config>
-        
-        <resource-bundle>
-            <base-name>
-                hu.schonherz.snowwhite.Restaurant
-            </base-name>
-            <var>out</var>	
-        </resource-bundle>
             
 	</application>
 </faces-config>

@@ -40,7 +40,8 @@
 		<div class="container_12">
 			<div class="grid_12">
 				<h1>
-					<a href="#{request.contextPath}/index.html"><img src="#{request.contextPath}/images/logo.png" alt=""/></a>
+					<a href="#{request.contextPath}/index.html"><img
+						src="#{request.contextPath}/images/logo.png" alt="" /></a>
 				</h1>
 				<div class="menu_block">
 					<nav>
@@ -54,24 +55,25 @@
 			</div>
 		</div>
 		</header>
-		<div class="slider_wrapper">
-			<div id="camera_wrap" class="">
-				<ui:insert name="slide"></ui:insert>
-			</div>
-		</div>
 		<div class="content">
 			<div class="container_12">
-				<div class="grid_12">
-					<h2>
-						<ui:insert name="header"></ui:insert>
-					</h2>
-					<h3>
-						<ui:insert name="services"></ui:insert>
-					</h3>
+				<ui:insert name="content"></ui:insert>
+			</div>
+		</div>
+		<footer>
+		<div class="container_12">
+			<div class="grid_12">
+				<div class="socials">
+					<a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a>
+				</div>
+				<div class="copy">
+					Web Design &copy; 2015 | Design
+					by: <a href="#{out.creatorlink}"><h:ouputText value="#{out.creatorlink}"></h:ouputText></a>
 				</div>
 			</div>
 		</div>
-		<ui:include src="footer.xhtml"></ui:include>
+		</footer>
 	</h:body>
+
 </f:view>
 </html>
