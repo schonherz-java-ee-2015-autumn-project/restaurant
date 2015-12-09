@@ -41,12 +41,18 @@
 		<div class="container_12">
 			<div class="grid_12">
 				<h1>
-					<a href="#{request.contextPath}/index.html"> <h:graphicImage
+					<a href="#{request.contextPath}/index.xhtml"> <h:graphicImage
 							library="default" name="images/logo.png" /></a>
 				</h1>
 				<div class="menu_block">
 					<nav>
 					<ul class="sf-menu">
+						<sec:authorize ifNotGranted="ROLE_USER">
+							<li><a href="#{request.contextPath}/public/login.xhtml">#{out.login}</a></li>
+						</sec:authorize>
+						<sec:authorize ifAnyGranted="ROLE_USER">
+							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
+						</sec:authorize>
 						<ui:insert name="menu"></ui:insert>
 					</ul>
 					</nav>

@@ -11,34 +11,35 @@
 		<h:outputStylesheet library="default" name="css/grid.css" />
 		<h:outputScript library="default" name="js/forms.js"></h:outputScript>
 	</ui:define>
+
 	<ui:define name="content">
 		<f:view>
 			<h:body>
-
 				<div class="grid_12">
-					<h3><span>Enter Details to Login</span></h3>
+					<h3>
+						<span>Enter Details to Login</span>
+					</h3>
 				</div>
 				<div class="grid_12" style="text-align: center;">
-					<form action="#{request.contextPath}/login" method="post">
-						<h:panelGroup layout="block" class="error"
-							rendered="#{param['error'] == 1}">Wrong password!</h:panelGroup>
-
-						<div>
-							<label class="name"> <input type="text"
-								placeholder="#{out.username}" name="j_username" />
-							</label>
+					<form id="login-form" action="#{request.contextPath}/login" method="post">
+						<div style="width: 50%; margin: auto;">
+							<h:panelGroup layout="block" class="error"
+								rendered="#{param['error'] == 1}">#{out.wrongpassword}</h:panelGroup>
+							<fieldset style="display: inline-block;">
+								<label class="name"><input type="text"
+									placeholder="#{out.username}" name="j_username" /> <br
+									class="clear" /> </label> <label class="password"> <input
+									type="password" name="j_password" placeholder="#{out.password}" />
+									<br class="clear" />
+								</label> <label class="remember-me"> <input type="checkbox"
+									name="remember-me" /> #{out.rememberme} <br class="clear" />
+								</label>
+								<div class="clear" />
+								<div class="btns" style="text-align: center;">
+									<input type="submit" value="#{out.send}" />
+								</div>
+							</fieldset>
 						</div>
-						<div>
-							<input type="password" class="form-control" name="j_password"
-								placeholder="#{out.password}" />
-						</div>
-						<div>
-							<label> <input type="checkbox" name="remember-me" />
-								#{out.rememberme}
-							</label>
-						</div>
-						<INPUT type="submit" value="#{out.send}"/>
-<!-- 						<a data-type="submit" class="btn">#{out.send}</a> -->
 					</form>
 				</div>
 			</h:body>
