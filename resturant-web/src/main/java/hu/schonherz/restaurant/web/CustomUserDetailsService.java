@@ -20,7 +20,6 @@ import hu.schonherz.restaurant.service.vo.RoleVo;
 import hu.schonherz.restaurant.service.vo.UserVo;
 
 @Service("customUserDetailsService")
-@EJB(name = "ejb.UserServiceLocal", beanInterface = UserServiceLocal.class)
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@EJB

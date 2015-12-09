@@ -15,11 +15,17 @@ public class User extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "username")
+	@Column(name = "username", unique = true, nullable = false, length = 60)
 	private String username;
 
-	@Column(name = "pass")
+	@Column(name = "pass", nullable = false, length = 60)
 	private String password;
+
+	@Column(name = "phone_number", nullable = false, length = 20)
+	private String phoneNumber;
+
+	@Column(name = "full_name", nullable = false, length = 60)
+	private String name;
 
 	@ManyToMany
 	@JoinTable(name = "users_roles_sw", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id") )
@@ -47,6 +53,22 @@ public class User extends BaseEntity {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

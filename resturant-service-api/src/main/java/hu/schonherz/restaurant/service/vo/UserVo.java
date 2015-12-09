@@ -10,6 +10,8 @@ public class UserVo implements Serializable {
 	private Long id;
 	private String username;
 	private String password;
+	private String phoneNumber;
+	private String name;
 	private List<RoleVo> roles;
 
 	public Long getId() {
@@ -42,6 +44,22 @@ public class UserVo implements Serializable {
 
 	public void setRoles(List<RoleVo> roles) {
 		this.roles = roles;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
