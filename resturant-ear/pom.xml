@@ -34,7 +34,6 @@
 	<packaging>ear</packaging>
 	<build>
 		<finalName>Restaurant</finalName>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -10,12 +10,12 @@
 <f:view>
 	<h:head>
 		<title><ui:insert name="pageTitle"></ui:insert></title>
-		<h:outputScript library="default" src="js/jquery.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery-migrate-1.1.1.js"></h:outputScript>
-		<h:outputScript library="default" src="js/superfish.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery.equalheights.js"></h:outputScript>
-		<h:outputScript library="default" src="js/jquery.easing.1.3.js"></h:outputScript>
-		<h:outputScript library="default" src="js/camera.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery-migrate-1.1.1.js"></h:outputScript>
+		<h:outputScript library="default" name="js/superfish.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery.equalheights.js"></h:outputScript>
+		<h:outputScript library="default" name="js/jquery.easing.1.3.js"></h:outputScript>
+		<h:outputScript library="default" name="js/camera.js"></h:outputScript>
 		<h:outputStylesheet rel="stylesheet" href="css/style.css" />
 		<h:outputStylesheet rel="stylesheet" href="css/camera.css" />
 		<f:verbatim>
@@ -68,7 +68,7 @@
 				</div>
 				<div class="copy">
 					Web Design &copy; 2015 | Design
-					by: <a href="#{out.creatorlink}"><h:ouputText value="#{out.creatorlink}"></h:ouputText></a>
+					by: <a href="#{out.creatorlink}"><h:outputText value="#{out.creatorlink}"></h:outputText></a>
 				</div>
 			</div>
 		</div>

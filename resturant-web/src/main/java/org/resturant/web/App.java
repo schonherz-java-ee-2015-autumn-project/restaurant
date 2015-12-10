@@ -1,13 +1,10 @@
 package org.resturant.web;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
+import javax.ejb.Stateless;
+
+@Stateless
+public class App {
+	public String getHello(){
+		return "Hello";
+	}
 }
