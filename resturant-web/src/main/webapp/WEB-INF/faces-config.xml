@@ -13,7 +13,7 @@
 
         <resource-bundle>
             <base-name>
-                hu.schonherz.restaurant.Messages
+                hu.schonherz.snowwhite.Restaurant
             </base-name>
             <var>out</var>	
         </resource-bundle>            
