@@ -3,18 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
-<application>
-	<message-bundle>hu.schonherz.snowwhite.Application</message-bundle>
-	<message-bundle>resources.application</message-bundle>
+	<application>
+		<message-bundle>hu.schonherz.snowwhite.Application</message-bundle>
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
         <locale-config>
             <default-locale>hu</default-locale>
 	        <supported-locale>en</supported-locale>
         </locale-config>
-        <locale-config>
-        	<default-locale>en</default-locale>
-        </locale-config>
-
         <resource-bundle>
             <base-name>
                 hu.schonherz.snowwhite.Restaurant
@@ -22,4 +17,12 @@
             <var>out</var>	
         </resource-bundle>            
 	</application>
+	<navigation-rule>
+		<from-view-id>index.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>outcome</from-outcome>
+				<to-view-id>secured/index.xhtml</to-view-id>
+				<redirect />
+			</navigation-case>
+	</navigation-rule>
 </faces-config>

@@ -3,7 +3,7 @@
 *.jar
 *.war
 *.ear
-*/target/
+**/target/
 
 
 #IDE specific files

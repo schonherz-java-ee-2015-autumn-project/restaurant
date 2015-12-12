@@ -47,9 +47,6 @@
 				<div class="menu_block">
 					<nav>
 					<ul class="sf-menu">
-						<sec:authorize ifNotGranted="ROLE_USER">
-							<li><a href="#{request.contextPath}/public/login.xhtml">#{out.login}</a></li>
-						</sec:authorize>
 						<sec:authorize ifAnyGranted="ROLE_USER">
 							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
 						</sec:authorize>
