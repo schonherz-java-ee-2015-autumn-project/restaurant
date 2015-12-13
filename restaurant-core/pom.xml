@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>hu.schonherz.snowwhite</groupId>
-		<artifactId>resturant-main</artifactId>
+		<artifactId>restaurant-main</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>resturant-core</artifactId>
+	<artifactId>restaurant-core</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -67,6 +67,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>

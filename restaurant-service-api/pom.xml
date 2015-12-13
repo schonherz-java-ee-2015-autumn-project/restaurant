@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>hu.schonherz.snowwhite</groupId>
-		<artifactId>resturant-main</artifactId>
+		<artifactId>restaurant-main</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>resturant-service-api</artifactId>
+	<artifactId>restaurant-service-api</artifactId>
 	<name>resturant-service-api</name>
 	<url>http://maven.apache.org</url>
 	<properties>

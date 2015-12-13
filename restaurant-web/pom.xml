@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>hu.schonherz.snowwhite</groupId>
-		<artifactId>resturant-main</artifactId>
+		<artifactId>restaurant-main</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>resturant-web</artifactId>
-	<name>resturant-web</name>
+	<artifactId>restaurant-web</artifactId>
+	<name>restaurant-web</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,8 +116,7 @@
 
 		<dependency>
 			<groupId>hu.schonherz.snowwhite</groupId>
-			<artifactId>resturant-service-api</artifactId>
-			<version>${project.version}</version>
+			<artifactId>restaurant-service-api</artifactId>
 		</dependency>
 	</dependencies>
 	<packaging>war</packaging>

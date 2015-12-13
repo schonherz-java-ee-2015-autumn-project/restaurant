@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>hu.schonherz.snowwhite</groupId>
-		<artifactId>resturant-main</artifactId>
+		<artifactId>restaurant-main</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>resturant-ear</artifactId>
-	<name>resturant-ear</name>
+	<artifactId>restaurant-ear</artifactId>
+	<name>restaurant-ear</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -19,15 +19,13 @@
 			
 		<dependency>
 			<groupId>hu.schonherz.snowwhite</groupId>
-			<artifactId>resturant-web</artifactId>
-			<version>${project.version}</version>
+			<artifactId>restaurant-web</artifactId>
 			<type>war</type>
 		</dependency>
 
 		<dependency>
 			<groupId>hu.schonherz.snowwhite</groupId>
-			<artifactId>resturant-service</artifactId>
-			<version>${project.version}</version>
+			<artifactId>restaurant-service</artifactId>
 			<type>ejb</type>
 		</dependency>
 	</dependencies>
@@ -45,12 +43,12 @@
 					<modules>
 						<webModule>
 							<groupId>hu.schonherz.snowwhite</groupId>
-							<artifactId>resturant-web</artifactId>
+							<artifactId>restaurant-web</artifactId>
 							<contextRoot>restaurant</contextRoot>
 						</webModule>
 						<ejbModule>
 							<groupId>hu.schonherz.snowwhite</groupId>
-							<artifactId>resturant-service</artifactId>
+							<artifactId>restaurant-service</artifactId>
 						</ejbModule>
 					</modules>
 				</configuration>

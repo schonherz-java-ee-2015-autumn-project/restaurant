@@ -3,15 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>hu.schonherz.snowwhite</groupId>
-	<artifactId>resturant-main</artifactId>
+	<artifactId>restaurant-main</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>resturant-core</module>
-		<module>resturant-service-api</module>
-		<module>resturant-service</module>
-		<module>resturant-web</module>
-		<module>resturant-ear</module>
+		<module>restaurant-core</module>
+		<module>restaurant-service-api</module>
+		<module>restaurant-service</module>
+		<module>restaurant-web</module>
+		<module>restaurant-ear</module>
 	</modules>
 
 	<repositories>
@@ -208,6 +208,33 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>5.1.6</version>
+			</dependency>
+
+			<!-- own dependencies -->
+			<dependency>
+				<groupId>hu.schonherz.snowwhite</groupId>
+				<artifactId>restaurant-web</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>war</type>
+			</dependency>
+
+			<dependency>
+				<groupId>hu.schonherz.snowwhite</groupId>
+				<artifactId>restaurant-service</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>ejb</type>
+			</dependency>
+
+			<dependency>
+				<groupId>hu.schonherz.snowwhite</groupId>
+				<artifactId>restaurant-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hu.schonherz.snowwhite</groupId>
+				<artifactId>restaurant-service-api</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
