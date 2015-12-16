@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<h:outputStylesheet library="default" name="css/custom.css" />
+	</ui:define>
+	<ui:define name="content">
+
+		<p:panel header="#{out.deliveries}" styleClass="top-margin-20">
+			<h:form id="tableform">
+				<p:dataTable var="delivery" value="#{deliveryBean.tableData}"
+					paginator="true" rows="10" emptyMessage="#{out.noorderstoshow}"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{deliveryBean.selectedDelivery}" id="deliveryTable"
+					lazy="true">
+					<p:ajax event="rowSelect" listener="#{deliveryBean.onRowSelect}"
+						update="deldetails"/>
+					<p:column headerText="#{out.id}" sortBy="#{delivery.guid}"
+						filterBy="#{delivery.guid}">
+						<h:outputText value="#{delivery.guid}" />
+					</p:column>
+					<p:column headerText="#{out.status}" sortBy="#{delivery.status}"
+						filterBy="#{delivery.status}">
+						<h:outputText value="#{delivery.status}" />
+					</p:column>
+					<p:column headerText="#{out.courier}"
+						sortBy="#{delivery.courierName}"
+						filterBy="#{delivery.courierName}">
+						<h:outputText value="#{delivery.courierName}" />
+					</p:column>
+					<p:column headerText="#{out.numberofaddresses}"
+						sortBy="#{delivery.numberOfAddresses}"
+						filterBy="#{delivery.numberOfAddresses}">
+						<h:outputText value="#{delivery.numberOfAddresses}" />
+					</p:column>
+					<p:column headerText="#{out.sumtotal}" sortBy="#{delivery.total}"
+						filterBy="#{delivery.total}">
+						<h:outputText value="#{delivery.total}">
+							<f:convertNumber type="currency" currencyCode="HUF" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<p:dialog id="deldetails" widgetVar="detailwidget" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.details}" visible="#{not empty deliveryBean.selectedDelivery}">
+			<p:panelGrid id="details" columns="2">
+
+				<h:outputText value="#{out.id}" />
+				<h:outputText value="#{deliveryBean.selectedDelivery.guid}" />
+
+				<h:outputText value="#{out.status}" />
+				<h:outputText value="#{deliveryBean.selectedDelivery.status}" />
+
+				<h:outputText value="#{out.courier}" />
+				<h:outputText value="#{deliveryBean.selectedDelivery.courierName}" />
+
+				<h:outputText value="#{out.numberofaddresses}" />
+				<h:outputText
+					value="#{deliveryBean.selectedDelivery.numberOfAddresses}" />
+
+				<h:outputText value="#{out.sumtotal}" />
+				<h:outputText value="#{deliveryBean.selectedDelivery.total}" />
+
+			</p:panelGrid>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

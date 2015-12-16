@@ -1,45 +1,27 @@
 package hu.schonherz.restaurant.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
+import org.springframework.stereotype.Service;
 
 import hu.schonherz.restaurant.entities.User;
 import hu.schonherz.restaurant.service.vo.UserVo;
 
-public class UserConverter {
+@Service("userConverter")
+public class UserConverter extends EntityVoConverter<UserVo, User> {
+
+	private static final long serialVersionUID = 1L;
 
 	private static Mapper mapper = new DozerBeanMapper();
 
-	public static UserVo toVo(User user) {
-		if (user == null) {
-			return null;
-		}
-		return mapper.map(user, UserVo.class);
+	@Override
+	public User convert(UserVo source) {
+		return mapper.map(source, User.class);
 	}
 
-	public static User toEntity(UserVo userVO) {
-		if (userVO == null) {
-			return null;
-		}
-		return mapper.map(userVO, User.class);
+	@Override
+	public UserVo reverse(User source) {
+		return mapper.map(source, UserVo.class);
 	}
 
-	public static List<UserVo> toVo(List<User> user) {
-		List<UserVo> rv = new ArrayList<>();
-		for (User users : user) {
-			rv.add(toVo(users));
-		}
-		return rv;
-	}
-
-	public static List<User> toEntity(List<UserVo> user) {
-		List<User> rv = new ArrayList<>();
-		for (UserVo users : user) {
-			rv.add(toEntity(users));
-		}
-		return rv;
-	}
 }

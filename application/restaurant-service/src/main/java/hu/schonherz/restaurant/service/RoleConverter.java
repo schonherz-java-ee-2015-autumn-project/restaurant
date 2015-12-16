@@ -1,45 +1,27 @@
 package hu.schonherz.restaurant.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
+import org.springframework.stereotype.Service;
 
 import hu.schonherz.restaurant.entities.Role;
 import hu.schonherz.restaurant.service.vo.RoleVo;
 
-public class RoleConverter {
+@Service("roleConverter")
+public class RoleConverter extends EntityVoConverter<RoleVo, Role> {
 
-	static Mapper mapper = new DozerBeanMapper();
+	private static final long serialVersionUID = 1L;
 
-	public static RoleVo toVo(Role entity) {
-		if (entity == null) {
-			return null;
-		}
-		return mapper.map(entity, RoleVo.class);
+	private static Mapper mapper = new DozerBeanMapper();
+
+	@Override
+	public Role convert(RoleVo source) {
+		return mapper.map(source, Role.class);
 	}
 
-	public static Role toEntity(RoleVo vo) {
-		if (vo == null) {
-			return null;
-		}
-		return mapper.map(vo, Role.class);
+	@Override
+	public RoleVo reverse(Role source) {
+		return mapper.map(source, RoleVo.class);
 	}
 
-	public static List<RoleVo> toVo(List<Role> entities) {
-		List<RoleVo> rv = new ArrayList<>();
-		for (Role roles : entities) {
-			rv.add(toVo(roles));
-		}
-		return rv;
-	}
-
-	public static List<Role> toEntity(List<RoleVo> vos) {
-		List<Role> rv = new ArrayList<>();
-		for (RoleVo role : vos) {
-			rv.add(toEntity(role));
-		}
-		return rv;
-	}
 }

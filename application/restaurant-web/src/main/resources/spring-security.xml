@@ -6,7 +6,7 @@
 	<security:http auto-config="true" use-expressions="true">
 		<security:csrf disabled="true" />
 		<security:headers disabled="true" />
-		<security:intercept-url pattern="/secured/*"
+		<security:intercept-url pattern="/secured/**"
 			access="hasRole('USER')" />
 		<security:form-login login-page="/public/login.xhtml" 
 			login-processing-url="/login" default-target-url="/index.xhtml"

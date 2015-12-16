@@ -9,43 +9,44 @@ import java.util.List;
  */
 public class DeliveryVo implements Serializable {
 
-    private States.State deliveryState;
+	private States.State deliveryState;
 
-    private String courier;
+	private String courier;
 
-    private Date deliveryDate;
+	private Date deliveryDate;
 
-    private List<OrderVo> orders;
+	private List<OrderVo> orders;
 
-    public States.State getDeliveryState() {
-        return deliveryState;
-    }
+	public States.State getDeliveryState() {
+		return deliveryState;
+	}
 
-    public void setDeliveryState(States.State deliveryState) {
-        this.deliveryState = deliveryState;
-    }
+	public void setDeliveryState(States.State deliveryState) {
+		this.deliveryState = deliveryState;
+	}
 
-    public String getCourier() {
-        return courier;
-    }
+	public String getCourier() {
+		return courier;
+	}
 
-    public void setCourier(String courier) {
-        this.courier = courier;
-    }
+	public void setCourier(String courier) {
+		this.courier = courier;
+	}
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
 
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
 
-    public List<OrderVo> getOrders() {
-        return orders;
-    }
+	public List<OrderVo> getOrders() {
+		return orders;
+	}
 
-    public void setOrders(List<OrderVo> orders) {
-        this.orders = orders;
-    }
+	public void setOrders(List<OrderVo> orders) {
+		this.orders = orders;
+	}
+
 }
