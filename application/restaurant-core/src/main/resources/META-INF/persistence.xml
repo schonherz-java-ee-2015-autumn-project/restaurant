@@ -10,6 +10,9 @@
 		<class>hu.schonherz.restaurant.entities.BaseEntity</class>
 		<class>hu.schonherz.restaurant.entities.User</class>
 		<class>hu.schonherz.restaurant.entities.Role</class>
+		<class>hu.schonherz.restaurant.entities.Delivery</class>
+		<class>hu.schonherz.restaurant.entities.Order</class>
+		<class>hu.schonherz.restaurant.entities.Product</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<!-- class><class -->
 		
