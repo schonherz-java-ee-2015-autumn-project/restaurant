@@ -1,3 +1,30 @@
 .top-margin-20 {
 	margin-top: 20px !important;
 }
+
+.no-border .ui-widget-content {
+	border: none;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.custom-scrollbar {
+	max-height: 150px;
+	width:250px;
+	max-width: 250px;
+}
+
+label {
+	vertical-align: middle !important;
+}
+
+.btn-right {
+	float: right;
+    margin-left: 5px;
+}
+
+.btn-no-margin {
+	margin-top: 0;
+}

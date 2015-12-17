@@ -1,7 +1,9 @@
 package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -9,6 +11,9 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
+import hu.schonherz.restaurant.service.DeliveryServiceLocal;
+import hu.schonherz.restaurant.service.vo.DeliveryVo;
+import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
 
 @ViewScoped
@@ -20,19 +25,23 @@ public class DeliveryController implements Serializable {
 	@ManagedProperty("#{deliveryTableModel}")
 	private LazyDataModel<DeliveryListingVo> tableData;
 
-	private DeliveryListingVo selectedDelivery;
+	@EJB
+	private DeliveryServiceLocal deliveryService;
+
+	private DeliveryVo selectedDelivery;
+	private DeliveryListingVo selectedDeliveryListing;
+
+	private Date deliveryDate;
+
+	private OrderVo selectedOrder;
 
 	public void onRowSelect(SelectEvent e) {
-		// TODO
-		selectedDelivery = (DeliveryListingVo) e.getObject();
+		selectedDeliveryListing = (DeliveryListingVo) e.getObject();
+		selectedDelivery = deliveryService.getDeliveryById(selectedDeliveryListing.getGuid());
 	}
 
-	public DeliveryListingVo getSelectedDelivery() {
-		return selectedDelivery;
-	}
-
-	public void setSelectedDelivery(DeliveryListingVo selectedDelivery) {
-		this.selectedDelivery = selectedDelivery;
+	public void onOrderSelect(SelectEvent e) {
+		selectedOrder = (OrderVo) e.getObject();
 	}
 
 	public LazyDataModel<DeliveryListingVo> getTableData() {
@@ -41,6 +50,30 @@ public class DeliveryController implements Serializable {
 
 	public void setTableData(LazyDataModel<DeliveryListingVo> tableData) {
 		this.tableData = tableData;
+	}
+
+	public DeliveryServiceLocal getDeliveryService() {
+		return deliveryService;
+	}
+
+	public void setDeliveryService(DeliveryServiceLocal deliveryService) {
+		this.deliveryService = deliveryService;
+	}
+
+	public DeliveryVo getSelectedDelivery() {
+		return selectedDelivery;
+	}
+
+	public void setSelectedDelivery(DeliveryVo selectedDelivery) {
+		this.selectedDelivery = selectedDelivery;
+	}
+
+	public DeliveryListingVo getSelectedDeliveryListing() {
+		return selectedDeliveryListing;
+	}
+
+	public void setSelectedDeliveryListing(DeliveryListingVo selectedDeliveryListing) {
+		this.selectedDeliveryListing = selectedDeliveryListing;
 	}
 
 }

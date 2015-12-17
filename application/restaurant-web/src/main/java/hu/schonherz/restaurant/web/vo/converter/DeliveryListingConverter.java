@@ -19,19 +19,15 @@ public class DeliveryListingConverter implements Converter<DeliveryVo, DeliveryL
 		if (source == null) {
 			return null;
 		}
-		DeliveryListingVo res = new DeliveryListingVo(source.getGuid(), source.getStatus(), source.getCourierName(),
-				source.getNumberOfAddresses(), source.getTotal());
+		DeliveryListingVo res = new DeliveryListingVo(source.getGuid(), source.getDeliveryState().name(),
+				source.getCourier(), source.getOrders().size(),
+				source.getOrders().stream().mapToInt(ord -> ord.getTotalPrice()).sum());
 		return res;
 	}
 
 	@Override
 	public DeliveryVo reverse(DeliveryListingVo source) {
-		if (source == null) {
-			return null;
-		}
-		DeliveryVo res = new DeliveryVo(source.getGuid(), source.getStatus(), source.getCourierName(),
-				source.getNumberOfAddresses(), source.getTotal());
-		return res;
+		return null;
 	}
 
 	@Override

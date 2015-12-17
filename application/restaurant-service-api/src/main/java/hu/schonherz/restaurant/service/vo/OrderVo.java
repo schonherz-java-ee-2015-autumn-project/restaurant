@@ -7,65 +7,65 @@ import java.util.List;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class OrderVo implements Serializable{
+public class OrderVo implements Serializable {
 
-    private String address;
+	private String address;
 
-    private Date deadline;
+	private Date deadline;
 
-    private String payType;
+	private String payType;
 
-    private List<ProductVo> products;
+	private List<ProductVo> products;
 
-    private Integer totalPrice;
+	private Integer totalPrice;
 
-    private States.State orderState;
+	private States.State orderState;
 
-    public String getAddress() {
-        return address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public Date getDeadline() {
-        return deadline;
-    }
+	public Date getDeadline() {
+		return deadline;
+	}
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
-    }
+	public void setDeadline(Date deadline) {
+		this.deadline = deadline;
+	}
 
-    public String getPayType() {
-        return payType;
-    }
+	public String getPayType() {
+		return payType;
+	}
 
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
 
-    public List<ProductVo> getProducts() {
-        return products;
-    }
+	public List<ProductVo> getProducts() {
+		return products;
+	}
 
-    public void setProducts(List<ProductVo> products) {
-        this.products = products;
-    }
+	public void setProducts(List<ProductVo> products) {
+		this.products = products;
+	}
 
-    public Integer getTotalPrice() {
-        return totalPrice;
-    }
+	public Integer getTotalPrice() {
+		return totalPrice;
+	}
 
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+	public void setTotalPrice(Integer totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
-    public States.State getOrderState() {
-        return orderState;
-    }
+	public States.State getOrderState() {
+		return orderState;
+	}
 
-    public void setOrderState(States.State orderState) {
-        this.orderState = orderState;
-    }
+	public void setOrderState(States.State orderState) {
+		this.orderState = orderState;
+	}
 }

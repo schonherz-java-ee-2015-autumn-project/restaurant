@@ -11,6 +11,12 @@ public class DeliveryVo implements Serializable {
 
 	private States.State deliveryState;
 
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
+
+	private String guid;
+
 	private String courier;
 
 	private Date deliveryDate;
@@ -47,6 +53,22 @@ public class DeliveryVo implements Serializable {
 
 	public void setOrders(List<OrderVo> orders) {
 		this.orders = orders;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 }
