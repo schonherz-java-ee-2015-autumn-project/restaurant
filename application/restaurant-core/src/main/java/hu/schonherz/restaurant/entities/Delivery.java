@@ -1,6 +1,7 @@
 package hu.schonherz.restaurant.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,22 +11,19 @@ import java.util.List;
 @Table(name = "deliveries")
 public class Delivery extends BaseEntity {
 
-    @Column(name = "state",  nullable = false)
-    private String state;
+    @Column(name = "delivery_state",  nullable = false)
+    @Enumerated(EnumType.STRING)
+    private States.State deliveryState;
 
     @Column(name = "courier")
     private String courier;
 
+    @Column(name = "delivery_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deliveryDate;
+
     @ManyToMany
     private List<Order> orders;
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
 
     public String getCourier() {
         return courier;
@@ -41,5 +39,21 @@ public class Delivery extends BaseEntity {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public States.State getDeliveryState() {
+        return deliveryState;
+    }
+
+    public void setDeliveryState(States.State deliveryState) {
+        this.deliveryState = deliveryState;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 }

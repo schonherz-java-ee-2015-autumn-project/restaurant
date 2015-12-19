@@ -27,6 +27,18 @@ public class Order extends BaseEntity {
     @Column(name = "total_price", length = 50)
     private Integer totalPrice;
 
+    @Column(name = "order_state",  nullable = false)
+    @Enumerated(EnumType.STRING)
+    private States.State orderState;
+
+    public States.State getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(States.State orderState) {
+        this.orderState = orderState;
+    }
+
     public String getAddress() {
         return address;
     }
