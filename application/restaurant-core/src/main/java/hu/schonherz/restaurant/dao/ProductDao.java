@@ -13,4 +13,7 @@ import java.util.List;
 public interface ProductDao extends JpaRepository<Product,Long>{
 
     List<Product> findAll();
+
+    @SuppressWarnings("unchecked")
+    Product save(Product product);
 }

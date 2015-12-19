@@ -13,5 +13,5 @@ public interface DeliveryServiceLocal {
 
     int getDeliveryCount();
 
-    DeliveryVo getDeliveryById(String Id);
+    DeliveryVo getDeliveryById(Long Id);
 }

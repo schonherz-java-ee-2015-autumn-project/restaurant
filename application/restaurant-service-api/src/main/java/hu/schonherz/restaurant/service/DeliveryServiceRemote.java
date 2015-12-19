@@ -13,5 +13,5 @@ public interface DeliveryServiceRemote {
 
     int getDeliveryCount();
 
-    DeliveryVo getDeliveryById(String Id);
+    DeliveryVo getDeliveryById(Long Id);
 }
