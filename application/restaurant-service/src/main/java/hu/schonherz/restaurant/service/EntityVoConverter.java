@@ -6,36 +6,38 @@ import java.util.List;
 
 import hu.schonherz.restaurant.entities.BaseEntity;
 
-public abstract class EntityVoConverter<V extends Serializable, E extends BaseEntity> extends DefaultConverter<V, E> {
+public abstract class EntityVoConverter<V extends Serializable, E extends BaseEntity> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public final V toVo(E entity) {
-		if (entity == null) {
-			return null;
-		}
-		return reverse(entity);
-	}
+	public abstract V toVo(E entity);
 
-	public final E toEntity(V vo) {
-		if (vo == null) {
-			return null;
-		}
-		return convert(vo);
-	}
+	public abstract E toEntity(V vo);
 
 	public final List<V> toVo(List<E> entities) {
+		List<V> res = new ArrayList<>();
 		if (entities == null) {
-			return new ArrayList<>();
+			return res;
 		}
-		return reverse(entities);
+
+		for (E entity : entities) {
+			res.add(toVo(entity));
+		}
+
+		return res;
 	}
 
 	public final List<E> toEntity(List<V> vos) {
+		List<E> res = new ArrayList<>();
 		if (vos == null) {
-			return new ArrayList<>();
+			return res;
 		}
-		return convert(vos);
+
+		for (V vo : vos) {
+			res.add(toEntity(vo));
+		}
+
+		return res;
 	}
 
 }

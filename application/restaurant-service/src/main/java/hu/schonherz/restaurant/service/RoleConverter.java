@@ -15,12 +15,12 @@ public class RoleConverter extends EntityVoConverter<RoleVo, Role> {
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override
-	public Role convert(RoleVo source) {
+	public Role toEntity(RoleVo source) {
 		return mapper.map(source, Role.class);
 	}
 
 	@Override
-	public RoleVo reverse(Role source) {
+	public RoleVo toVo(Role source) {
 		return mapper.map(source, RoleVo.class);
 	}
 

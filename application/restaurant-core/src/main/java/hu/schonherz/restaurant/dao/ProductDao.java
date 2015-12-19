@@ -1,18 +1,15 @@
 package hu.schonherz.restaurant.dao;
 
-import hu.schonherz.restaurant.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import hu.schonherz.restaurant.entities.Product;
 
 /**
  * Created by tothd on 2015. 12. 19..
  */
 @Repository
-public interface ProductDao extends JpaRepository<Product,Long>{
-
-    List<Product> findAll();
+public interface ProductDao extends JpaRepository<Product, Long> {
 
     Product findById(Long id);
 

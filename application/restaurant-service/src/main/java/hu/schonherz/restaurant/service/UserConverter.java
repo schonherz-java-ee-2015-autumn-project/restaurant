@@ -15,12 +15,12 @@ public class UserConverter extends EntityVoConverter<UserVo, User> {
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override
-	public User convert(UserVo source) {
+	public User toEntity(UserVo source) {
 		return mapper.map(source, User.class);
 	}
 
 	@Override
-	public UserVo reverse(User source) {
+	public UserVo toVo(User source) {
 		return mapper.map(source, UserVo.class);
 	}
 

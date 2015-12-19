@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 /**
  * Created by tothd on 2015. 12. 16..
  */
@@ -16,8 +17,6 @@ public interface DeliveryDao extends JpaRepository<Delivery,Long> {
 
     long countById();
 
-    Delivery findById(Long id);
+	Delivery findByGuid(String guid);
 
-    @SuppressWarnings("unchecked")
-    Delivery save(Delivery delivery);
 }

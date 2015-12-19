@@ -1,7 +1,6 @@
 package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -13,7 +12,6 @@ import org.primefaces.model.LazyDataModel;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
-import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
 
 @ViewScoped
@@ -31,17 +29,9 @@ public class DeliveryController implements Serializable {
 	private DeliveryVo selectedDelivery;
 	private DeliveryListingVo selectedDeliveryListing;
 
-	private Date deliveryDate;
-
-	private OrderVo selectedOrder;
-
 	public void onRowSelect(SelectEvent e) {
 		selectedDeliveryListing = (DeliveryListingVo) e.getObject();
-		selectedDelivery = deliveryService.getDeliveryById(selectedDeliveryListing.getGuid());
-	}
-
-	public void onOrderSelect(SelectEvent e) {
-		selectedOrder = (OrderVo) e.getObject();
+		selectedDelivery = deliveryService.getDeliveryByGuid(selectedDeliveryListing.getGuid());
 	}
 
 	public LazyDataModel<DeliveryListingVo> getTableData() {

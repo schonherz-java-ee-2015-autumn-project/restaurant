@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.deliveries}</ui:define>
+	<ui:define name="head-extra">
+		<h:outputStylesheet library="default" name="css/custom.css" />
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="messages" autoUpdate="true" showDetail="true" />
+		<p:panel id="orderPanel" header="#{out.new}"
+			styleClass="top-margin-20">
+			<h:form id="form">
+				<p:dataTable id="ordersDT" var="order"
+					value="#{newDeliveryBean.delivery.orders}" selectionMode="single"
+					selection="#{newDeliveryBean.selectedOrder}"
+					rowKey="#{order.address}" emptyMessage="#{out.noordertoshow}">
+					<f:facet name="header">
+						<h:outputText value="#{out.orders}" />
+					</f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{newDeliveryBean.onOrderRowSelect}"
+						update="messages, orderPanel" />
+					<p:ajax event="rowUnselect"
+						listener="#{newDeliveryBean.onOrderRowUnselect}"
+						update="messages, orderPanel" />
+					<p:column headerText="#{out.address}">
+						<h:outputText value="#{order.address}" />
+					</p:column>
+					<p:column headerText="#{out.deadline}">
+						<h:outputText value="#{order.deadline}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:32px;text-align: center">
+						<h:commandLink update="messages, ordersDT"
+							styleClass="btn-no-margin btn"
+							actionListener="#{newDeliveryBean.onRowDelete}"
+							value="#{out.remove}">
+							<f:attribute name="deleted" value="#{order}" />
+						</h:commandLink>
+					</p:column>
+				</p:dataTable>
+
+				<h:commandLink value="#{out.modify}"
+					onclick="PF('newOrderW').show();" update="orderDetails"
+					styleClass="btn-right btn" rendered="#{newDeliveryBean.canModify}" />
+
+				<h:commandLink value="#{out.new}" onclick="PF('newOrderW').show();"
+					update="orderDetails" styleClass="btn-right btn" />
+
+				<h:commandLink value="#{out.save}" styleClass="btn"
+					action="#{newDeliveryBean.saveDelivery}" />
+
+			</h:form>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

@@ -8,13 +8,11 @@ import javax.ejb.EJB;
 import org.apache.log4j.Logger;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
-import hu.schonherz.restaurant.service.converter.Converter;
-import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
+import hu.schonherz.restaurant.web.vo.converter.DeliveryListingConverter;
 
 @Service("deliveryTableModel")
 public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
@@ -22,9 +20,6 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = Logger.getLogger(LazyDeliveryListingModel.class);
-
-	@Autowired
-	private Converter<DeliveryVo, DeliveryListingVo> deliveryListingConverter;
 
 	@EJB
 	private DeliveryServiceLocal deliveryService;
@@ -41,9 +36,13 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 			filterColumnName = filters.keySet().iterator().next();
 		}
 
+		if (sortField == null) {
+			sortField = "guid";
+		}
+
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
 
-		data = deliveryListingConverter.convert(
+		data = DeliveryListingConverter.toListingVo(
 				deliveryService.getDeliveries(first / pageSize, pageSize, sortField, dir, filter, filterColumnName));
 
 		int size = deliveryService.getDeliveryCount();

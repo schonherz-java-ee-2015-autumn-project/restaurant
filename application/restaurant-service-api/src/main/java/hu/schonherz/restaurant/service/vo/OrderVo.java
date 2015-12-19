@@ -68,4 +68,43 @@ public class OrderVo implements Serializable {
 	public void setOrderState(States.State orderState) {
 		this.orderState = orderState;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((deadline == null) ? 0 : deadline.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof OrderVo)) {
+			return false;
+		}
+		OrderVo other = (OrderVo) obj;
+		if (address == null) {
+			if (other.address != null) {
+				return false;
+			}
+		} else if (!address.equals(other.address)) {
+			return false;
+		}
+		if (deadline == null) {
+			if (other.deadline != null) {
+				return false;
+			}
+		} else if (!deadline.equals(other.deadline)) {
+			return false;
+		}
+		return true;
+	}
+
 }
