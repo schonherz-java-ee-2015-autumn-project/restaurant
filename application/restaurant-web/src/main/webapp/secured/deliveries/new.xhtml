@@ -10,7 +10,6 @@
 		<h:outputStylesheet library="default" name="css/custom.css" />
 	</ui:define>
 	<ui:define name="content">
-		<p:growl id="messages" autoUpdate="true" showDetail="true" />
 		<p:panel id="orderPanel" header="#{out.new}"
 			styleClass="top-margin-20">
 			<h:form id="form">
@@ -23,10 +22,10 @@
 					</f:facet>
 					<p:ajax event="rowSelect"
 						listener="#{newDeliveryBean.onOrderRowSelect}"
-						update="messages, orderPanel" />
+						update="newOrderDialog,orderPanel" />
 					<p:ajax event="rowUnselect"
 						listener="#{newDeliveryBean.onOrderRowUnselect}"
-						update="messages, orderPanel" />
+						update="newOrderDialog,orderPanel" />
 					<p:column headerText="#{out.address}">
 						<h:outputText value="#{order.address}" />
 					</p:column>
@@ -45,12 +44,15 @@
 					</p:column>
 				</p:dataTable>
 
-				<h:commandLink value="#{out.modify}"
-					onclick="PF('newOrderW').show();" update="orderDetails"
-					styleClass="btn-right btn" rendered="#{newDeliveryBean.canModify}" />
+				<p:commandLink value="#{out.modify}"
+					oncomplete="PF('newOrderW').show();"
+					update="newOrderDialog,orderDetails" styleClass="btn-right btn"
+					rendered="#{newDeliveryBean.canModify}" />
 
-				<h:commandLink value="#{out.new}" onclick="PF('newOrderW').show();"
-					update="orderDetails" styleClass="btn-right btn" />
+				<h:commandLink value="#{out.new}"
+					actionListener="#{newDeliveryBean.onAddOrderButtonClick}"
+					oncomplete="PF('newOrderW').show();" update="newOrderDialog"
+					styleClass="btn-right btn" />
 
 				<h:commandLink value="#{out.save}" styleClass="btn"
 					action="#{newDeliveryBean.saveDelivery}" />
@@ -58,5 +60,38 @@
 			</h:form>
 		</p:panel>
 
+		<p:dialog id="newOrderDialog" widgetVar="newOrderW" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.new}"
+			visible="#{not empty newDeliveryBean.selectedOrder}">
+			<p:outputPanel id="orderDetails">
+				<h:form id="orderForm">
+
+					<h:panelGrid columns="2" columnClasses="label,value"
+						cellpadding="5">
+
+						<p:outputLabel for="orderAddr" value="#{out.address} " />
+						<p:inputText id="orderAddr"
+							value="#{newDeliveryBean.selectedOrder.address}" />
+
+						<p:outputLabel for="datetime" value="#{out.deadline} " />
+						<p:calendar id="datetime"
+							value="#{newDeliveryBean.selectedOrder.deadline}"
+							pattern="yyyy.MM.dd HH:mm">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+						</p:calendar>
+
+						<p:outputLabel for="productsList" value="#{out.products}" />
+						<p:dataTable id="productsList"
+							value="#{newDeliveryBean.selectedOrder.products}"
+							emptyMessage="#{out.noproducttolist}">
+
+						</p:dataTable>
+
+					</h:panelGrid>
+
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

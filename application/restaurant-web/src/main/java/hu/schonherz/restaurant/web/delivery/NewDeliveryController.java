@@ -32,11 +32,13 @@ public class NewDeliveryController implements Serializable {
 		delivery.setCourier("");
 		delivery.setOrders(new ArrayList<>());
 
+		canModify = false;
+	}
+
+	public void onAddOrderButtonClick(ActionEvent e) {
 		selectedOrder = new OrderVo();
 		selectedOrder.setOrderState(State.AVAILABLE);
 		selectedOrder.setProducts(new ArrayList<>());
-
-		canModify = false;
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
