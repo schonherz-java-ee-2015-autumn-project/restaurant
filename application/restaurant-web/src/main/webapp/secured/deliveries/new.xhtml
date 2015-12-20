@@ -13,10 +13,19 @@
 		<p:panel id="orderPanel" header="#{out.new}"
 			styleClass="top-margin-20">
 			<h:form id="form">
+				<p:outputPanel id="courierDatePanel">
+					<p:outputLabel for="delDate" value="#{out.packageDoneBy}" />
+					<p:calendar id="delDate"
+						value="#{newDeliveryBean.delivery.deliveryDate}"
+						pattern="yyyy.MM.dd HH:mm">
+						<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+					</p:calendar>
+				</p:outputPanel>
+
 				<p:dataTable id="ordersDT" var="order"
 					value="#{newDeliveryBean.delivery.orders}" selectionMode="single"
 					selection="#{newDeliveryBean.selectedOrder}"
-					rowKey="#{order.address}" emptyMessage="#{out.noordertoshow}">
+					rowKey="#{order.address}" emptyMessage="#{out.noorderstoshow}">
 					<f:facet name="header">
 						<h:outputText value="#{out.orders}" />
 					</f:facet>
@@ -49,7 +58,7 @@
 					update="newOrderDialog,orderDetails" styleClass="btn-right btn"
 					rendered="#{newDeliveryBean.canModify}" />
 
-				<h:commandLink value="#{out.new}"
+				<h:commandLink value="#{out.newOrder}"
 					actionListener="#{newDeliveryBean.onAddOrderButtonClick}"
 					oncomplete="PF('newOrderW').show();" update="newOrderDialog"
 					styleClass="btn-right btn" />
@@ -62,7 +71,7 @@
 
 		<p:dialog id="newOrderDialog" widgetVar="newOrderW" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false"
-			header="#{out.new}"
+			header="#{out.newOrder}"
 			visible="#{not empty newDeliveryBean.selectedOrder}">
 			<p:outputPanel id="orderDetails">
 				<h:form id="orderForm">
@@ -87,8 +96,38 @@
 							emptyMessage="#{out.noproducttolist}">
 
 						</p:dataTable>
-
 					</h:panelGrid>
+
+					<p:outputPanel id="productsButton">
+
+						<p:commandLink value="#{out.save}"
+							actionListener="#{newDeliveryBean.onSaveOrderButtonClick}"
+							styleClass="btn" />
+						<p:commandLink value="#{out.cancel}"
+							actionListener="#{newDeliveryBean.onCancelOrderButtonClick}"
+							oncomplete="PF('newOrderW').hide();" styleClass="btn" />
+
+						<p:commandLink value="#{out.modify}"
+							oncomplete="PF('newProductW').show();"
+							update="newOrderDialog,orderDetails" styleClass="btn-right btn"
+							rendered="#{newDeliveryBean.canModifyProduct}" />
+
+						<h:commandLink value="#{out.newProduct}"
+							actionListener="#{newDeliveryBean.onAddProductButtonClick}"
+							oncomplete="PF('newProductW').show();" update="newProductDialog"
+							styleClass="btn-right btn" />
+					</p:outputPanel>
+
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog id="newProductDialog" widgetVar="newProductW" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.newProduct}"
+			visible="#{not empty newDeliveryBean.selectedOrder}">
+			<p:outputPanel id="productDetails">
+				<h:form id="productForm">
 
 				</h:form>
 			</p:outputPanel>

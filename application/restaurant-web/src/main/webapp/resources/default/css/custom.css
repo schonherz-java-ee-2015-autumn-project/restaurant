@@ -20,6 +20,10 @@ label {
 	vertical-align: middle !important;
 }
 
+.btn {
+	padding:5px;
+}
+
 .btn-right {
 	float: right;
     margin-left: 5px;
