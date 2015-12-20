@@ -13,32 +13,32 @@ public class RoleConverter {
 
 	static Mapper mapper = new DozerBeanMapper();
 
-	public static RoleVo toVo(Role Role) {
-		if (Role == null) {
+	public static RoleVo toVo(Role entity) {
+		if (entity == null) {
 			return null;
 		}
-		return mapper.map(Role, RoleVo.class);
+		return mapper.map(entity, RoleVo.class);
 	}
 
-	public static Role toEntity(RoleVo RoleVo) {
-		if (RoleVo == null) {
+	public static Role toEntity(RoleVo vo) {
+		if (vo == null) {
 			return null;
 		}
-		return mapper.map(RoleVo, Role.class);
+		return mapper.map(vo, Role.class);
 	}
 
-	public static List<RoleVo> toVo(List<Role> Role) {
+	public static List<RoleVo> toVo(List<Role> entities) {
 		List<RoleVo> rv = new ArrayList<>();
-		for (Role Roles : Role) {
-			rv.add(toVo(Roles));
+		for (Role roles : entities) {
+			rv.add(toVo(roles));
 		}
 		return rv;
 	}
 
-	public static List<Role> toEntity(List<RoleVo> Role) {
+	public static List<Role> toEntity(List<RoleVo> vos) {
 		List<Role> rv = new ArrayList<>();
-		for (RoleVo Roles : Role) {
-			rv.add(toEntity(Roles));
+		for (RoleVo role : vos) {
+			rv.add(toEntity(role));
 		}
 		return rv;
 	}

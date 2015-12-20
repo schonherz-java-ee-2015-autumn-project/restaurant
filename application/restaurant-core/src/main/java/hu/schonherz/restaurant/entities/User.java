@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +31,9 @@ public class User extends BaseEntity {
 	@ManyToMany
 	@JoinTable(name = "users_roles_sw", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id") )
 	private List<Role> roles;
+
+	@ManyToOne
+	private Restaurant restaurant;
 
 	public String getUsername() {
 		return username;
@@ -69,6 +73,14 @@ public class User extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
 }
