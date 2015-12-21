@@ -48,7 +48,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
     @Override
     public int getDeliveryCount() {
-        return (int) deliveryDao.countById();
+        return (int) deliveryDao.count();
     }
 
     @Override

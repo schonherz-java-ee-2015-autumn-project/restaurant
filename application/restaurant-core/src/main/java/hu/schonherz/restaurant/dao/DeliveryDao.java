@@ -14,7 +14,7 @@ public interface DeliveryDao extends JpaRepository<Delivery,Long> {
 
     Page<Delivery> findByCourierContaining(String filter, Pageable pageable);
 
-    long countById();
+    long count();
 
     Delivery findById(Long id);
 
