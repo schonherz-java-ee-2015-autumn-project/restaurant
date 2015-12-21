@@ -124,7 +124,9 @@ public class NewDeliveryController implements Serializable {
 
 	public String saveDelivery() {
 		if (!delivery.getOrders().isEmpty()) {
-			delivery.setGuid(GuidGenerator.generate());
+			if (delivery.getGuid() == null || "".equals(delivery.getGuid())) {
+				delivery.setGuid(GuidGenerator.generate(userSessionBean.getUser().getRestaurant()));
+			}
 			deliveryService.saveDelivery(delivery);
 			return "index?faces-redirect=true";
 		}

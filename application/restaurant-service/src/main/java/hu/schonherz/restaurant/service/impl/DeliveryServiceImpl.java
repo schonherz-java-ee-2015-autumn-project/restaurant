@@ -16,7 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.restaurant.dao.DeliveryDao;
+import hu.schonherz.restaurant.dao.OrderDao;
+import hu.schonherz.restaurant.dao.ProductDao;
 import hu.schonherz.restaurant.entities.Delivery;
+import hu.schonherz.restaurant.entities.Order;
 import hu.schonherz.restaurant.service.DeliveryConverter;
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.DeliveryServiceRemote;
@@ -34,6 +37,12 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 	@Autowired
 	private DeliveryDao deliveryDao;
+
+	@Autowired
+	private OrderDao orderDao;
+
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public List<DeliveryVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
@@ -70,6 +79,17 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 	@Override
 	public void saveDelivery(DeliveryVo delivery) {
-		deliveryDao.save(DeliveryConverter.toEntity(delivery));
+		Delivery entity = DeliveryConverter.toEntity(delivery);
+
+		for (Order order : entity.getOrders()) {
+			int sum = order.getProducts().stream().mapToInt(prd -> prd.getPrice()).sum();
+			order.setTotalPrice(sum);
+
+			order.setProducts(productDao.save(order.getProducts()));
+		}
+
+		entity.setOrders(orderDao.save(entity.getOrders()));
+
+		deliveryDao.save(entity);
 	}
 }
