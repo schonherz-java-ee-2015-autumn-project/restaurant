@@ -30,8 +30,7 @@
 						<h:outputText value="#{out.orders}" />
 					</f:facet>
 					<p:ajax event="rowSelect"
-						listener="#{newDeliveryBean.onOrderRowSelect}"
-						update="orderPanel" />
+						listener="#{newDeliveryBean.onOrderRowSelect}" update="orderPanel" />
 					<p:column headerText="#{out.address}">
 						<h:outputText value="#{order.address}" />
 					</p:column>
@@ -40,7 +39,7 @@
 							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 						</h:outputText>
 					</p:column>
-					<p:column style="width:50px;text-align: center">
+					<p:column style="width:64px;text-align: center">
 						<h:commandLink update="messages, ordersDT"
 							styleClass="btn-no-margin btn"
 							actionListener="#{newDeliveryBean.onOrderRowDelete}"
@@ -74,36 +73,67 @@
 			<p:outputPanel id="orderDetails">
 				<h:form id="orderForm">
 
-					<h:panelGrid columns="2" columnClasses="label,value"
-						cellpadding="5">
-
-						<p:outputLabel for="orderAddr" value="#{out.address} " />
-						<p:inputText id="orderAddr"
-							value="#{newDeliveryBean.selectedOrder.address}" />
-
-						<p:outputLabel for="datetime" value="#{out.deadline} " />
-						<p:calendar id="datetime"
-							value="#{newDeliveryBean.selectedOrder.deadline}"
-							pattern="yyyy.MM.dd HH:mm">
-							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
-						</p:calendar>
-
-						<p:outputLabel for="productsList" value="#{out.products}" />
-						<p:dataTable id="productsList" var="product"
-							value="#{newDeliveryBean.selectedOrder.products}"
-							emptyMessage="#{out.noproducttolist}">
-
-							<p:column headerText="#{out.productname}">
-								<h:outputText value="#{product.name}" />
+					<h:panelGrid cellpadding="5">
+						<p:row>
+							<p:column>
+								<p:outputLabel for="orderAddr" value="#{out.address} " />
 							</p:column>
-
-							<p:column headerText="#{out.price}">
-								<h:outputText value="#{product.price}">
-									<f:convertNumber currencyCode="HUF" />
-								</h:outputText>
+							<p:column>
+								<p:inputText id="orderAddr"
+									value="#{newDeliveryBean.selectedOrder.address}" />
 							</p:column>
-
-						</p:dataTable>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="payTypeDropdown" value="#{out.payType} " />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="payTypeDropdown"
+									value="#{newDeliveryBean.selectedPayType}"
+									style="width:150px">
+									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
+										itemValue="#{pt}"
+										itemLabel="#{newDeliveryBean.payTypeLabel(pt)}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="datetime" value="#{out.deadline} " />
+							</p:column>
+							<p:column>
+								<p:calendar id="datetime"
+									value="#{newDeliveryBean.selectedOrder.deadline}"
+									pattern="yyyy.MM.dd HH:mm">
+									<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+								</p:calendar>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:dataTable id="productsList" var="product"
+									value="#{newDeliveryBean.selectedOrder.products}"
+									emptyMessage="#{out.noproducttolist}"
+									styleClass="top-margin-20" selectionMode="single"
+									selection="#{newDeliveryBean.selectedProduct}"
+									rowKey="#{product.name}">
+									<p:ajax event="rowSelect"
+										listener="#{newDeliveryBean.onProductRowSelect}"
+										update="orderDetails" />
+									<f:facet name="header">
+										<h:outputText value="#{out.products}" />
+									</f:facet>
+									<p:column headerText="#{out.productname}">
+										<h:outputText value="#{product.name}" />
+									</p:column>
+									<p:column headerText="#{out.price}">
+										<h:outputText value="#{product.price}">
+											<f:convertNumber currencyCode="HUF" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+							</p:column>
+						</p:row>
 					</h:panelGrid>
 
 					<p:outputPanel id="productsButton">

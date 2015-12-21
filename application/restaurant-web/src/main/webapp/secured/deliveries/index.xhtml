@@ -44,9 +44,11 @@
 						</h:outputText>
 					</p:column>
 				</p:dataTable>
-				<h:link styleClass="btn-right btn" value="#{out.new}"
-					outcome="new?faces-redirect=true" />
 
+				<p:outputPanel id="deliveryButtons">
+					<h:link styleClass="btn-right btn" value="#{out.new}"
+						outcome="new?faces-redirect=true" />
+				</p:outputPanel>
 			</h:form>
 		</p:panel>
 
@@ -71,7 +73,7 @@
 						<h:outputText value="#{out.status}" />
 					</p:column>
 					<p:column>
-						<h:outputText value="#{deliveryBean.selectedDelivery.state}" />
+						<h:outputText value="#{deliveryBean.selectedDelivery.deliveryState}" />
 					</p:column>
 				</p:row>
 

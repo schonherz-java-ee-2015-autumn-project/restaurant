@@ -30,7 +30,6 @@ public class DeliveryController implements Serializable {
 	private DeliveryListingVo selectedDeliveryListing;
 
 	public void onRowSelect(SelectEvent e) {
-		selectedDeliveryListing = (DeliveryListingVo) e.getObject();
 		selectedDelivery = deliveryService.getDeliveryByGuid(selectedDeliveryListing.getGuid());
 	}
 

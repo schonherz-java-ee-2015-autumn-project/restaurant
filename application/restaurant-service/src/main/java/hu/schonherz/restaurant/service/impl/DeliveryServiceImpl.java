@@ -82,9 +82,6 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 		Delivery entity = DeliveryConverter.toEntity(delivery);
 
 		for (Order order : entity.getOrders()) {
-			int sum = order.getProducts().stream().mapToInt(prd -> prd.getPrice()).sum();
-			order.setTotalPrice(sum);
-
 			order.setProducts(productDao.save(order.getProducts()));
 		}
 

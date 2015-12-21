@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import hu.schonherz.restaurant.type.PayType;
+
 /**
  * Created by tothd on 2015. 12. 16..
  */
@@ -13,7 +15,7 @@ public class OrderVo implements Serializable {
 
 	private Date deadline;
 
-	private String payType;
+	private PayType payType;
 
 	private List<ProductVo> products;
 
@@ -37,11 +39,11 @@ public class OrderVo implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public String getPayType() {
+	public PayType getPayType() {
 		return payType;
 	}
 
-	public void setPayType(String payType) {
+	public void setPayType(PayType payType) {
 		this.payType = payType;
 	}
 

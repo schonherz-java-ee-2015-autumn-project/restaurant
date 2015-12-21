@@ -3,6 +3,7 @@ package hu.schonherz.restaurant.web.delivery;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,6 +20,7 @@ import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
 import hu.schonherz.restaurant.service.vo.States.State;
+import hu.schonherz.restaurant.type.PayType;
 import hu.schonherz.restaurant.web.UserSessionBean;
 import hu.schonherz.restaurant.web.generator.GuidGenerator;
 
@@ -31,6 +33,7 @@ public class NewDeliveryController implements Serializable {
 	private DeliveryVo delivery;
 	private OrderVo selectedOrder;
 	private ProductVo selectedProduct;
+	private PayType selectedPayType;
 
 	private boolean canModify;
 	private boolean canModifyProduct;
@@ -40,6 +43,9 @@ public class NewDeliveryController implements Serializable {
 
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
+
+	@ManagedProperty("#{out}")
+	private ResourceBundle resource;
 
 	@PostConstruct
 	public void init() {
@@ -81,6 +87,8 @@ public class NewDeliveryController implements Serializable {
 			return;
 		}
 
+		selectedOrder.setPayType(selectedPayType);
+		selectedOrder.setTotalPrice(selectedOrder.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
 		delivery.getOrders().add(selectedOrder);
 
 		RequestContext reqContext = RequestContext.getCurrentInstance();
@@ -91,10 +99,12 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onCancelOrderButtonClick(ActionEvent e) {
+		canModify = false;
 		selectedOrder = null;
 	}
 
 	public void onAddProductButtonClick(ActionEvent e) {
+		canModifyProduct = false;
 		initProduct();
 	}
 
@@ -114,7 +124,12 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
+		selectedPayType = selectedOrder.getPayType();
 		canModify = true;
+	}
+
+	public void onProductRowSelect(SelectEvent e) {
+		canModifyProduct = true;
 	}
 
 	public void onOrderRowDelete(ActionEvent e) {
@@ -131,6 +146,14 @@ public class NewDeliveryController implements Serializable {
 			return "index?faces-redirect=true";
 		}
 		return null;
+	}
+
+	public String payTypeLabel(PayType pt) {
+		return resource.getString(pt.name().toLowerCase());
+	}
+
+	public PayType[] getPayTypes() {
+		return PayType.values();
 	}
 
 	public DeliveryVo getDelivery() {
@@ -187,6 +210,22 @@ public class NewDeliveryController implements Serializable {
 
 	public void setUserSessionBean(UserSessionBean userSessionBean) {
 		this.userSessionBean = userSessionBean;
+	}
+
+	public ResourceBundle getResource() {
+		return resource;
+	}
+
+	public void setResource(ResourceBundle resource) {
+		this.resource = resource;
+	}
+
+	public PayType getSelectedPayType() {
+		return selectedPayType;
+	}
+
+	public void setSelectedPayType(PayType selectedPayType) {
+		this.selectedPayType = selectedPayType;
 	}
 
 }
