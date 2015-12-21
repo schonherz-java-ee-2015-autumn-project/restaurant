@@ -14,6 +14,8 @@ public interface ProductDao extends JpaRepository<Product,Long>{
 
     List<Product> findAll();
 
+    Product findById(Long id);
+
     @SuppressWarnings("unchecked")
     Product save(Product product);
 }

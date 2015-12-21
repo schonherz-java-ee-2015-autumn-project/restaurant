@@ -29,13 +29,13 @@ public class Order extends BaseEntity {
 
     @Column(name = "order_state",  nullable = false)
     @Enumerated(EnumType.STRING)
-    private States.State orderState;
+    private State orderState;
 
-    public States.State getOrderState() {
+    public State getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(States.State orderState) {
+    public void setOrderState(State orderState) {
         this.orderState = orderState;
     }
 
