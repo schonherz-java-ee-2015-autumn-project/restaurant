@@ -9,10 +9,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.service.vo.OrderVo;
+import hu.schonherz.restaurant.service.vo.ProductVo;
 import hu.schonherz.restaurant.service.vo.States.State;
 
 @ViewScoped
@@ -23,6 +25,7 @@ public class NewDeliveryController implements Serializable {
 
 	private DeliveryVo delivery;
 	private OrderVo selectedOrder;
+	private ProductVo selectedProduct;
 
 	private boolean canModify;
 	private boolean canModifyProduct;
@@ -44,8 +47,16 @@ public class NewDeliveryController implements Serializable {
 		selectedOrder.setProducts(new ArrayList<>());
 	}
 
+	public void initProduct() {
+		selectedProduct = new ProductVo();
+		selectedProduct.setName("");
+		selectedProduct.setPrice(0);
+	}
+
 	public void onAddOrderButtonClick(ActionEvent e) {
 		initOrder();
+		selectedProduct = null;
+		canModify = false;
 	}
 
 	public void onSaveOrderButtonClick(ActionEvent e) {
@@ -54,19 +65,41 @@ public class NewDeliveryController implements Serializable {
 			// TODO add error message
 			return;
 		}
-		// TODO save order to delivery, update, hide dialog
+
+		delivery.getOrders().add(selectedOrder);
+
+		RequestContext reqContext = RequestContext.getCurrentInstance();
+		reqContext.execute("PF('newOrderW').hide();");
+		reqContext.update("orderPanel");
+
+		selectedOrder = null;
 	}
 
 	public void onCancelOrderButtonClick(ActionEvent e) {
-		initOrder();
+		selectedOrder = null;
+	}
+
+	public void onAddProductButtonClick(ActionEvent e) {
+		initProduct();
+	}
+
+	public void onSaveProductButtonClick(ActionEvent e) {
+		if ("".equals(selectedProduct.getName().trim()) || selectedProduct.getPrice() < 0) {
+			// TODO error message
+			return;
+		}
+
+		selectedOrder.getProducts().add(selectedProduct);
+
+		RequestContext reqContext = RequestContext.getCurrentInstance();
+		reqContext.execute("PF('newProductW').hide();");
+		reqContext.update("orderDetails");
+
+		selectedProduct = null;
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
 		canModify = true;
-	}
-
-	public void onOrderRowUnselect(SelectEvent e) {
-		canModify = false;
 	}
 
 	public void onOrderRowDelete(ActionEvent e) {
@@ -111,6 +144,14 @@ public class NewDeliveryController implements Serializable {
 
 	public void setCanModifyProduct(boolean canModifyProduct) {
 		this.canModifyProduct = canModifyProduct;
+	}
+
+	public ProductVo getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductVo selectedProduct) {
+		this.selectedProduct = selectedProduct;
 	}
 
 }

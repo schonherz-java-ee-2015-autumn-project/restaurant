@@ -31,10 +31,7 @@
 					</f:facet>
 					<p:ajax event="rowSelect"
 						listener="#{newDeliveryBean.onOrderRowSelect}"
-						update="newOrderDialog,orderPanel" />
-					<p:ajax event="rowUnselect"
-						listener="#{newDeliveryBean.onOrderRowUnselect}"
-						update="newOrderDialog,orderPanel" />
+						update="orderPanel" />
 					<p:column headerText="#{out.address}">
 						<h:outputText value="#{order.address}" />
 					</p:column>
@@ -72,7 +69,8 @@
 		<p:dialog id="newOrderDialog" widgetVar="newOrderW" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false"
 			header="#{out.newOrder}"
-			visible="#{not empty newDeliveryBean.selectedOrder}">
+			visible="#{not empty newDeliveryBean.selectedOrder}"
+			styleClass="custom-dialog">
 			<p:outputPanel id="orderDetails">
 				<h:form id="orderForm">
 
@@ -91,9 +89,19 @@
 						</p:calendar>
 
 						<p:outputLabel for="productsList" value="#{out.products}" />
-						<p:dataTable id="productsList"
+						<p:dataTable id="productsList" var="product"
 							value="#{newDeliveryBean.selectedOrder.products}"
 							emptyMessage="#{out.noproducttolist}">
+
+							<p:column headerText="#{out.productname}">
+								<h:outputText value="#{product.name}" />
+							</p:column>
+
+							<p:column headerText="#{out.price}">
+								<h:outputText value="#{product.price}">
+									<f:convertNumber currencyCode="HUF" />
+								</h:outputText>
+							</p:column>
 
 						</p:dataTable>
 					</h:panelGrid>
@@ -125,9 +133,32 @@
 		<p:dialog id="newProductDialog" widgetVar="newProductW" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false"
 			header="#{out.newProduct}"
-			visible="#{not empty newDeliveryBean.selectedOrder}">
+			visible="#{not empty newDeliveryBean.selectedProduct}"
+			styleClass="custom-dialog">
 			<p:outputPanel id="productDetails">
 				<h:form id="productForm">
+					<h:panelGrid columns="2" columnClasses="label,value"
+						cellpadding="5">
+
+						<p:outputLabel for="prodName" value="#{out.name} " />
+						<p:inputText id="prodName"
+							value="#{newDeliveryBean.selectedProduct.name}" />
+
+						<p:outputLabel for="prodPrice" value="#{out.price}" />
+						<p:inputText id="prodPrice"
+							value="#{newDeliveryBean.selectedProduct.price}" />
+					</h:panelGrid>
+
+					<p:outputPanel id="productDialogButtons">
+
+						<p:commandLink value="#{out.save}"
+							actionListener="#{newDeliveryBean.onSaveProductButtonClick}"
+							styleClass="btn" />
+						<p:commandLink value="#{out.cancel}"
+							actionListener="#{newDeliveryBean.onCancelProductButtonClick}"
+							oncomplete="PF('newProductW').hide();" styleClass="btn" />
+
+					</p:outputPanel>
 
 				</h:form>
 			</p:outputPanel>

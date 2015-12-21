@@ -20,15 +20,19 @@ label {
 	vertical-align: middle !important;
 }
 
-.btn {
+a.btn {
 	padding:5px;
 }
 
-.btn-right {
+a.btn-right {
 	float: right;
     margin-left: 5px;
 }
 
-.btn-no-margin {
+a.btn-no-margin {
 	margin-top: 0;
+}
+
+.custom-dialog {
+	max-width: 500px;
 }
