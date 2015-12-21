@@ -22,7 +22,7 @@
 					</p:calendar>
 				</p:outputPanel>
 
-				<p:dataTable id="ordersDT" var="order"
+				<p:dataTable id="ordersDT" var="order" styleClass="top-margin-20"
 					value="#{newDeliveryBean.delivery.orders}" selectionMode="single"
 					selection="#{newDeliveryBean.selectedOrder}"
 					rowKey="#{order.address}" emptyMessage="#{out.noorderstoshow}">
