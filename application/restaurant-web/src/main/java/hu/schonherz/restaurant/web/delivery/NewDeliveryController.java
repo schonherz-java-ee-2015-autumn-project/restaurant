@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
+import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
 import hu.schonherz.restaurant.service.vo.States.State;
+import hu.schonherz.restaurant.web.UserSessionBean;
+import hu.schonherz.restaurant.web.generator.GuidGenerator;
 
 @ViewScoped
 @ManagedBean(name = "newDeliveryBean")
@@ -30,8 +35,18 @@ public class NewDeliveryController implements Serializable {
 	private boolean canModify;
 	private boolean canModifyProduct;
 
+	@EJB
+	private DeliveryServiceLocal deliveryService;
+
+	@ManagedProperty("#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+
 	@PostConstruct
 	public void init() {
+		if (userSessionBean.getUser() == null) {
+			userSessionBean.init();
+		}
+
 		delivery = new DeliveryVo();
 		delivery.setDeliveryState(State.AVAILABLE);
 		delivery.setCourier("");
@@ -109,6 +124,8 @@ public class NewDeliveryController implements Serializable {
 
 	public String saveDelivery() {
 		if (!delivery.getOrders().isEmpty()) {
+			delivery.setGuid(GuidGenerator.generate());
+			deliveryService.saveDelivery(delivery);
 			return "index?faces-redirect=true";
 		}
 		return null;
@@ -152,6 +169,22 @@ public class NewDeliveryController implements Serializable {
 
 	public void setSelectedProduct(ProductVo selectedProduct) {
 		this.selectedProduct = selectedProduct;
+	}
+
+	public DeliveryServiceLocal getDeliveryService() {
+		return deliveryService;
+	}
+
+	public void setDeliveryService(DeliveryServiceLocal deliveryService) {
+		this.deliveryService = deliveryService;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 }

@@ -16,4 +16,6 @@ public interface DeliveryServiceLocal {
 	DeliveryVo getDeliveryById(Long Id);
 
 	DeliveryVo getDeliveryByGuid(String guid);
+
+	void saveDelivery(DeliveryVo delivery);
 }

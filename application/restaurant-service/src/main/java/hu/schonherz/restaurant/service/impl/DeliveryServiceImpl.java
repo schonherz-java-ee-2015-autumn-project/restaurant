@@ -32,8 +32,8 @@ import hu.schonherz.restaurant.service.vo.DeliveryVo;
 @Remote(DeliveryServiceRemote.class)
 public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServiceRemote {
 
-    @Autowired
-    private DeliveryDao deliveryDao;
+	@Autowired
+	private DeliveryDao deliveryDao;
 
 	@Override
 	public List<DeliveryVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
@@ -44,11 +44,11 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
 		Page<Delivery> entities;
 
-        if (filter.length() != 0 && filterColumnName.equals("courier")) {
-            entities = deliveryDao.findByCourierContaining(filter, pageRequest);
-        } else {
-            entities = deliveryDao.findAll(pageRequest);
-        }
+		if (filter.length() != 0 && filterColumnName.equals("courier")) {
+			entities = deliveryDao.findByCourierContaining(filter, pageRequest);
+		} else {
+			entities = deliveryDao.findAll(pageRequest);
+		}
 
 		return DeliveryConverter.toVo(entities.getContent());
 	}
@@ -66,5 +66,10 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Override
 	public DeliveryVo getDeliveryByGuid(String guid) {
 		return DeliveryConverter.toVo(deliveryDao.findByGuid(guid));
+	}
+
+	@Override
+	public void saveDelivery(DeliveryVo delivery) {
+		deliveryDao.save(DeliveryConverter.toEntity(delivery));
 	}
 }
