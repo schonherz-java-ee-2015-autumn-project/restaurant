@@ -40,10 +40,10 @@
 							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 						</h:outputText>
 					</p:column>
-					<p:column style="width:32px;text-align: center">
+					<p:column style="width:50px;text-align: center">
 						<h:commandLink update="messages, ordersDT"
 							styleClass="btn-no-margin btn"
-							actionListener="#{newDeliveryBean.onRowDelete}"
+							actionListener="#{newDeliveryBean.onOrderRowDelete}"
 							value="#{out.remove}">
 							<f:attribute name="deleted" value="#{order}" />
 						</h:commandLink>
