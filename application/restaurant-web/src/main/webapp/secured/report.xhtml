@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="head-extra">
+		<h:outputStylesheet library="default" name="css/form.css" />
+		<h:outputStylesheet library="default" name="css/grid.css" />
+		<h:outputScript library="default" name="js/forms.js"></h:outputScript>
+	</ui:define>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<h3 style="margin-top: 0">Basic</h3>
+		<p:accordionPanel>
+			<p:tab title="Daily Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+						<h:panelGrid columns="1" columnClasses="left,right"
+							style="width:100%">
+							<p:chart type="bar" model="#{shippingReportBean.dailyQueryModel}"
+								style="width:400px;" />
+						</h:panelGrid>
+					</ui:define>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Weekly Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+						<h:panelGrid columns="1" columnClasses="left,right"
+							style="width:100%">
+							<p:chart type="bar" model="#{shippingReportBean.weeklyQueryModel}"
+								style="width:400px;" />
+						</h:panelGrid>
+					</ui:define>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Monthly Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
+			<p:chart type="bar" model="#{shippingReportBean.monthlyQueryModel}"
+				style="width:400px;" />
+		</h:panelGrid>
+	</ui:define>
+				</h:panelGrid>
+			</p:tab>
+			
+			<p:tab title="Annual Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
+			<p:chart type="bar" model="#{shippingReportBean.annualQueryModel}"
+				style="width:400px;" />
+		</h:panelGrid>
+	</ui:define>
+				</h:panelGrid>
+			</p:tab>
+		<p:tab title="Overall Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
+			<p:chart type="bar" model="#{shippingReportBean.overallQueryModel}"
+				style="width:400px;" />
+		</h:panelGrid>
+	</ui:define>
+				</h:panelGrid>
+			</p:tab>
+		<p:tab title="Overall Query">
+				<h:panelGrid columns="1" cellpadding="10">
+					<ui:define name="content">
+		<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" />
+		
+		</h:panelGrid>
+	</ui:define>
+				</h:panelGrid>
+			</p:tab>
+		</p:accordionPanel>
+
+	</h:form>
+</ui:composition>
