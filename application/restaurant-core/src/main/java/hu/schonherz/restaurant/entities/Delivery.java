@@ -3,6 +3,7 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,9 +20,9 @@ import javax.persistence.TemporalType;
 @Table(name = "deliveries")
 public class Delivery extends BaseEntity {
 
-    @Column(name = "delivery_state",  nullable = false)
-    @Enumerated(EnumType.STRING)
-    private State deliveryState;
+	@Column(name = "delivery_state", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private State deliveryState;
 
 	@Column(name = "courier")
 	private String courier;
@@ -33,7 +34,7 @@ public class Delivery extends BaseEntity {
 	@Column(name = "guid", unique = true, nullable = false)
 	private String guid;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Order> orders;
 
 	public String getCourier() {
@@ -52,13 +53,13 @@ public class Delivery extends BaseEntity {
 		this.orders = orders;
 	}
 
-    public State getDeliveryState() {
-        return deliveryState;
-    }
+	public State getDeliveryState() {
+		return deliveryState;
+	}
 
-    public void setDeliveryState(State deliveryState) {
-        this.deliveryState = deliveryState;
-    }
+	public void setDeliveryState(State deliveryState) {
+		this.deliveryState = deliveryState;
+	}
 
 	public Date getDeliveryDate() {
 		return deliveryDate;

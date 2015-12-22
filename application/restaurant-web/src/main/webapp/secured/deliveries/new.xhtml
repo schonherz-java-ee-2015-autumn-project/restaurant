@@ -93,7 +93,7 @@
 									style="width:150px">
 									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
 										itemValue="#{pt}"
-										itemLabel="#{newDeliveryBean.payTypeLabel(pt)}" />
+										itemLabel="#{out['PayType.'.concat(pt.name())]}" />
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>

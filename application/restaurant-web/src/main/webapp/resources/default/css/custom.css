@@ -12,7 +12,7 @@
 
 .custom-scrollbar {
 	max-height: 150px;
-	width:250px;
+	width: 250px;
 	max-width: 250px;
 }
 
@@ -21,12 +21,13 @@ label {
 }
 
 a.btn {
-	padding:5px;
+	padding: 5px;
+	background-color: #009FB3;
 }
 
 a.btn-right {
-	float: right;
-    margin-left: 5px;
+	float: right !important;
+	margin-left: 5px;
 }
 
 a.btn-no-margin {
