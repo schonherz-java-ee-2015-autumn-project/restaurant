@@ -9,6 +9,9 @@ import java.util.List;
  */
 public interface OrderServiceRemote {
 
+    List<OrderVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
+                                String filterColumnName);
+
     List<OrderVo> getOrders();
 
     OrderVo getOrderById(Long id);
