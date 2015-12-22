@@ -18,6 +18,4 @@ public interface DeliveryDao extends JpaRepository<Delivery,Long> {
 
     Delivery findById(Long id);
 
-    @SuppressWarnings("unchecked")
-    Delivery save(Delivery delivery);
 }

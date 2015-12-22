@@ -16,6 +16,4 @@ public interface OrderDao extends JpaRepository<Order,Long>{
 
     Order findById(Long id);
 
-    @SuppressWarnings("unchecked")
-    Order save(Order order);
 }
