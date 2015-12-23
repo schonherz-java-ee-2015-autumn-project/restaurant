@@ -1,24 +1,25 @@
 package hu.schonherz.restaurant.validation;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Violation {
-	private String context;
-	private String error;
+public class Violation implements Serializable {
 
-	public Violation(String context, String error) {
-		this.context = context;
-		this.error = error;
+	private static final long serialVersionUID = 1L;
+
+	private String message;
+	private String details;
+
+	public Violation() {
 	}
 
-	public String getContext() {
-		return context;
-	}
-
-	public String getError() {
-		return error;
+	public Violation(String message, String details) {
+		super();
+		this.message = message;
+		this.details = details;
 	}
 
 	@Override
@@ -34,6 +35,22 @@ public class Violation {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
 	}
 
 }

@@ -2,7 +2,7 @@ package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -22,6 +22,9 @@ import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
 import hu.schonherz.restaurant.service.vo.States.State;
 import hu.schonherz.restaurant.type.PayType;
+import hu.schonherz.restaurant.validation.Validator;
+import hu.schonherz.restaurant.validation.Violation;
+import hu.schonherz.restaurant.validation.ViolationException;
 import hu.schonherz.restaurant.web.UserSessionBean;
 import hu.schonherz.restaurant.web.generator.GuidGenerator;
 
@@ -44,6 +47,18 @@ public class NewDeliveryController implements Serializable {
 
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
+
+	@ManagedProperty("#{deliveryValidator}")
+	private Validator<DeliveryVo> deliveryValidator;
+
+	@ManagedProperty("#{orderValidator}")
+	private Validator<OrderVo> orderValidator;
+
+	@ManagedProperty("#{productValidator}")
+	private Validator<ProductVo> productValidator;
+
+	@ManagedProperty("#{out}")
+	private ResourceBundle resource;
 
 	@PostConstruct
 	public void init() {
@@ -79,21 +94,21 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onSaveOrderButtonClick(ActionEvent e) {
-		if ("".equals(selectedOrder.getAddress().trim()) || selectedOrder.getDeadline().before(new Date())
-				|| selectedOrder.getProducts().isEmpty()) {
-			// TODO add error message
-			return;
+		try {
+			orderValidator.validate(selectedOrder);
+
+			selectedOrder.setPayType(selectedPayType);
+			selectedOrder.setTotalPrice(selectedOrder.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
+			delivery.getOrders().add(selectedOrder);
+
+			RequestContext reqContext = RequestContext.getCurrentInstance();
+			reqContext.execute("PF('newOrderW').hide();");
+			reqContext.update("orderPanel");
+
+			selectedOrder = null;
+		} catch (ViolationException ve) {
+			addMessage(ve);
 		}
-
-		selectedOrder.setPayType(selectedPayType);
-		selectedOrder.setTotalPrice(selectedOrder.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
-		delivery.getOrders().add(selectedOrder);
-
-		RequestContext reqContext = RequestContext.getCurrentInstance();
-		reqContext.execute("PF('newOrderW').hide();");
-		reqContext.update("orderPanel");
-
-		selectedOrder = null;
 	}
 
 	public void onCancelOrderButtonClick(ActionEvent e) {
@@ -107,18 +122,19 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onSaveProductButtonClick(ActionEvent e) {
-		if (selectedProduct.getPrice() <= 0) {
-			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "#{out.positiveNumberRequired}", ""));
-			return;
+		try {
+			productValidator.validate(selectedProduct);
+
+			selectedOrder.getProducts().add(selectedProduct);
+
+			RequestContext reqContext = RequestContext.getCurrentInstance();
+			reqContext.execute("PF('newProductW').hide();");
+			reqContext.update("orderDetails");
+
+			selectedProduct = null;
+		} catch (ViolationException ve) {
+			addMessage(ve);
 		}
-
-		selectedOrder.getProducts().add(selectedProduct);
-
-		RequestContext reqContext = RequestContext.getCurrentInstance();
-		reqContext.execute("PF('newProductW').hide();");
-		reqContext.update("orderDetails");
-
-		selectedProduct = null;
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
@@ -136,18 +152,30 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public String saveDelivery() {
-		if (!delivery.getOrders().isEmpty()) {
+		try {
+			deliveryValidator.validate(delivery);
+
 			if (delivery.getGuid() == null || "".equals(delivery.getGuid())) {
 				delivery.setGuid(GuidGenerator.generate(userSessionBean.getUser().getRestaurant()));
 			}
 			deliveryService.saveDelivery(delivery);
 			return "list?faces-redirect=true";
+		} catch (ViolationException ve) {
+			addMessage(ve);
 		}
 		return null;
 	}
 
 	public void addMessage(FacesMessage fm) {
 		FacesContext.getCurrentInstance().addMessage(null, fm);
+	}
+
+	protected void addMessage(ViolationException ve) {
+		for (Violation e : ve.getViolations()) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, resource.getString(e.getMessage()),
+					e.getDetails());
+			addMessage(msg);
+		}
 	}
 
 	public PayType[] getPayTypes() {
@@ -216,6 +244,38 @@ public class NewDeliveryController implements Serializable {
 
 	public void setSelectedPayType(PayType selectedPayType) {
 		this.selectedPayType = selectedPayType;
+	}
+
+	public Validator<OrderVo> getOrderValidator() {
+		return orderValidator;
+	}
+
+	public void setOrderValidator(Validator<OrderVo> orderValidator) {
+		this.orderValidator = orderValidator;
+	}
+
+	public ResourceBundle getResource() {
+		return resource;
+	}
+
+	public void setResource(ResourceBundle resource) {
+		this.resource = resource;
+	}
+
+	public Validator<ProductVo> getProductValidator() {
+		return productValidator;
+	}
+
+	public void setProductValidator(Validator<ProductVo> productValidator) {
+		this.productValidator = productValidator;
+	}
+
+	public Validator<DeliveryVo> getDeliveryValidator() {
+		return deliveryValidator;
+	}
+
+	public void setDeliveryValidator(Validator<DeliveryVo> deliveryValidator) {
+		this.deliveryValidator = deliveryValidator;
 	}
 
 }

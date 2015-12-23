@@ -118,6 +118,11 @@
 			<groupId>hu.schonherz.snowwhite</groupId>
 			<artifactId>restaurant-service-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>hu.schonherz.snowwhite</groupId>
+			<artifactId>restaurant-validation-api</artifactId>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 </project>

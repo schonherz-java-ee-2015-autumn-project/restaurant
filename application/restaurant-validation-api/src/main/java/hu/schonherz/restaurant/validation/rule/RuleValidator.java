@@ -12,6 +12,8 @@ import hu.schonherz.restaurant.validation.ViolationException;
 
 public class RuleValidator<T> implements Validator<T> {
 
+	private static final long serialVersionUID = 1L;
+
 	private Collection<ValidationRule<T>> rules;
 
 	public RuleValidator(Collection<ValidationRule<T>> rules) {
@@ -32,6 +34,14 @@ public class RuleValidator<T> implements Validator<T> {
 		if (!violations.isEmpty()) {
 			throw new ViolationException(violations);
 		}
+	}
+
+	public Collection<ValidationRule<T>> getRules() {
+		return rules;
+	}
+
+	public void setRules(Collection<ValidationRule<T>> rules) {
+		this.rules = rules;
 	}
 
 }
