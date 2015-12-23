@@ -20,7 +20,17 @@ label {
 	vertical-align: middle !important;
 }
 
+a.btn:HOVER {
+	color: #fff;
+	background-color: #FD9220;
+	border-color: #985610;
+}
+
 a.btn {
+	text-align: center;
+	border: 1px solid #004B54;
+	min-width: 50px;
+	color: #fff;
 	padding: 5px;
 	background-color: #009FB3;
 }
@@ -28,6 +38,10 @@ a.btn {
 a.btn-right {
 	float: right !important;
 	margin-left: 5px;
+}
+
+a.btn-left {
+	margin-right: 5px;
 }
 
 a.btn-no-margin {

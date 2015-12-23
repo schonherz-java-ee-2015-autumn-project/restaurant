@@ -10,6 +10,7 @@
 		<h:outputStylesheet library="default" name="css/custom.css" />
 	</ui:define>
 	<ui:define name="content">
+		<p:growl id="msg" autoUpdate="true" showDetail="true" />
 		<p:panel id="orderPanel" header="#{out.new}"
 			styleClass="top-margin-20">
 			<h:form id="form">
@@ -59,7 +60,7 @@
 					oncomplete="PF('newOrderW').show();" update="newOrderDialog"
 					styleClass="btn-right btn" />
 
-				<h:commandLink value="#{out.save}" styleClass="btn"
+				<h:commandLink value="#{out.save}" styleClass="btn-left btn"
 					action="#{newDeliveryBean.saveDelivery}" />
 
 			</h:form>
@@ -89,8 +90,7 @@
 							</p:column>
 							<p:column>
 								<p:selectOneMenu id="payTypeDropdown"
-									value="#{newDeliveryBean.selectedPayType}"
-									style="width:150px">
+									value="#{newDeliveryBean.selectedPayType}" style="width:150px">
 									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
 										itemValue="#{pt}"
 										itemLabel="#{out['PayType.'.concat(pt.name())]}" />
@@ -140,10 +140,10 @@
 
 						<p:commandLink value="#{out.save}"
 							actionListener="#{newDeliveryBean.onSaveOrderButtonClick}"
-							styleClass="btn" />
+							styleClass="btn-left btn" />
 						<p:commandLink value="#{out.cancel}"
 							actionListener="#{newDeliveryBean.onCancelOrderButtonClick}"
-							oncomplete="PF('newOrderW').hide();" styleClass="btn" />
+							oncomplete="PF('newOrderW').hide();" styleClass="btn-left btn" />
 
 						<p:commandLink value="#{out.modify}"
 							oncomplete="PF('newProductW').show();"
@@ -183,10 +183,10 @@
 
 						<p:commandLink value="#{out.save}"
 							actionListener="#{newDeliveryBean.onSaveProductButtonClick}"
-							styleClass="btn" />
+							styleClass="btn-left btn" />
 						<p:commandLink value="#{out.cancel}"
 							actionListener="#{newDeliveryBean.onCancelProductButtonClick}"
-							oncomplete="PF('newProductW').hide();" styleClass="btn" />
+							oncomplete="PF('newProductW').hide();" styleClass="btn-right btn" />
 
 					</p:outputPanel>
 
