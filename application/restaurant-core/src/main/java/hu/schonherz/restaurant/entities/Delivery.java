@@ -3,7 +3,6 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,7 +33,7 @@ public class Delivery extends BaseEntity {
 	@Column(name = "guid", unique = true, nullable = false)
 	private String guid;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<Order> orders;
 
 	public String getCourier() {

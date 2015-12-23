@@ -3,18 +3,23 @@ package hu.schonherz.restaurant.web.delivery;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import org.springframework.stereotype.Service;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
+import hu.schonherz.restaurant.web.UserSessionBean;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
 import hu.schonherz.restaurant.web.vo.converter.DeliveryListingConverter;
 
-@Service("deliveryTableModel")
+@ViewScoped
+@ManagedBean(name = "deliveryTableModel")
 public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 
 	private static final long serialVersionUID = 1L;
@@ -24,7 +29,17 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 	@EJB
 	private DeliveryServiceLocal deliveryService;
 
+	@ManagedProperty("#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+
 	private List<DeliveryListingVo> data;
+
+	@PostConstruct
+	public void init() {
+		if (userSessionBean.getUser() == null) {
+			userSessionBean.init();
+		}
+	}
 
 	@Override
 	public List<DeliveryListingVo> load(int first, int pageSize, String sortField, SortOrder sortOrder,
@@ -42,10 +57,11 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
 
-		data = DeliveryListingConverter.toListingVo(
-				deliveryService.getDeliveries(first / pageSize, pageSize, sortField, dir, filter, filterColumnName));
+		Long restId = userSessionBean.getUser().getRestaurant().getId();
+		data = DeliveryListingConverter.toListingVo(deliveryService.getDeliveriesByRestaurantId(restId,
+				first / pageSize, pageSize, sortField, dir, filter, filterColumnName));
 
-		int size = deliveryService.getDeliveryCount();
+		int size = deliveryService.getDeliveryCountByRestaurantId(restId);
 
 		setRowCount(size);
 
@@ -70,6 +86,30 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 	@Override
 	public Object getRowKey(DeliveryListingVo object) {
 		return object.getGuid();
+	}
+
+	public DeliveryServiceLocal getDeliveryService() {
+		return deliveryService;
+	}
+
+	public void setDeliveryService(DeliveryServiceLocal deliveryService) {
+		this.deliveryService = deliveryService;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
+	public List<DeliveryListingVo> getData() {
+		return data;
+	}
+
+	public void setData(List<DeliveryListingVo> data) {
+		this.data = data;
 	}
 
 }

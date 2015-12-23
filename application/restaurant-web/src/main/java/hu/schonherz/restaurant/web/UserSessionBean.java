@@ -26,27 +26,32 @@ public class UserSessionBean {
 	private UserVo user;
 
 	@PostConstruct
-	public void init() {
+	public synchronized void init() {
 		try {
 			HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
 					.getRequest();
-			if (user == null) {
-				user = null;
-				Principal principal = req.getUserPrincipal();
-				if (principal != null) {
-					String username = principal.getName();
-					try {
-						user = getUserService().findUserByName(username);
+			synchronized (UserSessionBean.class) {
+				if (user == null) {
+					user = null;
+					Principal principal = req.getUserPrincipal();
+					if (principal != null) {
+						String username = principal.getName();
+						try {
+							user = getUserService().findUserByName(username);
 
-						logger.info("UserVo is set!");
-					} catch (Exception e) {
-						// TODO Nice logging message
-						logger.info("Exception thrown + " + e.getMessage());
+							logger.info("UserVo is set!");
+						} catch (Exception e) {
+							// TODO Nice logging message
+							logger.info("Exception thrown + " + e.getMessage());
+						}
 					}
 				}
 			}
+
 		} catch (Exception e) {
+			logger.error("Excepion during USB initialization", e);
 		}
+
 	}
 
 	public UserServiceLocal getUserService() {

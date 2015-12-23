@@ -17,4 +17,8 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 
 	Delivery findByGuid(String guid);
 
+	Page<Delivery> findByGuidStartingWith(String restaurantNameCode, Pageable pageable);
+
+	long countByGuidStartingWith(String restaurantNameCode);
+
 }

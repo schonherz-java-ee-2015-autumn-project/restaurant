@@ -18,6 +18,7 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 import hu.schonherz.restaurant.dao.DeliveryDao;
 import hu.schonherz.restaurant.dao.OrderDao;
 import hu.schonherz.restaurant.dao.ProductDao;
+import hu.schonherz.restaurant.dao.RestaurantDao;
 import hu.schonherz.restaurant.entities.Delivery;
 import hu.schonherz.restaurant.entities.Order;
 import hu.schonherz.restaurant.service.DeliveryConverter;
@@ -44,20 +45,21 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Autowired
 	private ProductDao productDao;
 
+	@Autowired
+	private RestaurantDao restaurantDao;
+
 	@Override
-	public List<DeliveryVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
-			String filterColumnName) {
+	public List<DeliveryVo> getDeliveriesByRestaurantId(Long restId, int i, int pageSize, String sortField, int dir,
+			String filter, String filterColumnName) {
 
 		Sort.Direction direction = dir == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(i, pageSize,
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
 		Page<Delivery> entities;
 
-		if (filter.length() != 0 && filterColumnName.equals("courier")) {
-			entities = deliveryDao.findByCourierContaining(filter, pageRequest);
-		} else {
-			entities = deliveryDao.findAll(pageRequest);
-		}
+		String restaurantNameCode = restaurantDao.findOne(restId).getName().replace(' ', '_');
+
+		entities = deliveryDao.findByGuidStartingWith(restaurantNameCode, pageRequest);
 
 		return DeliveryConverter.toVo(entities.getContent());
 	}
@@ -65,6 +67,12 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Override
 	public int getDeliveryCount() {
 		return (int) deliveryDao.count();
+	}
+
+	@Override
+	public int getDeliveryCountByRestaurantId(Long restId) {
+		String restaurantNameCode = restaurantDao.findOne(restId).getName().replace(' ', '_');
+		return (int) deliveryDao.countByGuidStartingWith(restaurantNameCode);
 	}
 
 	@Override
@@ -89,4 +97,5 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 		deliveryDao.save(entity);
 	}
+
 }
