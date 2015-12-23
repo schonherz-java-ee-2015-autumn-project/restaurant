@@ -143,7 +143,7 @@ public class NewDeliveryController implements Serializable {
 				delivery.setGuid(GuidGenerator.generate(userSessionBean.getUser().getRestaurant()));
 			}
 			deliveryService.saveDelivery(delivery);
-			return "index?faces-redirect=true";
+			return "list?faces-redirect=true";
 		}
 		return null;
 	}
