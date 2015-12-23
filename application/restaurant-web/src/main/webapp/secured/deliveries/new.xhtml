@@ -10,7 +10,7 @@
 		<h:outputStylesheet library="default" name="css/custom.css" />
 	</ui:define>
 	<ui:define name="content">
-		<p:growl id="msg" autoUpdate="true" showDetail="true" />
+		<p:growl id="msg" />
 		<p:panel id="orderPanel" header="#{out.new}"
 			styleClass="top-margin-20">
 			<h:form id="form">
@@ -77,20 +77,21 @@
 					<h:panelGrid cellpadding="5">
 						<p:row>
 							<p:column>
-								<p:outputLabel for="orderAddr" value="#{out.address} " />
+								<p:outputLabel for="orderAddr" value="#{out.address}" />
 							</p:column>
 							<p:column>
 								<p:inputText id="orderAddr"
-									value="#{newDeliveryBean.selectedOrder.address}" />
+									value="#{newDeliveryBean.selectedOrder.address}"
+									required="true" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:outputLabel for="payTypeDropdown" value="#{out.payType} " />
+								<p:outputLabel for="payTypeDropdown" value="#{out.payType}" />
 							</p:column>
 							<p:column>
 								<p:selectOneMenu id="payTypeDropdown"
-									value="#{newDeliveryBean.selectedPayType}" style="width:150px">
+									value="#{newDeliveryBean.selectedPayType}">
 									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
 										itemValue="#{pt}"
 										itemLabel="#{out['PayType.'.concat(pt.name())]}" />
@@ -99,12 +100,12 @@
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:outputLabel for="datetime" value="#{out.deadline} " />
+								<p:outputLabel for="datetime" value="#{out.deadline}" />
 							</p:column>
 							<p:column>
 								<p:calendar id="datetime"
 									value="#{newDeliveryBean.selectedOrder.deadline}"
-									pattern="yyyy.MM.dd HH:mm">
+									pattern="yyyy.MM.dd HH:mm" required="true">
 									<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 								</p:calendar>
 							</p:column>
@@ -140,7 +141,7 @@
 
 						<p:commandLink value="#{out.save}"
 							actionListener="#{newDeliveryBean.onSaveOrderButtonClick}"
-							styleClass="btn-left btn" />
+							styleClass="btn-left btn" update="msg" />
 						<p:commandLink value="#{out.cancel}"
 							actionListener="#{newDeliveryBean.onCancelOrderButtonClick}"
 							oncomplete="PF('newOrderW').hide();" styleClass="btn-left btn" />
@@ -172,18 +173,18 @@
 
 						<p:outputLabel for="prodName" value="#{out.name} " />
 						<p:inputText id="prodName"
-							value="#{newDeliveryBean.selectedProduct.name}" />
+							value="#{newDeliveryBean.selectedProduct.name}" required="true" />
 
 						<p:outputLabel for="prodPrice" value="#{out.price}" />
 						<p:inputText id="prodPrice"
-							value="#{newDeliveryBean.selectedProduct.price}" />
+							value="#{newDeliveryBean.selectedProduct.price}" required="true" />
 					</h:panelGrid>
 
 					<p:outputPanel id="productDialogButtons">
 
 						<p:commandLink value="#{out.save}"
 							actionListener="#{newDeliveryBean.onSaveProductButtonClick}"
-							styleClass="btn-left btn" />
+							styleClass="btn-left btn" update="msg" />
 						<p:commandLink value="#{out.cancel}"
 							actionListener="#{newDeliveryBean.onCancelProductButtonClick}"
 							oncomplete="PF('newProductW').hide();" styleClass="btn-right btn" />

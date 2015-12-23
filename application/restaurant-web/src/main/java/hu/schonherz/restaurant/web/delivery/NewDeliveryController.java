@@ -3,13 +3,14 @@ package hu.schonherz.restaurant.web.delivery;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
@@ -43,9 +44,6 @@ public class NewDeliveryController implements Serializable {
 
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
-
-	@ManagedProperty("#{out}")
-	private ResourceBundle resource;
 
 	@PostConstruct
 	public void init() {
@@ -109,8 +107,8 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onSaveProductButtonClick(ActionEvent e) {
-		if ("".equals(selectedProduct.getName().trim()) || selectedProduct.getPrice() < 0) {
-			// TODO error message
+		if (selectedProduct.getPrice() <= 0) {
+			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "#{out.positiveNumberRequired}", ""));
 			return;
 		}
 
@@ -148,8 +146,8 @@ public class NewDeliveryController implements Serializable {
 		return null;
 	}
 
-	public String payTypeLabel(PayType pt) {
-		return resource.getString(pt.name().toLowerCase());
+	public void addMessage(FacesMessage fm) {
+		FacesContext.getCurrentInstance().addMessage(null, fm);
 	}
 
 	public PayType[] getPayTypes() {
@@ -210,14 +208,6 @@ public class NewDeliveryController implements Serializable {
 
 	public void setUserSessionBean(UserSessionBean userSessionBean) {
 		this.userSessionBean = userSessionBean;
-	}
-
-	public ResourceBundle getResource() {
-		return resource;
-	}
-
-	public void setResource(ResourceBundle resource) {
-		this.resource = resource;
 	}
 
 	public PayType getSelectedPayType() {

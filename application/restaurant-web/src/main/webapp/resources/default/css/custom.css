@@ -51,3 +51,8 @@ a.btn-no-margin {
 .custom-dialog {
 	max-width: 500px;
 }
+
+td.label {
+	margin-right: 10px !important;
+	text-align: right !important;
+}
