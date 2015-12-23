@@ -1,8 +1,7 @@
 package hu.schonherz.restaurant.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant")
@@ -15,6 +14,9 @@ public class Restaurant extends BaseEntity {
 
 	@Column(name = "resturant_address")
 	private String address;
+
+	@OneToMany(mappedBy = "restaurant")
+	private List<Product> products;
 
 	public String getName() {
 		return name;
@@ -32,4 +34,12 @@ public class Restaurant extends BaseEntity {
 		this.address = address;
 	}
 
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 }

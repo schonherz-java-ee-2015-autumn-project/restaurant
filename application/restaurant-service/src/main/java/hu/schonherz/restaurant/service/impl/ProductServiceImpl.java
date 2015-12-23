@@ -39,4 +39,9 @@ public class ProductServiceImpl implements ProductServiceLocal,ProductServiceRem
     public ProductVo saveProduct(ProductVo productVo) {
         return ProductConverter.toVo(productDao.save(ProductConverter.toEntity(productVo)));
     }
+
+    @Override
+    public List<ProductVo> getProductsByRestaurantId(Long id) {
+        return ProductConverter.toVo(productDao.findAllByRestaurantId(id));
+    }
 }

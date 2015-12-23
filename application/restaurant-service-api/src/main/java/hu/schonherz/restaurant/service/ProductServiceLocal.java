@@ -13,4 +13,6 @@ public interface ProductServiceLocal {
     ProductVo getProductById(Long id);
 
     ProductVo saveProduct(ProductVo productVo);
+
+    List<ProductVo> getProductsByRestaurantId(Long id);
 }

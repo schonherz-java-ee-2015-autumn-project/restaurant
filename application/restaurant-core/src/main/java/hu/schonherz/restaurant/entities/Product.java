@@ -1,8 +1,6 @@
 package hu.schonherz.restaurant.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by tothd on 2015. 12. 16..
@@ -16,6 +14,9 @@ public class Product extends BaseEntity{
 
     @Column(name = "product_price",  nullable = false, length = 50)
     private Integer price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Restaurant restaurant;
 
     public String getName() {
         return name;

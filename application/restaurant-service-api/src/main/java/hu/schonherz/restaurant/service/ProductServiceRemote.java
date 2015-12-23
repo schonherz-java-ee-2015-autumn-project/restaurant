@@ -14,4 +14,6 @@ public interface ProductServiceRemote {
     ProductVo getProductById(Long id);
 
     ProductVo saveProduct(ProductVo productVo);
+
+    List<ProductVo> getProductsByRestaurantId(Long id);
 }
