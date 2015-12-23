@@ -2,13 +2,13 @@ package hu.schonherz.restaurant.web.vo;
 
 import java.io.Serializable;
 
+import hu.schonherz.restaurant.service.vo.States.State;
+
 public class DeliveryListingVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String guid;
-
-	private String status;
 
 	private String courierName;
 
@@ -16,16 +16,18 @@ public class DeliveryListingVo implements Serializable {
 
 	private double total;
 
+	private State state;
+
 	public DeliveryListingVo() {
 	}
 
-	public DeliveryListingVo(String guid, String status, String courierName, int numberOfAddresses, double total) {
+	public DeliveryListingVo(String guid, String courierName, int numberOfAddresses, double total, State state) {
 		super();
 		this.guid = guid;
-		this.status = status;
 		this.courierName = courierName;
 		this.numberOfAddresses = numberOfAddresses;
 		this.total = total;
+		this.state = state;
 	}
 
 	public String getGuid() {
@@ -34,14 +36,6 @@ public class DeliveryListingVo implements Serializable {
 
 	public void setGuid(String guid) {
 		this.guid = guid;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public String getCourierName() {
@@ -66,6 +60,14 @@ public class DeliveryListingVo implements Serializable {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }

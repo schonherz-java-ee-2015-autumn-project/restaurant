@@ -25,9 +25,9 @@
 						filterBy="#{delivery.guid}">
 						<h:outputText value="#{delivery.guid}" />
 					</p:column>
-					<p:column headerText="#{out.status}" sortBy="#{delivery.status}"
-						filterBy="#{delivery.status}">
-						<h:outputText value="#{delivery.status}" />
+					<p:column headerText="#{out.state}" sortBy="#{delivery.state}">
+						<h:outputText
+							value="#{out['State.'.concat(delivery.state.name())]}" />
 					</p:column>
 					<p:column headerText="#{out.courier}"
 						sortBy="#{delivery.courierName}"
@@ -70,7 +70,7 @@
 
 				<p:row>
 					<p:column>
-						<h:outputText value="#{out.status}" />
+						<h:outputText value="#{out.state}" />
 					</p:column>
 					<p:column>
 						<h:outputText
