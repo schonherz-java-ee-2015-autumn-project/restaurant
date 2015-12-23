@@ -13,6 +13,7 @@ public class UserVo implements Serializable {
 	private String phoneNumber;
 	private String name;
 	private List<RoleVo> roles;
+	private RestaurantVo restaurant;
 
 	public Long getId() {
 		return id;
@@ -60,6 +61,14 @@ public class UserVo implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public RestaurantVo getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(RestaurantVo restaurant) {
+		this.restaurant = restaurant;
 	}
 
 }

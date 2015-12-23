@@ -13,6 +13,7 @@
 		<class>hu.schonherz.restaurant.entities.Delivery</class>
 		<class>hu.schonherz.restaurant.entities.Order</class>
 		<class>hu.schonherz.restaurant.entities.Product</class>
+		<class>hu.schonherz.restaurant.entities.Restaurant</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<!-- class><class -->
 		
