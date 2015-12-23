@@ -50,7 +50,7 @@
 					<ul class="sf-menu">
 						<sec:authorize ifAnyGranted="ROLE_USER">
 							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
-							<li><a href="#{request.contextPath}/secured/deliveries">#{out.deliveries}</a></li>
+							<li><a href="#{request.contextPath}/secured/deliveries/list.xhtml">#{out.deliveries}</a></li>
 						</sec:authorize>
 						<ui:insert name="menu"></ui:insert>
 					</ul>
