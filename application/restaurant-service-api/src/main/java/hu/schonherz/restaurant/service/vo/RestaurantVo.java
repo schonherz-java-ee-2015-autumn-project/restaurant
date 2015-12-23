@@ -1,6 +1,7 @@
 package hu.schonherz.restaurant.service.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RestaurantVo implements Serializable {
 
@@ -11,6 +12,16 @@ public class RestaurantVo implements Serializable {
 	private String name;
 
 	private String address;
+
+	private List<ProductVo> products;
+
+	public List<ProductVo> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<ProductVo> products) {
+		this.products = products;
+	}
 
 	public String getName() {
 		return name;
