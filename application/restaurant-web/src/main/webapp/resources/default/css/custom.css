@@ -18,6 +18,8 @@
 
 label {
 	vertical-align: middle !important;
+	margin-right: 10px !important;
+	font-weight: bold;
 }
 
 a.btn:HOVER {
@@ -55,9 +57,22 @@ a.btn-no-margin {
 td.label {
 	margin-right: 10px !important;
 	text-align: right !important;
+	padding: 2px 4px;
 }
 
 th.nobg {
 	background-color: #F9F9F9 !important;
 	background-image: none !important;
+}
+
+table, table td {
+	vertical-align: middle !important;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: left !important;
+}
+
+.ui-selectonemenu-filter-container {
+	width: 98% !important;
 }

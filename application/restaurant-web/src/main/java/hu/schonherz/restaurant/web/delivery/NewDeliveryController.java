@@ -223,8 +223,15 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onOrderRowDelete(ActionEvent e) {
+		selectedOrder = null;
 		OrderVo deleted = (OrderVo) e.getComponent().getAttributes().get("deleted");
 		delivery.getOrders().remove(deleted);
+	}
+
+	public void onProductRowDelete(ActionEvent e) {
+		selectedProduct = null;
+		ProductVo deleted = (ProductVo) e.getComponent().getAttributes().get("deleted");
+		orderProducts.remove(deleted);
 	}
 
 	public String saveDelivery() {

@@ -26,7 +26,8 @@
 				<p:dataTable id="ordersDT" var="order" styleClass="top-margin-20"
 					value="#{newDeliveryBean.delivery.orders}" selectionMode="single"
 					selection="#{newDeliveryBean.selectedOrder}"
-					rowKey="#{order.address}" emptyMessage="#{out.noorderstoshow}">
+					rowKey="#{order.address}" emptyMessage="#{out.noorderstoshow}"
+					tableStyle="table-layout: auto;">
 					<f:facet name="header">
 						<h:outputText value="#{out.orders}" />
 					</f:facet>
@@ -41,11 +42,11 @@
 						</h:outputText>
 					</p:column>
 					<p:column styleClass="nobg" style="width:64px;text-align: center">
-						<h:commandLink update="ordersDT" styleClass="btn-no-margin btn"
+						<p:commandLink update="ordersDT" styleClass="btn-no-margin btn"
 							actionListener="#{newDeliveryBean.onOrderRowDelete}"
-							value="#{out.remove}">
+							value="#{out.remove}" oncomplete="PF('newOrderW').hide();">
 							<f:attribute name="deleted" value="#{order}" />
-						</h:commandLink>
+						</p:commandLink>
 					</p:column>
 				</p:dataTable>
 
@@ -74,14 +75,14 @@
 			<p:outputPanel id="orderDetails">
 				<h:form id="orderForm">
 
-					<h:panelGrid cellpadding="5">
+					<h:panelGrid columnClasses="label,value">
 						<p:row>
 							<p:column>
 								<p:outputLabel for="orderAddr" value="#{out.address}" />
 							</p:column>
 							<p:column>
-								<p:inputText id="orderAddr"
-									value="#{newDeliveryBean.address}" />
+								<p:inputText id="orderAddr" value="#{newDeliveryBean.address}"
+									style="width:170px;" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -89,7 +90,7 @@
 								<p:outputLabel for="payTypeDropdown" value="#{out.payType}" />
 							</p:column>
 							<p:column>
-								<p:selectOneMenu id="payTypeDropdown"
+								<p:selectOneMenu id="payTypeDropdown" style="width:150px;"
 									value="#{newDeliveryBean.selectedPayType}">
 									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
 										itemValue="#{pt}"
@@ -102,9 +103,8 @@
 								<p:outputLabel for="datetime" value="#{out.deadline}" />
 							</p:column>
 							<p:column>
-								<p:calendar id="datetime"
-									value="#{newDeliveryBean.orderDate}"
-									pattern="yyyy.MM.dd HH:mm">
+								<p:calendar id="datetime" value="#{newDeliveryBean.orderDate}"
+									pattern="yyyy.MM.dd HH:mm" style="width:150px;">
 									<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 								</p:calendar>
 							</p:column>
@@ -116,20 +116,29 @@
 									emptyMessage="#{out.noproducttolist}"
 									styleClass="top-margin-20" selectionMode="single"
 									selection="#{newDeliveryBean.selectedProduct}"
-									rowKey="#{product.name}">
+									rowKey="#{product.name}" tableStyle="table-layout: auto;">
 									<p:ajax event="rowSelect"
 										listener="#{newDeliveryBean.onProductRowSelect}"
 										update="orderDetails" />
 									<f:facet name="header">
 										<h:outputText value="#{out.products}" />
 									</f:facet>
-									<p:column headerText="#{out.productname}">
+									<p:column styleClass="nobg" headerText="#{out.productname}">
 										<h:outputText value="#{product.name}" />
 									</p:column>
-									<p:column headerText="#{out.price}">
+									<p:column styleClass="nobg" headerText="#{out.price}">
 										<h:outputText value="#{product.price}">
-											<f:convertNumber currencyCode="HUF" />
+											<f:convertNumber type="currency" currencyCode="HUF" />
 										</h:outputText>
+									</p:column>
+									<p:column styleClass="nobg"
+										style="width:64px;text-align: center">
+										<p:commandLink update="productsList"
+											styleClass="btn-no-margin btn"
+											actionListener="#{newDeliveryBean.onProductRowDelete}"
+											value="#{out.remove}" oncomplete="PF('newOrderW').show();">
+											<f:attribute name="deleted" value="#{product}" />
+										</p:commandLink>
 									</p:column>
 								</p:dataTable>
 							</p:column>
@@ -169,15 +178,27 @@
 			styleClass="custom-dialog">
 			<p:outputPanel id="productDetails">
 				<h:form id="productForm">
-					<h:panelGrid columns="2" columnClasses="label,value"
-						cellpadding="5">
+					<h:panelGrid columnClasses="label,value" cellpadding="5">
 
-						<p:outputLabel for="prodName" value="#{out.name} " />
-						<p:inputText id="prodName" value="#{newDeliveryBean.productName}" />
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodName" value="#{out.name} " />
+							</p:column>
+							<p:column>
+								<p:inputText id="prodName"
+									value="#{newDeliveryBean.productName}" />
+							</p:column>
 
-						<p:outputLabel for="prodPrice" value="#{out.price}" />
-						<p:inputText id="prodPrice"
-							value="#{newDeliveryBean.productPrice}" />
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodPrice" value="#{out.price}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="prodPrice"
+									value="#{newDeliveryBean.productPrice}" />
+							</p:column>
+						</p:row>
 					</h:panelGrid>
 
 					<p:outputPanel id="productDialogButtons">
@@ -190,7 +211,6 @@
 							oncomplete="PF('newProductW').hide();" styleClass="btn-right btn" />
 
 					</p:outputPanel>
-
 				</h:form>
 			</p:outputPanel>
 		</p:dialog>
