@@ -44,4 +44,9 @@ public class ProductServiceImpl implements ProductServiceLocal,ProductServiceRem
     public List<ProductVo> getProductsByRestaurantId(Long id) {
         return ProductConverter.toVo(productDao.findAllByRestaurantId(id));
     }
+
+    @Override
+    public ProductVo getProductByNameAndRestaurantId(String name, Long id) {
+        return ProductConverter.toVo(productDao.findByNameAndRestaurantId(name,id));
+    }
 }
