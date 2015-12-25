@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class DeliveryVo implements Serializable {
 
-	private States.State deliveryState;
+	private State deliveryState;
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,11 +23,11 @@ public class DeliveryVo implements Serializable {
 
 	private List<OrderVo> orders;
 
-	public States.State getDeliveryState() {
+	public State getDeliveryState() {
 		return deliveryState;
 	}
 
-	public void setDeliveryState(States.State deliveryState) {
+	public void setDeliveryState(State deliveryState) {
 		this.deliveryState = deliveryState;
 	}
 

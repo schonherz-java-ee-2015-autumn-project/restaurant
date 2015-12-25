@@ -32,17 +32,16 @@
 					</f:facet>
 					<p:ajax event="rowSelect"
 						listener="#{newDeliveryBean.onOrderRowSelect}" update="orderPanel" />
-					<p:column headerText="#{out.address}">
+					<p:column styleClass="nobg" headerText="#{out.address}">
 						<h:outputText value="#{order.address}" />
 					</p:column>
-					<p:column headerText="#{out.deadline}">
+					<p:column styleClass="nobg" headerText="#{out.deadline}">
 						<h:outputText value="#{order.deadline}">
 							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 						</h:outputText>
 					</p:column>
-					<p:column style="width:64px;text-align: center">
-						<h:commandLink update="ordersDT"
-							styleClass="btn-no-margin btn"
+					<p:column styleClass="nobg" style="width:64px;text-align: center">
+						<h:commandLink update="ordersDT" styleClass="btn-no-margin btn"
 							actionListener="#{newDeliveryBean.onOrderRowDelete}"
 							value="#{out.remove}">
 							<f:attribute name="deleted" value="#{order}" />
@@ -52,8 +51,9 @@
 
 				<p:commandLink value="#{out.modify}"
 					oncomplete="PF('newOrderW').show();"
+					actionListener="#{deliveryBean.onModifyOrderButtonClick}"
 					update="newOrderDialog,orderDetails" styleClass="btn-right btn"
-					rendered="#{newDeliveryBean.canModify}" />
+					rendered="#{not empty newDeliveryBean.selectedOrder}" />
 
 				<p:commandLink value="#{out.newOrder}"
 					actionListener="#{newDeliveryBean.onAddOrderButtonClick}"
@@ -81,7 +81,7 @@
 							</p:column>
 							<p:column>
 								<p:inputText id="orderAddr"
-									value="#{newDeliveryBean.selectedOrder.address}" />
+									value="#{newDeliveryBean.address}" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -103,7 +103,7 @@
 							</p:column>
 							<p:column>
 								<p:calendar id="datetime"
-									value="#{newDeliveryBean.selectedOrder.deadline}"
+									value="#{newDeliveryBean.orderDate}"
 									pattern="yyyy.MM.dd HH:mm">
 									<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
 								</p:calendar>
@@ -112,7 +112,7 @@
 						<p:row>
 							<p:column colspan="2">
 								<p:dataTable id="productsList" var="product"
-									value="#{newDeliveryBean.selectedOrder.products}"
+									value="#{newDeliveryBean.orderProducts}"
 									emptyMessage="#{out.noproducttolist}"
 									styleClass="top-margin-20" selectionMode="single"
 									selection="#{newDeliveryBean.selectedProduct}"
@@ -143,13 +143,14 @@
 							styleClass="btn-left btn" update="msg" />
 						<p:commandLink value="#{out.cancel}"
 							actionListener="#{newDeliveryBean.onCancelOrderButtonClick}"
-							oncomplete="PF('newOrderW').hide();" styleClass="btn-left btn"
-							process="@this" />
+							oncomplete="PF('newOrderW').hide();" styleClass="btn-left btn" />
 
 						<p:commandLink value="#{out.modify}"
+							actionListener="#{newDeliveryBean.onModifyProductButtonClick}"
 							oncomplete="PF('newProductW').show();"
-							update="newOrderDialog,orderDetails" styleClass="btn-right btn"
-							rendered="#{newDeliveryBean.canModifyProduct}" />
+							update="newOrderDialog,orderDetails,newProductDialog"
+							styleClass="btn-right btn"
+							rendered="#{not empty newDeliveryBean.selectedProduct}" />
 
 						<p:commandLink value="#{out.newProduct}"
 							actionListener="#{newDeliveryBean.onAddProductButtonClick}"
@@ -172,12 +173,11 @@
 						cellpadding="5">
 
 						<p:outputLabel for="prodName" value="#{out.name} " />
-						<p:inputText id="prodName"
-							value="#{newDeliveryBean.selectedProduct.name}" />
+						<p:inputText id="prodName" value="#{newDeliveryBean.productName}" />
 
 						<p:outputLabel for="prodPrice" value="#{out.price}" />
 						<p:inputText id="prodPrice"
-							value="#{newDeliveryBean.selectedProduct.price}" />
+							value="#{newDeliveryBean.productPrice}" />
 					</h:panelGrid>
 
 					<p:outputPanel id="productDialogButtons">

@@ -2,7 +2,7 @@ package hu.schonherz.restaurant.web.vo;
 
 import java.io.Serializable;
 
-import hu.schonherz.restaurant.service.vo.States.State;
+import hu.schonherz.restaurant.service.vo.State;
 
 public class DeliveryListingVo implements Serializable {
 

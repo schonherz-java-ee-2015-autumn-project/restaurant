@@ -21,24 +21,26 @@
 					id="deliveryTable" lazy="true">
 					<p:ajax event="rowSelect" listener="#{deliveryBean.onRowSelect}"
 						update="deldetails" />
-					<p:column headerText="#{out.id}" sortBy="#{delivery.guid}"
-						filterBy="#{delivery.guid}">
+					<p:column styleClass="nobg" headerText="#{out.id}"
+						sortBy="#{delivery.guid}" filterBy="#{delivery.guid}">
 						<h:outputText value="#{delivery.guid}" />
 					</p:column>
-					<p:column headerText="#{out.state}" sortBy="#{delivery.state}">
+					<p:column styleClass="nobg" headerText="#{out.state}"
+						sortBy="#{delivery.state}">
 						<h:outputText
 							value="#{out['State.'.concat(delivery.state.name())]}" />
 					</p:column>
-					<p:column headerText="#{out.courier}"
+					<p:column styleClass="nobg" headerText="#{out.courier}"
 						sortBy="#{delivery.courierName}"
 						filterBy="#{delivery.courierName}">
 						<h:outputText value="#{delivery.courierName}" />
 					</p:column>
-					<p:column headerText="#{out.numberofaddresses}"
+					<p:column styleClass="nobg" headerText="#{out.numberofaddresses}"
 						sortBy="#{delivery.numberOfAddresses}">
 						<h:outputText value="#{delivery.numberOfAddresses}" />
 					</p:column>
-					<p:column headerText="#{out.sumtotal}" sortBy="#{delivery.total}">
+					<p:column styleClass="nobg" headerText="#{out.sumtotal}"
+						sortBy="#{delivery.total}">
 						<h:outputText value="#{delivery.total}">
 							<f:convertNumber type="currency" currencyCode="HUF" />
 						</h:outputText>
@@ -56,69 +58,79 @@
 			showEffect="fade" hideEffect="fade" resizable="false"
 			header="#{out.details}"
 			visible="#{not empty deliveryBean.selectedDelivery}">
-			<p:panelGrid id="details"
-				style="text-align: center; vertical-align:middle;">
+			<h:form id="deldetailsForm">
+				<h:panelGrid id="details" cellpadding="5"
+					style="text-align: center; vertical-align:middle;">
 
-				<p:row>
-					<p:column>
-						<h:outputText value="#{out.id}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{deliveryBean.selectedDelivery.guid}" />
-					</p:column>
-				</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.id}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{deliveryBean.selectedDelivery.guid}" />
+						</p:column>
+					</p:row>
 
-				<p:row>
-					<p:column>
-						<h:outputText value="#{out.state}" />
-					</p:column>
-					<p:column>
-						<h:outputText
-							value="#{deliveryBean.selectedDelivery.deliveryState}" />
-					</p:column>
-				</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.state}" />
+						</p:column>
+						<p:column>
+							<h:outputText
+								value="#{deliveryBean.selectedDelivery.deliveryState}" />
+						</p:column>
+					</p:row>
 
-				<p:row>
-					<p:column>
-						<h:outputText value="#{out.courier}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{deliveryBean.selectedDelivery.courier}" />
-					</p:column>
-				</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.courier}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{deliveryBean.selectedDelivery.courier}" />
+						</p:column>
+					</p:row>
 
-				<p:row>
-					<p:column>
-						<h:outputText value="#{out.addresses}" />
-					</p:column>
-					<p:column>
-						<p:scrollPanel mode="native" styleClass="custom-scrollbar"
-							style="border:none;">
-							<p:dataList value="#{deliveryBean.selectedDelivery.orders}"
-								var="order" styleClass="no-border" type="unordered">
-								<h:outputText value="#{order.address}" />
-							</p:dataList>
-						</p:scrollPanel>
-					</p:column>
-				</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.addresses}" />
+						</p:column>
+						<p:column>
+							<p:scrollPanel mode="native" styleClass="custom-scrollbar"
+								style="border:none;">
+								<p:dataList value="#{deliveryBean.selectedDelivery.orders}"
+									var="order" styleClass="no-border" type="unordered">
+									<h:outputText value="#{order.address}" />
+								</p:dataList>
+							</p:scrollPanel>
+						</p:column>
+					</p:row>
 
-				<!-- 				<p:row> -->
-				<!-- 					<p:column colspan="2"> -->
-				<!-- 						<p:outputPanel id="orderdetail"></p:outputPanel> -->
-				<!-- 					</p:column> -->
-				<!-- 				</p:row> -->
+					<!-- 				<p:row> -->
+					<!-- 					<p:column colspan="2"> -->
+					<!-- 						<p:outputPanel id="orderdetail"></p:outputPanel> -->
+					<!-- 					</p:column> -->
+					<!-- 				</p:row> -->
 
-				<p:row>
-					<p:column>
-						<h:outputText value="#{out.sumtotal}" />
-					</p:column>
-					<p:column>
-						<h:outputText
-							value="#{deliveryBean.selectedDeliveryListing.total}" />
-					</p:column>
-				</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.sumtotal}" />
+						</p:column>
+						<p:column>
+							<h:outputText
+								value="#{deliveryBean.selectedDeliveryListing.total}" />
+						</p:column>
+					</p:row>
 
-			</p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<h:commandLink styleClass="btn"
+								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'AVAILABLE'}"
+								value="#{out.modify}"
+								action="#{deliveryBean.onModifyButtonClick}" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+			</h:form>
 		</p:dialog>
 
 	</ui:define>

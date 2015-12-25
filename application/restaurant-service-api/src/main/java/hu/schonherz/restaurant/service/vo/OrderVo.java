@@ -21,7 +21,7 @@ public class OrderVo implements Serializable {
 
 	private Integer totalPrice;
 
-	private States.State orderState;
+	private State orderState;
 
 	public String getAddress() {
 		return address;
@@ -63,11 +63,11 @@ public class OrderVo implements Serializable {
 		this.totalPrice = totalPrice;
 	}
 
-	public States.State getOrderState() {
+	public State getOrderState() {
 		return orderState;
 	}
 
-	public void setOrderState(States.State orderState) {
+	public void setOrderState(State orderState) {
 		this.orderState = orderState;
 	}
 

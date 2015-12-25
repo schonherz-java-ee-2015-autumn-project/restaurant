@@ -2,6 +2,8 @@ package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -20,7 +23,7 @@ import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
-import hu.schonherz.restaurant.service.vo.States.State;
+import hu.schonherz.restaurant.service.vo.State;
 import hu.schonherz.restaurant.type.PayType;
 import hu.schonherz.restaurant.validation.Validator;
 import hu.schonherz.restaurant.validation.Violation;
@@ -37,10 +40,16 @@ public class NewDeliveryController implements Serializable {
 	private DeliveryVo delivery;
 	private OrderVo selectedOrder;
 	private ProductVo selectedProduct;
-	private PayType selectedPayType;
 
-	private boolean canModify;
-	private boolean canModifyProduct;
+	// FORMS
+
+	private String address;
+	private Date orderDate;
+	private PayType selectedPayType;
+	private List<ProductVo> orderProducts;
+
+	private String productName;
+	private String productPrice;
 
 	@EJB
 	private DeliveryServiceLocal deliveryService;
@@ -66,84 +75,151 @@ public class NewDeliveryController implements Serializable {
 			userSessionBean.init();
 		}
 
-		delivery = new DeliveryVo();
-		delivery.setDeliveryState(State.AVAILABLE);
-		delivery.setCourier("");
-		delivery.setOrders(new ArrayList<>());
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
-		canModify = false;
-		canModifyProduct = false;
+		if (externalContext.getRequestParameterMap().get("deliveryId") == null) {
+			delivery = new DeliveryVo();
+			delivery.setDeliveryState(State.AVAILABLE);
+			delivery.setCourier("");
+			delivery.setOrders(new ArrayList<>());
+		} else {
+			delivery = deliveryService.getDeliveryByGuid(externalContext.getRequestParameterMap().get("deliveryId"));
+		}
+
 	}
 
-	public void initOrder() {
-		selectedOrder = new OrderVo();
-		selectedOrder.setOrderState(State.AVAILABLE);
-		selectedOrder.setProducts(new ArrayList<>());
+	public OrderVo initOrder() {
+		OrderVo res = new OrderVo();
+		res.setOrderState(State.AVAILABLE);
+		res.setProducts(orderProducts);
+		res.setPayType(selectedPayType);
+		res.setAddress(address);
+		res.setDeadline(orderDate);
+		return res;
 	}
 
-	public void initProduct() {
-		selectedProduct = new ProductVo();
-		selectedProduct.setName("");
-		selectedProduct.setPrice(0);
+	public ProductVo initProduct() {
+		ProductVo res = new ProductVo();
+		res.setName(productName);
+		res.setPrice(Integer.valueOf(productPrice));
+		return res;
 	}
 
 	public void onAddOrderButtonClick(ActionEvent e) {
-		initOrder();
 		selectedProduct = null;
-		canModify = false;
+		selectedOrder = null;
+		orderProducts = new ArrayList<>();
 	}
 
 	public void onSaveOrderButtonClick(ActionEvent e) {
 		try {
-			orderValidator.validate(selectedOrder);
+			OrderVo order = initOrder();
 
-			selectedOrder.setPayType(selectedPayType);
-			selectedOrder.setTotalPrice(selectedOrder.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
-			delivery.getOrders().add(selectedOrder);
+			orderValidator.validate(order);
+
+			order.setTotalPrice(order.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
+
+			if (selectedOrder == null) {
+				delivery.getOrders().add(order);
+			} else {
+				selectedOrder.setAddress(order.getAddress());
+				selectedOrder.setDeadline(order.getDeadline());
+				selectedOrder.setOrderState(order.getOrderState());
+				selectedOrder.setPayType(order.getPayType());
+				selectedOrder.setProducts(order.getProducts());
+				selectedOrder.setTotalPrice(order.getTotalPrice());
+			}
 
 			RequestContext reqContext = RequestContext.getCurrentInstance();
 			reqContext.execute("PF('newOrderW').hide();");
 			reqContext.update("orderPanel");
 
 			selectedOrder = null;
+			resetOrderInput();
 		} catch (ViolationException ve) {
 			addMessage(ve);
 		}
 	}
 
+	private void fillOrderInput(OrderVo order) {
+		address = order.getAddress();
+		selectedPayType = order.getPayType();
+		orderDate = order.getDeadline();
+		orderProducts = new ArrayList<>(order.getProducts());
+	}
+
+	private void fillProductInput(ProductVo product) {
+		productName = product.getName();
+		productPrice = String.valueOf(product.getPrice());
+	}
+
+	private void resetOrderInput() {
+		address = "";
+		orderDate = new Date();
+		selectedPayType = PayType.MONEY;
+		orderProducts = new ArrayList<>();
+	}
+
+	private void resetProductInput() {
+		productName = "";
+		productPrice = "";
+	}
+
+	public void onModifyOrderButtonClick(ActionEvent e) {
+		fillOrderInput(selectedOrder);
+	}
+
+	public void onModifyProductButtonClick(ActionEvent e) {
+		fillProductInput(selectedProduct);
+	}
+
 	public void onCancelOrderButtonClick(ActionEvent e) {
-		canModify = false;
 		selectedOrder = null;
+		resetOrderInput();
+	}
+
+	public void onCancelProductButtonClick(ActionEvent e) {
+		selectedProduct = null;
+		resetProductInput();
 	}
 
 	public void onAddProductButtonClick(ActionEvent e) {
-		canModifyProduct = false;
-		initProduct();
+		selectedProduct = null;
 	}
 
 	public void onSaveProductButtonClick(ActionEvent e) {
 		try {
-			productValidator.validate(selectedProduct);
+			ProductVo prod = initProduct();
 
-			selectedOrder.getProducts().add(selectedProduct);
+			productValidator.validate(prod);
+
+			if (selectedProduct != null) {
+				selectedProduct.setName(prod.getName());
+				selectedProduct.setPrice(prod.getPrice());
+			} else {
+				orderProducts.add(prod);
+			}
 
 			RequestContext reqContext = RequestContext.getCurrentInstance();
 			reqContext.execute("PF('newProductW').hide();");
 			reqContext.update("orderDetails");
 
+			resetProductInput();
 			selectedProduct = null;
 		} catch (ViolationException ve) {
 			addMessage(ve);
+		} catch (NumberFormatException nfe) {
+			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, resource.getString("value_must_be_int"), ""));
 		}
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
-		selectedPayType = selectedOrder.getPayType();
-		canModify = true;
+		selectedOrder = (OrderVo) e.getObject();
+		fillOrderInput(selectedOrder);
 	}
 
 	public void onProductRowSelect(SelectEvent e) {
-		canModifyProduct = true;
+		selectedProduct = (ProductVo) e.getObject();
 	}
 
 	public void onOrderRowDelete(ActionEvent e) {
@@ -196,22 +272,6 @@ public class NewDeliveryController implements Serializable {
 
 	public void setSelectedOrder(OrderVo selectedOrder) {
 		this.selectedOrder = selectedOrder;
-	}
-
-	public boolean isCanModify() {
-		return canModify;
-	}
-
-	public void setCanModify(boolean canModify) {
-		this.canModify = canModify;
-	}
-
-	public boolean isCanModifyProduct() {
-		return canModifyProduct;
-	}
-
-	public void setCanModifyProduct(boolean canModifyProduct) {
-		this.canModifyProduct = canModifyProduct;
 	}
 
 	public ProductVo getSelectedProduct() {
@@ -276,6 +336,46 @@ public class NewDeliveryController implements Serializable {
 
 	public void setDeliveryValidator(Validator<DeliveryVo> deliveryValidator) {
 		this.deliveryValidator = deliveryValidator;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(String productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public List<ProductVo> getOrderProducts() {
+		return orderProducts;
+	}
+
+	public void setOrderProducts(List<ProductVo> orderProducts) {
+		this.orderProducts = orderProducts;
 	}
 
 }

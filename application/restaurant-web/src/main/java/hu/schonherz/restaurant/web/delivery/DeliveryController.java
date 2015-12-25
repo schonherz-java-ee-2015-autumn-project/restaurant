@@ -33,6 +33,17 @@ public class DeliveryController implements Serializable {
 		selectedDelivery = deliveryService.getDeliveryByGuid(selectedDeliveryListing.getGuid());
 	}
 
+	public String onModifyButtonClick() {
+		if (selectedDelivery == null) {
+			return null;
+		}
+
+		StringBuilder sb = new StringBuilder("new?faces-redirect=true");
+		sb.append("&deliveryId=").append(selectedDelivery.getGuid());
+		sb.append("&includeViewParams=true");
+		return sb.toString();
+	}
+
 	public LazyDataModel<DeliveryListingVo> getTableData() {
 		return tableData;
 	}

@@ -56,3 +56,8 @@ td.label {
 	margin-right: 10px !important;
 	text-align: right !important;
 }
+
+th.nobg {
+	background-color: #F9F9F9 !important;
+	background-image: none !important;
+}
