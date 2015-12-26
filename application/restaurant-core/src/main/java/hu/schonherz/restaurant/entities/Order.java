@@ -89,4 +89,5 @@ public class Order extends BaseEntity {
 	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+
 }

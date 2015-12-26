@@ -2,6 +2,8 @@ package hu.schonherz.restaurant.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -9,27 +11,39 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "products")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
-    @Column(name = "product_name", nullable = false)
-    private String name;
+	@Column(name = "product_name", nullable = false)
+	private String name;
 
-    @Column(name = "product_price",  nullable = false, length = 50)
-    private Integer price;
+	@Column(name = "product_price", nullable = false, length = 50)
+	private Integer price;
 
-    public String getName() {
-        return name;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Restaurant restaurant;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getPrice() {
-        return price;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
 }

@@ -1,5 +1,7 @@
 package hu.schonherz.restaurant.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +13,8 @@ import hu.schonherz.restaurant.entities.Product;
 @Repository
 public interface ProductDao extends JpaRepository<Product, Long> {
 
-    Product findById(Long id);
+	List<Product> findByRestaurantId(Long id);
 
-    @SuppressWarnings("unchecked")
-    Product save(Product product);
+	Product findByNameAndRestaurantId(String name, Long id);
+
 }

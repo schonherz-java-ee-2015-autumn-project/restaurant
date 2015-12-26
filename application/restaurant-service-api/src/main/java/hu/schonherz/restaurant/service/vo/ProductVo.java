@@ -11,6 +11,8 @@ public class ProductVo implements Serializable {
 
 	private Integer price;
 
+	private RestaurantVo restaurant;
+
 	public String getName() {
 		return name;
 	}
@@ -25,6 +27,14 @@ public class ProductVo implements Serializable {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public RestaurantVo getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(RestaurantVo restaurant) {
+		this.restaurant = restaurant;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package hu.schonherz.restaurant.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +13,6 @@ import hu.schonherz.restaurant.entities.Order;
 @Repository
 public interface OrderDao extends JpaRepository<Order, Long> {
 
-    Order findById(Long id);
+	Page<Order> findByAddressContaining(String filter, Pageable pageable);
 
-    @SuppressWarnings("unchecked")
-    Order save(Order order);
 }

@@ -1,17 +1,19 @@
 package hu.schonherz.restaurant.service;
 
-import hu.schonherz.restaurant.service.vo.OrderVo;
-
 import java.util.List;
+
+import hu.schonherz.restaurant.service.vo.OrderVo;
 
 /**
  * Created by tothd on 2015. 12. 21..
  */
 public interface OrderServiceRemote {
 
-    List<OrderVo> getOrders();
+	List<OrderVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
 
-    OrderVo getOrderById(Long id);
+	List<OrderVo> getOrders();
 
-    OrderVo saveOrder(OrderVo orderVo);
+	OrderVo getOrderById(Long id);
+
+	OrderVo saveOrder(OrderVo orderVo);
 }

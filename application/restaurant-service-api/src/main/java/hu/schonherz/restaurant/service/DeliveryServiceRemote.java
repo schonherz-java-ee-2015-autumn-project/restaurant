@@ -20,4 +20,5 @@ public interface DeliveryServiceRemote {
 	DeliveryVo getDeliveryByGuid(String guid);
 
 	void saveDelivery(DeliveryVo delivery);
+
 }

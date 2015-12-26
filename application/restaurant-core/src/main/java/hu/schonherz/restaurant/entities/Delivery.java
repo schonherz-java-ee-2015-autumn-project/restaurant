@@ -75,4 +75,5 @@ public class Delivery extends BaseEntity {
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
+
 }

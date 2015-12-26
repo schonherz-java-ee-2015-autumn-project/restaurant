@@ -26,9 +26,6 @@ import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.DeliveryServiceRemote;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 
-/**
- * Created by tothd on 2015. 12. 17..
- */
 @Stateless(mappedName = "DeliveryService")
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
