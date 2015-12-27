@@ -17,4 +17,6 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
 	Product findByNameAndRestaurantId(String name, Long id);
 
+	List<Product> findByNameStartingWithAndRestaurantId(String query, Long id);
+
 }

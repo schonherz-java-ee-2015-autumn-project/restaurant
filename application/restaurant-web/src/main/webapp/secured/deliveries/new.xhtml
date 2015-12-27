@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/template/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
-	<ui:define name="pageTitle">#{out.deliveries}</ui:define>
+	<ui:define name="pageTitle">#{out.newdelivery}</ui:define>
 	<ui:define name="head-extra">
 		<h:outputStylesheet library="default" name="css/custom.css" />
 	</ui:define>
@@ -185,8 +185,16 @@
 								<p:outputLabel for="prodName" value="#{out.name} " />
 							</p:column>
 							<p:column>
-								<p:inputText id="prodName"
-									value="#{newDeliveryBean.productName}" />
+								<p:autoComplete id="prodName"
+									value="#{newDeliveryBean.productName}"
+									completeMethod="#{newDeliveryBean.completeProducts}"
+									minQueryLength="3">
+									<p:ajax event="itemSelect"
+										listener="#{newDeliveryBean.onProductSelect}" update="msg" />
+								</p:autoComplete>
+
+								<!-- 								<p:inputText id="prodName" -->
+								<!-- 									value="#{newDeliveryBean.productName}" /> -->
 							</p:column>
 
 						</p:row>

@@ -17,4 +17,7 @@ public interface ProductServiceLocal {
 	List<ProductVo> getProductsByRestaurantId(Long id);
 
 	ProductVo getProductByNameAndRestaurantId(String name, Long id);
+
+	List<ProductVo> getProductsByNameStartingWithAndRestaurantId(String query, Long id);
+
 }

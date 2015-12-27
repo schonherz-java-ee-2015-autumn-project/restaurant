@@ -123,6 +123,10 @@
 			<groupId>hu.schonherz.snowwhite</groupId>
 			<artifactId>restaurant-validation-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 </project>

@@ -46,10 +46,6 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 			Map<String, Object> filters) {
 		String filter = "";
 		String filterColumnName = "";
-		if (filters.keySet().size() > 0) {
-			filter = (String) filters.values().toArray()[0];
-			filterColumnName = filters.keySet().iterator().next();
-		}
 
 		if (sortField == null) {
 			sortField = "guid";

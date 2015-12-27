@@ -1,10 +1,12 @@
 package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -16,10 +18,13 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
+import hu.schonherz.restaurant.service.ProductServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
@@ -34,6 +39,8 @@ import hu.schonherz.restaurant.web.generator.GuidGenerator;
 @ViewScoped
 @ManagedBean(name = "newDeliveryBean")
 public class NewDeliveryController implements Serializable {
+
+	private static Logger logger = Logger.getLogger(NewDeliveryController.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,6 +60,9 @@ public class NewDeliveryController implements Serializable {
 
 	@EJB
 	private DeliveryServiceLocal deliveryService;
+
+	@EJB
+	private ProductServiceLocal productService;
 
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
@@ -88,6 +98,13 @@ public class NewDeliveryController implements Serializable {
 
 	}
 
+	public List<String> completeProducts(String query) {
+		List<ProductVo> products = productService.getProductsByNameStartingWithAndRestaurantId(query,
+				userSessionBean.getUser().getRestaurant().getId());
+
+		return products.stream().map(p -> p.getName()).collect(Collectors.toList());
+	}
+
 	public OrderVo initOrder() {
 		OrderVo res = new OrderVo();
 		res.setOrderState(State.AVAILABLE);
@@ -102,6 +119,7 @@ public class NewDeliveryController implements Serializable {
 		ProductVo res = new ProductVo();
 		res.setName(productName);
 		res.setPrice(Integer.valueOf(productPrice));
+		res.setRestaurant(userSessionBean.getUser().getRestaurant());
 		return res;
 	}
 
@@ -193,9 +211,20 @@ public class NewDeliveryController implements Serializable {
 
 			productValidator.validate(prod);
 
+			ProductVo productTemp = productService.getProductByNameAndRestaurantId(prod.getName(),
+					prod.getRestaurant().getId());
+
+			if (productTemp != null) {
+				FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						resource.getString("product_already_exist"), "");
+
+				BeanUtils.copyProperties(prod, productTemp);
+				addMessage(fmsg);
+
+			}
+
 			if (selectedProduct != null) {
-				selectedProduct.setName(prod.getName());
-				selectedProduct.setPrice(prod.getPrice());
+				BeanUtils.copyProperties(selectedProduct, prod);
 			} else {
 				orderProducts.add(prod);
 			}
@@ -210,6 +239,9 @@ public class NewDeliveryController implements Serializable {
 			addMessage(ve);
 		} catch (NumberFormatException nfe) {
 			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, resource.getString("value_must_be_int"), ""));
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			// TODO addMessage
+			logger.error("BeanUtils exception", e1);
 		}
 	}
 
@@ -232,6 +264,29 @@ public class NewDeliveryController implements Serializable {
 		selectedProduct = null;
 		ProductVo deleted = (ProductVo) e.getComponent().getAttributes().get("deleted");
 		orderProducts.remove(deleted);
+	}
+
+	public void onProductSelect(SelectEvent e) {
+		ProductVo prod = productService.getProductByNameAndRestaurantId((String) e.getObject(),
+				userSessionBean.getUser().getRestaurant().getId());
+		try {
+			if (selectedProduct == null) {
+				orderProducts.add(prod);
+			} else {
+				BeanUtils.copyProperties(selectedProduct, prod);
+			}
+
+			RequestContext reqContext = RequestContext.getCurrentInstance();
+			reqContext.execute("PF('newProductW').hide();");
+			reqContext.update("orderDetails");
+
+			selectedProduct = null;
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, resource.getString("cant_modify_product"),
+					"");
+			addMessage(msg);
+		}
+
 	}
 
 	public String saveDelivery() {
