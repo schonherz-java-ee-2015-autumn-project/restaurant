@@ -11,5 +11,7 @@ public interface UserServiceRemote {
 	public List<UserVo> getUsers();
 
 	public UserVo findById(Long id);
+	
+	public void save(UserVo user);
 
 }

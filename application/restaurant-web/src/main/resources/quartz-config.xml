@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data.xsd"
+	version="1.8">
+
+	<schedule>
+		<job>
+			<name>UserRefresh</name>
+			<group>UserAdminServiceRefresh</group>
+			<description>Remote administrator service refresh</description>
+			<job-class>hu.schonherz.restaurant.integration.UserRefresherScheduledJob
+			</job-class>
+		</job>
+		<trigger>
+			<cron>
+				<name>UserRefreshTrigger</name>
+				<job-name>UserRefresh</job-name>
+				<job-group>UserAdminServiceRefresh</job-group>
+				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression>
+				<!-- <cron-expression>0 0 0/1 1/1 * ? *</cron-expression> -->
+			</cron>
+		</trigger>
+
+
+		<job>
+			<name>DeliveryRefresh</name>
+			<group>DeliveryAdminServiceRefresh</group>
+			<description>Remote administrator service refresh</description>
+			<job-class>hu.schonherz.restaurant.integration.DeliveryRefresherScheduledJob
+			</job-class>
+		</job>
+		<trigger>
+			<cron>
+				<name>DeliveryRefreshTrigger</name>
+				<job-name>DeliveryRefresh</job-name>
+				<job-group>DeliveryAdminServiceRefresh</job-group>
+				<cron-expression>0 0/1 * 1/1 * ? *</cron-expression>
+			</cron>
+		</trigger>
+	</schedule>
+
+</job-scheduling-data>
+  

@@ -12,7 +12,9 @@ import javax.interceptor.Interceptors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
+import hu.schonherz.restaurant.dao.RoleDao;
 import hu.schonherz.restaurant.dao.UserDao;
+import hu.schonherz.restaurant.entities.Role;
 import hu.schonherz.restaurant.entities.User;
 import hu.schonherz.restaurant.service.EntityVoConverter;
 import hu.schonherz.restaurant.service.UserServiceLocal;
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private RoleDao roleDao;
 
 	@Autowired
 	private EntityVoConverter<UserVo, User> userConverter;
@@ -45,6 +50,15 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	@Override
 	public UserVo findById(Long id) {
 		return userConverter.toVo(userDao.findOne(id));
+	}
+
+	@Override
+	public void save(UserVo user) {
+		Role role = roleDao.findByName("ROLE_USER");
+		if (role==null){
+			roleDao.save(new Role("ROLE_USER"));
+		}
+		userDao.save(userConverter.toEntity(user));
 	}
 
 }
