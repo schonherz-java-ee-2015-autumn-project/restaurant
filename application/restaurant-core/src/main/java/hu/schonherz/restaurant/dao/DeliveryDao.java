@@ -4,6 +4,8 @@ import hu.schonherz.restaurant.entities.Delivery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,9 @@ public interface DeliveryDao extends JpaRepository<Delivery,Long> {
     Page<Delivery> findByCourierContaining(String filter, Pageable pageable);
 
     Delivery findById(Long id);
+
+    @Modifying
+    @Query("update Delivery d set d.isDeleted='True' where d.id=?1")
+    void setIsDeletedById(Long id);
 
 }

@@ -55,4 +55,9 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
     public DeliveryVo getDeliveryById(Long id) {
         return DeliveryConverter.toVo(deliveryDao.findById(id));
     }
+
+    @Override
+    public void deleteDeliveryById(Long id) {
+        deliveryDao.setIsDeletedById(id);
+    }
 }

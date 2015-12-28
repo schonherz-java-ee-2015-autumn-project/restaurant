@@ -1,5 +1,7 @@
 package hu.schonherz.restaurant.entities;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "deliveries")
+@Where(clause = "isDeleted='false'")
 public class Delivery extends BaseEntity {
 
     @Column(name = "delivery_state",  nullable = false)
@@ -24,6 +27,17 @@ public class Delivery extends BaseEntity {
 
     @ManyToMany
     private List<Order> orders;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public String getCourier() {
         return courier;
