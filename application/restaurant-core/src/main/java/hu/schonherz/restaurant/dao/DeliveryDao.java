@@ -23,8 +23,8 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 
 	long countByGuidStartingWith(String restaurantNameCode);
 
-    @Modifying
-    @Query("update Delivery d set d.isDeleted='True' where d.id=?1")
-    void setIsDeletedById(Long id);
+	@Modifying
+	@Query("update Delivery d set d.isDeleted=true where d.id=?1")
+	void setIsDeletedById(Long id);
 
 }

@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -42,6 +43,12 @@ public class DeliveryController implements Serializable {
 		sb.append("&deliveryId=").append(selectedDelivery.getGuid());
 		sb.append("&includeViewParams=true");
 		return sb.toString();
+	}
+
+	public void onDeleteButtonClick(ActionEvent e) {
+		deliveryService.deleteDeliveryById(selectedDelivery.getId());
+		selectedDelivery = null;
+		selectedDeliveryListing = null;
 	}
 
 	public LazyDataModel<DeliveryListingVo> getTableData() {

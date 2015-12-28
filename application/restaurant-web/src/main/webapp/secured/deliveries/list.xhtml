@@ -125,10 +125,16 @@
 
 					<p:row>
 						<p:column colspan="2">
-							<h:commandLink styleClass="btn"
+							<h:commandLink styleClass="btn-left btn"
 								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
 								value="#{out.modify}"
 								action="#{deliveryBean.onModifyButtonClick}" />
+							<p:commandLink styleClass="btn-left btn"
+								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
+								value="#{out.delete}"
+								actionListener="#{deliveryBean.onDeleteButtonClick}"
+								update="tableform:deliveryTable"
+								oncomplete="PF('detailwidget').hide();" />
 						</p:column>
 					</p:row>
 				</h:panelGrid>
