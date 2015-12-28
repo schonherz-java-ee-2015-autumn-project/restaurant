@@ -73,11 +73,6 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	}
 
 	@Override
-	public DeliveryVo getDeliveryById(Long id) {
-		return DeliveryConverter.toVo(deliveryDao.findOne(id));
-	}
-
-	@Override
 	public DeliveryVo getDeliveryByGuid(String guid) {
 		return DeliveryConverter.toVo(deliveryDao.findByGuid(guid));
 	}
@@ -93,6 +88,16 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 		entity.setOrders(orderDao.save(entity.getOrders()));
 
 		deliveryDao.save(entity);
+	}
+
+	@Override
+	public DeliveryVo getDeliveryById(Long id) {
+		return DeliveryConverter.toVo(deliveryDao.findOne(id));
+	}
+
+	@Override
+	public void deleteDeliveryById(Long id) {
+		deliveryDao.setIsDeletedById(id);
 	}
 
 }

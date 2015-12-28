@@ -2,7 +2,7 @@ package hu.schonherz.restaurant.web.vo;
 
 import java.io.Serializable;
 
-import hu.schonherz.restaurant.service.vo.State;
+import hu.schonherz.restaurant.service.vo.DeliveryState;
 
 public class DeliveryListingVo implements Serializable {
 
@@ -16,12 +16,13 @@ public class DeliveryListingVo implements Serializable {
 
 	private double total;
 
-	private State state;
+	private DeliveryState state;
 
 	public DeliveryListingVo() {
 	}
 
-	public DeliveryListingVo(String guid, String courierName, int numberOfAddresses, double total, State state) {
+	public DeliveryListingVo(String guid, String courierName, int numberOfAddresses, double total,
+			DeliveryState state) {
 		super();
 		this.guid = guid;
 		this.courierName = courierName;
@@ -62,11 +63,11 @@ public class DeliveryListingVo implements Serializable {
 		this.total = total;
 	}
 
-	public State getState() {
+	public DeliveryState getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(DeliveryState state) {
 		this.state = state;
 	}
 

@@ -9,7 +9,7 @@ import hu.schonherz.restaurant.type.PayType;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class OrderVo implements Serializable {
+public class OrderVo extends BaseVo implements Serializable {
 
 	private String address;
 
@@ -21,7 +21,7 @@ public class OrderVo implements Serializable {
 
 	private Integer totalPrice;
 
-	private State orderState;
+	private OrderState orderState;
 
 	public String getAddress() {
 		return address;
@@ -63,11 +63,11 @@ public class OrderVo implements Serializable {
 		this.totalPrice = totalPrice;
 	}
 
-	public State getOrderState() {
+	public OrderState getOrderState() {
 		return orderState;
 	}
 
-	public void setOrderState(State orderState) {
+	public void setOrderState(OrderState orderState) {
 		this.orderState = orderState;
 	}
 

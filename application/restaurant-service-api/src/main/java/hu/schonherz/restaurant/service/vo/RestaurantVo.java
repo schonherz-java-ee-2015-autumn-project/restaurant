@@ -3,17 +3,17 @@ package hu.schonherz.restaurant.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
-public class RestaurantVo implements Serializable {
+public class RestaurantVo extends BaseVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private Long id;
 
 	private String name;
 
 	private String address;
 
 	private List<ProductVo> products;
+
+	private Boolean banned;
 
 	public List<ProductVo> getProducts() {
 		return products;
@@ -39,12 +39,11 @@ public class RestaurantVo implements Serializable {
 		this.address = address;
 	}
 
-	public Long getId() {
-		return id;
+	public Boolean getBanned() {
+		return banned;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
 	}
-
 }

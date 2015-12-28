@@ -15,10 +15,12 @@ public interface DeliveryServiceLocal {
 
 	int getDeliveryCountByRestaurantId(Long restId);
 
-	DeliveryVo getDeliveryById(Long Id);
-
 	DeliveryVo getDeliveryByGuid(String guid);
 
 	void saveDelivery(DeliveryVo delivery);
+
+	DeliveryVo getDeliveryById(Long id);
+
+	void deleteDeliveryById(Long id);
 
 }

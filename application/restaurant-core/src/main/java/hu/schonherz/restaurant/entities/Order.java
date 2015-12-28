@@ -40,18 +40,14 @@ public class Order extends BaseEntity {
 
 	@Column(name = "order_state", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private State orderState;
+	private OrderState orderState;
 
-	public State getOrderState() {
+	public OrderState getOrderState() {
 		return orderState;
 	}
 
-	public void setOrderState(State orderState) {
+	public void setOrderState(OrderState orderState) {
 		this.orderState = orderState;
-	}
-
-	public String getAddress() {
-		return address;
 	}
 
 	public void setAddress(String address) {

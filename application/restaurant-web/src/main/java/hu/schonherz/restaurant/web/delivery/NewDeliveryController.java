@@ -25,10 +25,11 @@ import org.primefaces.event.SelectEvent;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.ProductServiceLocal;
+import hu.schonherz.restaurant.service.vo.DeliveryState;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
+import hu.schonherz.restaurant.service.vo.OrderState;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
-import hu.schonherz.restaurant.service.vo.State;
 import hu.schonherz.restaurant.type.PayType;
 import hu.schonherz.restaurant.validation.Validator;
 import hu.schonherz.restaurant.validation.Violation;
@@ -89,7 +90,7 @@ public class NewDeliveryController implements Serializable {
 
 		if (externalContext.getRequestParameterMap().get("deliveryId") == null) {
 			delivery = new DeliveryVo();
-			delivery.setDeliveryState(State.AVAILABLE);
+			delivery.setDeliveryState(DeliveryState.FREE);
 			delivery.setCourier("");
 			delivery.setOrders(new ArrayList<>());
 		} else {
@@ -107,7 +108,7 @@ public class NewDeliveryController implements Serializable {
 
 	public OrderVo initOrder() {
 		OrderVo res = new OrderVo();
-		res.setOrderState(State.AVAILABLE);
+		res.setOrderState(OrderState.IN_PROGRESS);
 		res.setProducts(orderProducts);
 		res.setPayType(selectedPayType);
 		res.setAddress(address);

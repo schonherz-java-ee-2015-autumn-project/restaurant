@@ -7,13 +7,11 @@ import java.util.List;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class DeliveryVo implements Serializable {
+public class DeliveryVo extends BaseVo implements Serializable {
 
-	private State deliveryState;
+	private DeliveryState deliveryState;
 
 	private static final long serialVersionUID = 1L;
-
-	private Long id;
 
 	private String guid;
 
@@ -23,12 +21,20 @@ public class DeliveryVo implements Serializable {
 
 	private List<OrderVo> orders;
 
-	public State getDeliveryState() {
+	public DeliveryState getDeliveryState() {
 		return deliveryState;
 	}
 
-	public void setDeliveryState(State deliveryState) {
+	public void setDeliveryState(DeliveryState deliveryState) {
 		this.deliveryState = deliveryState;
+	}
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	public String getCourier() {
@@ -53,22 +59,6 @@ public class DeliveryVo implements Serializable {
 
 	public void setOrders(List<OrderVo> orders) {
 		this.orders = orders;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getGuid() {
-		return guid;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
 	}
 
 }

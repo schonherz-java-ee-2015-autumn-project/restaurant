@@ -28,6 +28,9 @@ public class User extends BaseEntity {
 	@Column(name = "full_name", nullable = false, length = 60)
 	private String name;
 
+	@Column(name = "banned")
+	private Boolean banned;
+
 	@ManyToMany
 	@JoinTable(name = "users_roles_sw", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id") )
 	private List<Role> roles;
@@ -83,4 +86,11 @@ public class User extends BaseEntity {
 		this.restaurant = restaurant;
 	}
 
+	public Boolean getBanned() {
+		return banned;
+	}
+
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
+	}
 }

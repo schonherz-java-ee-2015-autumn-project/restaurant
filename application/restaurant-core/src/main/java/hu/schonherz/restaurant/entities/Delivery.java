@@ -12,16 +12,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Where;
+
 /**
  * Created by tothd on 2015. 12. 16..
  */
 @Entity
 @Table(name = "deliveries")
+@Where(clause = "isDeleted='false'")
 public class Delivery extends BaseEntity {
-
-	@Column(name = "delivery_state", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private State deliveryState;
 
 	@Column(name = "courier")
 	private String courier;
@@ -36,28 +35,19 @@ public class Delivery extends BaseEntity {
 	@ManyToMany
 	private List<Order> orders;
 
+	@Column(name = "delivery_state", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private DeliveryState deliveryState;
+
+	@Column(name = "is_deleted")
+	private Boolean isDeleted;
+
 	public String getCourier() {
 		return courier;
 	}
 
 	public void setCourier(String courier) {
 		this.courier = courier;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
-	public State getDeliveryState() {
-		return deliveryState;
-	}
-
-	public void setDeliveryState(State deliveryState) {
-		this.deliveryState = deliveryState;
 	}
 
 	public Date getDeliveryDate() {
@@ -74,6 +64,30 @@ public class Delivery extends BaseEntity {
 
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public DeliveryState getDeliveryState() {
+		return deliveryState;
+	}
+
+	public void setDeliveryState(DeliveryState deliveryState) {
+		this.deliveryState = deliveryState;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
