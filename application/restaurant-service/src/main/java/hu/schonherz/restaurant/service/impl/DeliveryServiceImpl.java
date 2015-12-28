@@ -81,6 +81,10 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	public void saveDelivery(DeliveryVo delivery) {
 		Delivery entity = DeliveryConverter.toEntity(delivery);
 
+		if (entity.getIsDeleted() == null) {
+			entity.setIsDeleted(false);
+		}
+
 		for (Order order : entity.getOrders()) {
 			order.setProducts(productDao.save(order.getProducts()));
 		}
