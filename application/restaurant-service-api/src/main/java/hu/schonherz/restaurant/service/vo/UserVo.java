@@ -14,6 +14,7 @@ public class UserVo extends BaseVo implements Serializable {
 	private String name;
 	private List<RoleVo> roles;
 	private RestaurantVo restaurant;
+	private Boolean banned;
 
 	public Long getId() {
 		return id;
@@ -71,4 +72,11 @@ public class UserVo extends BaseVo implements Serializable {
 		this.restaurant = restaurant;
 	}
 
+	public Boolean getBanned() {
+		return banned;
+	}
+
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
+	}
 }

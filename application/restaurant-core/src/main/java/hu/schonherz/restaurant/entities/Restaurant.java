@@ -18,6 +18,9 @@ public class Restaurant extends BaseEntity {
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products;
 
+	@Column(name = "banned")
+	private Boolean banned;
+
 	public String getName() {
 		return name;
 	}
@@ -41,5 +44,13 @@ public class Restaurant extends BaseEntity {
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
+	}
+
+	public Boolean getBanned() {
+		return banned;
+	}
+
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
 	}
 }

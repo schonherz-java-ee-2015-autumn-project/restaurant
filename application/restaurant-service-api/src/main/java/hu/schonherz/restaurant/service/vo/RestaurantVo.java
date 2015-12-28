@@ -15,6 +15,8 @@ public class RestaurantVo extends BaseVo implements Serializable {
 
 	private List<ProductVo> products;
 
+	private Boolean banned;
+
 	public List<ProductVo> getProducts() {
 		return products;
 	}
@@ -47,4 +49,11 @@ public class RestaurantVo extends BaseVo implements Serializable {
 		this.id = id;
 	}
 
+	public Boolean getBanned() {
+		return banned;
+	}
+
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
+	}
 }
