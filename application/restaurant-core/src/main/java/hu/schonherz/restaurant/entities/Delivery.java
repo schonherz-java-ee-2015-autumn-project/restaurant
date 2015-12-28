@@ -13,7 +13,7 @@ public class Delivery extends BaseEntity {
 
     @Column(name = "delivery_state",  nullable = false)
     @Enumerated(EnumType.STRING)
-    private State deliveryState;
+    private DeliveryState deliveryState;
 
     @Column(name = "courier")
     private String courier;
@@ -41,11 +41,11 @@ public class Delivery extends BaseEntity {
         this.orders = orders;
     }
 
-    public State getDeliveryState() {
+    public DeliveryState getDeliveryState() {
         return deliveryState;
     }
 
-    public void setDeliveryState(State deliveryState) {
+    public void setDeliveryState(DeliveryState deliveryState) {
         this.deliveryState = deliveryState;
     }
 
