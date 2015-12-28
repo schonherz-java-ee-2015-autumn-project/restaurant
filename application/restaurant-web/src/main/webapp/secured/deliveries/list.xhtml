@@ -28,7 +28,7 @@
 					<p:column styleClass="nobg" headerText="#{out.state}"
 						sortBy="#{delivery.state}">
 						<h:outputText
-							value="#{out['State.'.concat(delivery.state.name())]}" />
+							value="#{out['DeliveryState.'.concat(delivery.state.name())]}" />
 					</p:column>
 					<p:column styleClass="nobg" headerText="#{out.courier}"
 						sortBy="#{delivery.courierName}"
@@ -124,7 +124,7 @@
 					<p:row>
 						<p:column colspan="2">
 							<h:commandLink styleClass="btn"
-								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'AVAILABLE'}"
+								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
 								value="#{out.modify}"
 								action="#{deliveryBean.onModifyButtonClick}" />
 						</p:column>

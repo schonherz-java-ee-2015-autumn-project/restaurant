@@ -19,7 +19,7 @@ import org.hibernate.annotations.Where;
  */
 @Entity
 @Table(name = "deliveries")
-@Where(clause = "isDeleted='false'")
+@Where(clause = "is_deleted=0")
 public class Delivery extends BaseEntity {
 
 	@Column(name = "courier")

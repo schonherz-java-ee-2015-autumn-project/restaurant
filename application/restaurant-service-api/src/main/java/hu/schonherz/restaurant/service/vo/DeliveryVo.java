@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class DeliveryVo extends BaseVo implements Serializable {
 
-	private DeliveryState deliveryState;
-
 	private static final long serialVersionUID = 1L;
+
+	private DeliveryState deliveryState;
 
 	private String guid;
 
