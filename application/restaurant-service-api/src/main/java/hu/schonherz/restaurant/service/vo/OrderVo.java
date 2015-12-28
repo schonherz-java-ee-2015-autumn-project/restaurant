@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class OrderVo implements Serializable{
+public class OrderVo extends BaseVo implements Serializable{
 
     private String address;
 
@@ -19,7 +19,7 @@ public class OrderVo implements Serializable{
 
     private Integer totalPrice;
 
-    private States.State orderState;
+    private OrderState orderState;
 
     public String getAddress() {
         return address;
@@ -61,11 +61,11 @@ public class OrderVo implements Serializable{
         this.totalPrice = totalPrice;
     }
 
-    public States.State getOrderState() {
+    public OrderState getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(States.State orderState) {
+    public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
     }
 }

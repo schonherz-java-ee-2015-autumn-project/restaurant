@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class DeliveryVo implements Serializable {
+public class DeliveryVo extends BaseVo implements Serializable {
 
-    private States.State deliveryState;
+    private DeliveryState deliveryState;
 
     private String courier;
 
@@ -17,11 +17,11 @@ public class DeliveryVo implements Serializable {
 
     private List<OrderVo> orders;
 
-    public States.State getDeliveryState() {
+    public DeliveryState getDeliveryState() {
         return deliveryState;
     }
 
-    public void setDeliveryState(States.State deliveryState) {
+    public void setDeliveryState(DeliveryState deliveryState) {
         this.deliveryState = deliveryState;
     }
 

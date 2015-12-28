@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by tothd on 2015. 12. 16..
  */
-public class ProductVo implements Serializable{
+public class ProductVo extends BaseVo implements Serializable{
 
     private String name;
 

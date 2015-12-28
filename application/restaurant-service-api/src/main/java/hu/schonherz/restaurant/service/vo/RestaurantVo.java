@@ -3,7 +3,7 @@ package hu.schonherz.restaurant.service.vo;
 import java.io.Serializable;
 import java.util.List;
 
-public class RestaurantVo implements Serializable {
+public class RestaurantVo extends BaseVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
