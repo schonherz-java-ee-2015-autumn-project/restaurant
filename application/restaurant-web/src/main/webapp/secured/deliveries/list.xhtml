@@ -91,10 +91,12 @@
 					</p:row>
 
 					<p:row>
-						<p:column>
+						<p:column colspan="2">
 							<h:outputText value="#{out.addresses}" />
 						</p:column>
-						<p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
 							<p:scrollPanel mode="native" styleClass="custom-scrollbar"
 								style="border:none;">
 								<p:dataList value="#{deliveryBean.selectedDelivery.orders}"

@@ -50,6 +50,10 @@ public class Order extends BaseEntity {
 		this.orderState = orderState;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
