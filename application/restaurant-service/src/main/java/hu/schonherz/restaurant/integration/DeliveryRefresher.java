@@ -2,13 +2,11 @@ package hu.schonherz.restaurant.integration;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.xml.ws.WebServiceRef;
 
 import org.apache.commons.lang3.Validate;
 
@@ -20,10 +18,8 @@ import hu.schonherz.restaurant.service.vo.DeliveryVo;
 @Remote(RefresherRemote.class)
 public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
-	Logger logger = Logger.getLogger("DeliveryRefresher");
-
-	@WebServiceRef(wsdlLocation = "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
-	// @EJB
+//	@WebServiceRef(wsdlLocation = "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
+	 @EJB
 	AdminRemoteRefreshService remoteRefreshService;
 
 	@EJB
@@ -36,7 +32,6 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		for (DeliveryVo delivery : deliveries) {
 			deliveryService.saveDelivery(delivery);
 		}
-		logger.info("Delivery refresh done successfuly!");
 	}
 
 	@Override
