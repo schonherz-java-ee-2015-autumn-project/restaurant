@@ -71,7 +71,7 @@
 
 					</p:accordionPanel>
 				</p:tab>
-				<p:tab title="#{out.financialstat}"></p:tab>
+				<p:tab title="#{out.financialstat}">
 				<p:accordionPanel>
 					<p:tab title="#{out.dailyfinancialquery}">
 
@@ -81,48 +81,51 @@
 								model="#{shippingReportBean.dailyFinancialQueryModel}"
 								style="width:600px;align:center" />
 						</h:panelGrid>
-
+					</p:tab>>
 						<p:tab title="#{out.weeklyfinancialquery}">
 
 
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:chart type="bar"
+								model="#{shippingReportBean.weeklyFinancialQueryModel}"
+								style="width:600px;align:center" />
+						</h:panelGrid>
+
+
+					</p:tab>
+
+					<p:tab title="#{out.monthlyfinancialquery}">
+
+
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:chart type="bar"
+								model="#{shippingReportBean.monthlyFinancialQueryModel}"
+								style="width:600px;align:center" />
+						</h:panelGrid>
+
+					</p:tab>
+
+					<p:tab title="#{out.annualfinancialquery}">
+
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:chart type="bar"
+								model="#{shippingReportBean.annualFinancialQueryModel}"
+								style="width:600px;align:center" />
+						</h:panelGrid>
+
+</p:tab>
+						<p:tab title="#{out.overallfinancialquery}">
+
 							<h:panelGrid columns="1" cellpadding="10">
 								<p:chart type="bar"
-									model="#{shippingReportBean.weeklyFinancialQueryModel}"
+									model="#{shippingReportBean.overallFinancialQueryModel}"
 									style="width:600px;align:center" />
-							</h:panelGrid>
 
+							</h:panelGrid>
 
 						</p:tab>
-
-						<p:tab title="#{out.monthlyfinancialquery}">
-
-
-							<h:panelGrid columns="1" cellpadding="10">
-								<p:chart type="bar"
-									model="#{shippingReportBean.monthlyFinancialQueryModel}"
-									style="width:600px;align:center" />
-							</h:panelGrid>
-
-
-
-							<p:tab title="#{out.annualfinancialquery}">
-
-								<h:panelGrid columns="1" cellpadding="10">
-									<p:chart type="bar"
-										model="#{shippingReportBean.annualFinancialQueryModel}"
-										style="width:600px;align:center" />
-								</h:panelGrid>
-
-
-								<p:tab title="#{out.overallfinancialquery}">
-
-									<h:panelGrid columns="1" cellpadding="10">
-										<p:chart type="bar"
-											model="#{shippingReportBean.overallFinancialQueryModel}"
-											style="width:600px;align:center" />
-
-									</h:panelGrid>
 				</p:accordionPanel>
+				</p:tab>
 			</p:tabView>
 
 		</h:form>

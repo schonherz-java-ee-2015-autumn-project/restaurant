@@ -9,12 +9,12 @@ public class FinancialReport implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Integer price;
+	Long price;
 	Date date;
-	public Integer getPrice() {
+	public Long getPrice() {
 		return price;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 	public Date getDate() {
@@ -25,7 +25,7 @@ public class FinancialReport implements Serializable{
 	}
 	
 	
-	public FinancialReport(Integer price, Date date) {
+	public FinancialReport(Date date, Long price) {
 		super();
 		this.price = price;
 		this.date = date;

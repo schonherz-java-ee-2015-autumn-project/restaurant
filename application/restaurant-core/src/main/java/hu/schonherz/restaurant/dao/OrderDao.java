@@ -37,15 +37,15 @@ public interface OrderDao extends JpaRepository<Order, Long> {
 	@Query("SELECT New hu.schonherz.restaurant.dto.AddressReport(o.address) FROM Order o")
 	public List<AddressReport> addressQuery();
 	
-	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Order o join Delivery.orders d where d.guid like ?1% and o.orderState = 'SUCCESS' and o.deadline = Current_Date group by Hour(o.deadline)")
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Delivery d join d.orders o where d.guid like ?1% and o.orderState = 'SUCCESS' and o.deadline = Current_Date group by Hour(o.deadline)")
 	public List<FinancialReport> dailyFinancialQuery(String res);
-	@Query("Select New hu.schonherz.restaurant,dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Order o join Delivery.orders d where d.guid like ?1% and o.orderState = 'SUCCESS' and week(o.deadline) = week(Current_Date) group by Day(o.deadline)")
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Delivery d join d.orders o where d.guid like ?1% and o.orderState = 'SUCCESS' and o.deadline = Current_Date group by o.deadline")
 	public List<FinancialReport> weeklyFinancialQuery(String res);
-	@Query("Select New hu.schonherz.restaurant,dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Order o join Delivery.orders d where d.guid like ?1% and o.orderState = 'SUCCESS' and Month(o.deadline) = Month(Current_Date) group by Week(o.deadline)")
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Delivery d join d.orders o where d.guid like ?1% and o.orderState = 'SUCCESS' and o.deadline = Current_Date group by o.deadline")
 	public List<FinancialReport> monthlyFinancialQuery(String res);
-	@Query("Select New hu.schonherz.restaurant,dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Order o join Delivery.orders d where d.guid like ?1% and o.orderState = 'SUCCESS' and YEAR(o.deadline) = YEAR(Current_Date) group by Month(o.deadline)")
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Delivery d join d.orders o where d.guid like ?1% and o.orderState = 'SUCCESS' and o.deadline = Current_Date group by o.deadline")
 	public List<FinancialReport> annualFinancialQuery(String res);
-	@Query("Select New hu.schonherz.restaurant,dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Order o join Delivery.orders d where d.guid like ?1% and o.orderState = 'SUCCESS' group by Year(o.deadline)")
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.deadline, sum(o.totalPrice)) From Delivery d join d.orders o where d.guid like ?1% and o.orderState = 'SUCCESS' group by o.deadline")
 	public List<FinancialReport> overallFinancialQuery(String res);
 
 }

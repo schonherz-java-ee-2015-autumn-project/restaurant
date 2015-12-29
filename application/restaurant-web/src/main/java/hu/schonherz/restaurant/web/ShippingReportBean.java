@@ -60,6 +60,10 @@ public class ShippingReportBean {
 	@PostConstruct
 	public void init() {
 		createAnimatedModels();
+		
+		if (userSessionBean.getUser() == null) {
+				userSessionBean.init();
+			}
 	}
 
 	private void createAnimatedModels() {

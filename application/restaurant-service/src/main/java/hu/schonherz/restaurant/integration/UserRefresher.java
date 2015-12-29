@@ -20,8 +20,8 @@ public class UserRefresher implements RefresherLocal,RefresherRemote{
 
 	Logger logger = Logger.getLogger("UserRefresher");
 	
-	@WebServiceRef(wsdlLocation="http://drake:8088/mockAdminRemoteRefreshService?WSDL")
-//	@EJB
+//	@WebServiceRef(wsdlLocation="http://drake:8088/mockAdminRemoteRefreshService?WSDL")
+	@EJB
 	AdminRemoteRefreshService remoteRefreshService;
 	
 	@EJB
