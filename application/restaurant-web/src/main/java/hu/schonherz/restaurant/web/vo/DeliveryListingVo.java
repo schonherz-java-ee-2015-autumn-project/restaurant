@@ -8,6 +8,8 @@ public class DeliveryListingVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Long id;
+
 	private String guid;
 
 	private String courierName;
@@ -21,14 +23,23 @@ public class DeliveryListingVo implements Serializable {
 	public DeliveryListingVo() {
 	}
 
-	public DeliveryListingVo(String guid, String courierName, int numberOfAddresses, double total,
+	public DeliveryListingVo(Long id, String guid, String courierName, int numberOfAddresses, double total,
 			DeliveryState state) {
 		super();
+		this.id = id;
 		this.guid = guid;
 		this.courierName = courierName;
 		this.numberOfAddresses = numberOfAddresses;
 		this.total = total;
 		this.state = state;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getGuid() {
