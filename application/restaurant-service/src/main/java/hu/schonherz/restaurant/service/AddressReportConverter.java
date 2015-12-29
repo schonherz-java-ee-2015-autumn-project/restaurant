@@ -15,31 +15,31 @@ public class AddressReportConverter {
 
 	private static Mapper mapper = new DozerBeanMapper();
 
-	public static AddressReportVo<String> toVo(AddressReport<String> report) {
+	public static AddressReportVo toVo(AddressReport report) {
 		if (report == null) {
 			return null;
 		}
 		return mapper.map(report, AddressReportVo.class);
 	}
 
-	public static AddressReport<String> toDto(AddressReportVo<String> reportVO) {
+	public static AddressReport toDto(AddressReportVo reportVO) {
 		if (reportVO == null) {
 			return null;
 		}
 		return mapper.map(reportVO, AddressReport.class);
 	}
 
-	public static List<AddressReportVo<String>> toVo(List<AddressReport<String>> report) {
-		List<AddressReportVo<String>> rv = new ArrayList<>();
-		for (AddressReport<String> reports : report) {
+	public static List<AddressReportVo> toVo(List<AddressReport> report) {
+		List<AddressReportVo> rv = new ArrayList<>();
+		for (AddressReport reports : report) {
 			rv.add(toVo(reports));
 		}
 		return rv;
 	}
 
-	public static List<AddressReport<String>> toDto(List<AddressReportVo<String>> report) {
-		List<AddressReport<String>> rv = new ArrayList<>();
-		for (AddressReportVo<String> reports : report) {
+	public static List<AddressReport> toDto(List<AddressReportVo> report) {
+		List<AddressReport> rv = new ArrayList<>();
+		for (AddressReportVo reports : report) {
 			rv.add(toDto(reports));
 		}
 		return rv;

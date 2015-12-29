@@ -1,18 +1,24 @@
 package hu.schonherz.restaurant.dto;
 
-public class AddressReport<T> {
+import java.io.Serializable;
 
-	T Address;
+public class AddressReport implements Serializable{
 
-	public T getAddress() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	String Address;
+
+	public String getAddress() {
 		return Address;
 	}
 
-	public void setAddress(T address) {
+	public void setAddress(String address) {
 		Address = address;
 	}
 
-	public AddressReport(T address) {
+	public AddressReport(String address) {
 		super();
 		Address = address;
 	}

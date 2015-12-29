@@ -1,26 +1,36 @@
 package hu.schonherz.restaurant.service.vo;
 
-public class OrderCountReportVo<T, S> {
+public class OrderCountReportVo {
 	
 	private static final long serialVersionUID = 1L;
 
-	T groupped;
-	S quantity;
+	String groupped;
+	Long quantity;
 
-	public T getGroupped() {
+	public String getGroupped() {
 		return groupped;
 	}
 
-	public void setGroupped(T groupped) {
+	public void setGroupped(String groupped) {
 		this.groupped = groupped;
 	}
 
-	public S getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(S quantity) {
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
+	}
+
+	public OrderCountReportVo(String groupped, Long quantity) {
+		super();
+		this.groupped = groupped;
+		this.quantity = quantity;
+	}
+
+	public OrderCountReportVo() {
+		super();
 	}
 
 	

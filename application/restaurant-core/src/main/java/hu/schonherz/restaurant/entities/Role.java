@@ -1,3 +1,4 @@
+
 package hu.schonherz.restaurant.entities;
 
 import javax.persistence.Column;

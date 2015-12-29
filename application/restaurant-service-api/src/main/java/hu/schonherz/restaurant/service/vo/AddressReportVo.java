@@ -1,20 +1,20 @@
 package hu.schonherz.restaurant.service.vo;
 
-public class AddressReportVo<T> {
+public class AddressReportVo {
 	
 	private static final long serialVersionUID = 1L;
 
-	T Address;
+	String Address;
 
-	public T getAddress() {
+	public String getAddress() {
 		return Address;
 	}
 
-	public void setAddress(T address) {
+	public void setAddress(String address) {
 		Address = address;
 	}
 
-	public AddressReportVo(T address) {
+	public AddressReportVo(String address) {
 		super();
 		Address = address;
 	}

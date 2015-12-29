@@ -12,74 +12,123 @@
 		<h:outputScript library="default" name="js/forms.js"></h:outputScript>
 	</ui:define>
 
-	<h:form id="form">
-		<p:growl id="msgs" showDetail="true" />
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="msgs" showDetail="true" />
 
-		<h3 style="margin-top: 0">Basic</h3>
-		<p:accordionPanel>
-			<p:tab title="Daily Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-						<h:panelGrid columns="1" columnClasses="left,right"
-							style="width:100%">
-							<p:chart type="bar" model="#{shippingReportBean.dailyQueryModel}"
-								style="width:400px;" />
-						</h:panelGrid>
-					</ui:define>
-				</h:panelGrid>
-			</p:tab>
-			<p:tab title="Weekly Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-						<h:panelGrid columns="1" columnClasses="left,right"
-							style="width:100%">
-							<p:chart type="bar" model="#{shippingReportBean.weeklyQueryModel}"
-								style="width:400px;" />
-						</h:panelGrid>
-					</ui:define>
-				</h:panelGrid>
-			</p:tab>
-			<p:tab title="Monthly Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
-			<p:chart type="bar" model="#{shippingReportBean.monthlyQueryModel}"
-				style="width:400px;" />
-		</h:panelGrid>
-	</ui:define>
-				</h:panelGrid>
-			</p:tab>
-			
-			<p:tab title="Annual Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
-			<p:chart type="bar" model="#{shippingReportBean.annualQueryModel}"
-				style="width:400px;" />
-		</h:panelGrid>
-	</ui:define>
-				</h:panelGrid>
-			</p:tab>
-		<p:tab title="Overall Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-		<h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
-			<p:chart type="bar" model="#{shippingReportBean.overallQueryModel}"
-				style="width:400px;" />
-		</h:panelGrid>
-	</ui:define>
-				</h:panelGrid>
-			</p:tab>
-		<p:tab title="Overall Query">
-				<h:panelGrid columns="1" cellpadding="10">
-					<ui:define name="content">
-		<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" />
-		
-		</h:panelGrid>
-	</ui:define>
-				</h:panelGrid>
-			</p:tab>
-		</p:accordionPanel>
+			<h3 style="margin-top: 0">
+				<span><h:outputText value="#{out.report}" /></span>
+			</h3>
+			<p:tabView>
+				<p:tab title="#{out.orderstat}">
+					<p:accordionPanel>
+						<p:tab title="#{out.dailyquery}">
+							<h:panelGrid columns="1" cellpadding="10">
+								<p:chart type="bar"
+									model="#{shippingReportBean.dailyQueryModel}"
+									style="width:600px;align:center" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{out.weeklyquery}">
+							<h:panelGrid columns="1" cellpadding="10">
 
-	</h:form>
+								<p:chart type="bar"
+									model="#{shippingReportBean.weeklyQueryModel}"
+									style="width:400px;" />
+
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{out.monthlyquery}">
+							<h:panelGrid columns="1" cellpadding="10">
+
+
+								<p:chart type="bar"
+									model="#{shippingReportBean.monthlyQueryModel}"
+									style="width:400px;" />
+							</h:panelGrid>
+						</p:tab>
+
+						<p:tab title="#{out.annualquery}">
+							<h:panelGrid columns="1" cellpadding="10">
+
+
+								<p:chart type="bar"
+									model="#{shippingReportBean.annualQueryModel}"
+									style="width:400px;" />
+							</h:panelGrid>
+
+						</p:tab>
+						<p:tab title="#{out.overallquery}">
+							<h:panelGrid columns="1" cellpadding="10">
+
+
+								<p:chart type="bar"
+									model="#{shippingReportBean.overallQueryModel}"
+									style="width:400px;" />
+
+							</h:panelGrid>
+						</p:tab>
+
+					</p:accordionPanel>
+				</p:tab>
+				<p:tab title="#{out.financialstat}"></p:tab>
+				<p:accordionPanel>
+					<p:tab title="#{out.dailyfinancialquery}">
+
+
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:chart type="bar"
+								model="#{shippingReportBean.dailyFinancialQueryModel}"
+								style="width:600px;align:center" />
+						</h:panelGrid>
+
+						<p:tab title="#{out.weeklyfinancialquery}">
+
+
+							<h:panelGrid columns="1" cellpadding="10">
+								<p:chart type="bar"
+									model="#{shippingReportBean.weeklyFinancialQueryModel}"
+									style="width:600px;align:center" />
+							</h:panelGrid>
+
+
+						</p:tab>
+
+						<p:tab title="#{out.monthlyfinancialquery}">
+
+
+							<h:panelGrid columns="1" cellpadding="10">
+								<p:chart type="bar"
+									model="#{shippingReportBean.monthlyFinancialQueryModel}"
+									style="width:600px;align:center" />
+							</h:panelGrid>
+
+
+
+							<p:tab title="#{out.annualfinancialquery}">
+
+								<h:panelGrid columns="1" cellpadding="10">
+									<p:chart type="bar"
+										model="#{shippingReportBean.annualFinancialQueryModel}"
+										style="width:600px;align:center" />
+								</h:panelGrid>
+
+
+								<p:tab title="#{out.overallfinancialquery}">
+
+									<h:panelGrid columns="1" cellpadding="10">
+										<p:chart type="bar"
+											model="#{shippingReportBean.overallFinancialQueryModel}"
+											style="width:600px;align:center" />
+
+									</h:panelGrid>
+				</p:accordionPanel>
+			</p:tabView>
+
+		</h:form>
+	</ui:define>
+
+
+
+
 </ui:composition>

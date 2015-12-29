@@ -1,27 +1,32 @@
 package hu.schonherz.restaurant.dto;
 
-public class OrderCountReport<T, S> {
+import java.io.Serializable;
+import java.util.Date;
 
-	T groupped;
-	S quantity;
+public class OrderCountReport implements Serializable{
+	
+	private static final long   serialVersionUID    = 1L;
 
-	public T getGroupped() {
+	Date groupped;
+	Long quantity;
+
+	public Date getGroupped() {
 		return groupped;
 	}
 
-	public void setGroupped(T groupped) {
+	public void setGroupped(Date groupped) {
 		this.groupped = groupped;
 	}
 
-	public S getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(S quantity) {
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
 
-	public OrderCountReport(T groupped, S quantity) {
+	public OrderCountReport(Date groupped, Long quantity) {
 		super();
 		this.groupped = groupped;
 		this.quantity = quantity;
