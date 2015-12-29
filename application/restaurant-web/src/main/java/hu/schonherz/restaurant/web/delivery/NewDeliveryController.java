@@ -86,19 +86,31 @@ public class NewDeliveryController implements Serializable {
 			userSessionBean.init();
 		}
 
+		delivery = initDelivery();
+	}
+
+	private DeliveryVo initDelivery() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
-		if (externalContext.getRequestParameterMap().get("deliveryId") == null) {
-			delivery = new DeliveryVo();
-			delivery.setDeliveryState(DeliveryState.FREE);
-			delivery.setCourier("");
-			delivery.setOrders(new ArrayList<>());
-			delivery.setRestaurant(userSessionBean.getUser().getRestaurant());
-		} else {
-			delivery = deliveryService
-					.getDeliveryById(Long.valueOf(externalContext.getRequestParameterMap().get("deliveryId")));
+		try {
+			String deliveryIdParameter = externalContext.getRequestParameterMap().get("deliveryId");
+			Long longId = Long.valueOf(deliveryIdParameter);
+			DeliveryVo tmp = deliveryService.getDeliveryById(longId);
+			if (tmp.getRestaurant().equals(userSessionBean.getUser().getRestaurant())
+					&& tmp.getDeliveryState().equals(DeliveryState.FREE)) {
+				return tmp;
+			}
+		} catch (Exception e) {
+			logger.warn("Initializing delivery failed");
 		}
 
+		DeliveryVo delivery = null;
+		delivery = new DeliveryVo();
+		delivery.setDeliveryState(DeliveryState.FREE);
+		delivery.setCourier("");
+		delivery.setOrders(new ArrayList<>());
+		delivery.setRestaurant(userSessionBean.getUser().getRestaurant());
+		return delivery;
 	}
 
 	public List<String> completeProducts(String query) {
