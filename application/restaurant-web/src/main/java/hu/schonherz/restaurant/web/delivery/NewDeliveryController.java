@@ -93,6 +93,7 @@ public class NewDeliveryController implements Serializable {
 			delivery.setDeliveryState(DeliveryState.FREE);
 			delivery.setCourier("");
 			delivery.setOrders(new ArrayList<>());
+			delivery.setRestaurant(userSessionBean.getUser().getRestaurant());
 		} else {
 			delivery = deliveryService.getDeliveryByGuid(externalContext.getRequestParameterMap().get("deliveryId"));
 		}
