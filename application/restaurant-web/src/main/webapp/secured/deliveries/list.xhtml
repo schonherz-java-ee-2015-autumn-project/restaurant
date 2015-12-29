@@ -22,25 +22,20 @@
 					<p:ajax event="rowSelect" listener="#{deliveryBean.onRowSelect}"
 						update="deldetails" />
 					<p:column styleClass="nobg" headerText="#{out.id}"
-						sortBy="#{delivery.guid}" filterBy="#{delivery.guid}">
+						sortBy="#{delivery.guid}">
 						<h:outputText value="#{delivery.guid}" />
 					</p:column>
-					<p:column styleClass="nobg" headerText="#{out.state}"
-						sortBy="#{delivery.state}">
+					<p:column styleClass="nobg" headerText="#{out.state}">
 						<h:outputText
 							value="#{out['DeliveryState.'.concat(delivery.state.name())]}" />
 					</p:column>
-					<p:column styleClass="nobg" headerText="#{out.courier}"
-						sortBy="#{delivery.courierName}"
-						filterBy="#{delivery.courierName}">
+					<p:column styleClass="nobg" headerText="#{out.courier}">
 						<h:outputText value="#{delivery.courierName}" />
 					</p:column>
-					<p:column styleClass="nobg" headerText="#{out.numberofaddresses}"
-						sortBy="#{delivery.numberOfAddresses}">
+					<p:column styleClass="nobg" headerText="#{out.numberofaddresses}">
 						<h:outputText value="#{delivery.numberOfAddresses}" />
 					</p:column>
-					<p:column styleClass="nobg" headerText="#{out.sumtotal}"
-						sortBy="#{delivery.total}">
+					<p:column styleClass="nobg" headerText="#{out.sumtotal}">
 						<h:outputText value="#{delivery.total}">
 							<f:convertNumber type="currency" currencyCode="HUF" />
 						</h:outputText>
