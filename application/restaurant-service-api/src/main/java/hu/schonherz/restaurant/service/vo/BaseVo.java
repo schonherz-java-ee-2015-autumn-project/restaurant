@@ -1,11 +1,14 @@
 package hu.schonherz.restaurant.service.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by tothd on 2015. 12. 28..
  */
-public abstract class BaseVo {
+public abstract class BaseVo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 

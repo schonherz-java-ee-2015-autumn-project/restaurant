@@ -16,11 +16,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.restaurant.dao.DeliveryDao;
+import hu.schonherz.restaurant.dao.ItemDao;
 import hu.schonherz.restaurant.dao.OrderDao;
 import hu.schonherz.restaurant.dao.ProductDao;
 import hu.schonherz.restaurant.dao.RestaurantDao;
 import hu.schonherz.restaurant.entities.Delivery;
-import hu.schonherz.restaurant.entities.Order;
 import hu.schonherz.restaurant.service.DeliveryConverter;
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.DeliveryServiceRemote;
@@ -41,6 +41,9 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 	@Autowired
 	private ProductDao productDao;
+
+	@Autowired
+	private ItemDao itemDao;
 
 	@Autowired
 	private RestaurantDao restaurantDao;
@@ -81,15 +84,18 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	public void saveDelivery(DeliveryVo delivery) {
 		Delivery entity = DeliveryConverter.toEntity(delivery);
 
-		if (entity.getIsDeleted() == null) {
-			entity.setIsDeleted(false);
-		}
-
-		for (Order order : entity.getOrders()) {
-			order.setProducts(productDao.save(order.getProducts()));
-		}
-
-		entity.setOrders(orderDao.save(entity.getOrders()));
+		// if (entity.getIsDeleted() == null) {
+		// entity.setIsDeleted(false);
+		// }
+		//
+		// for (Order order : entity.getOrders()) {
+		// for (Item item : order.getItems()) {
+		// item.setProduct(productDao.sa);
+		// }
+		// order.setItems(itemDao.save(order.getItems()));
+		// }
+		//
+		// entity.setOrders(orderDao.save(entity.getOrders()));
 
 		deliveryDao.save(entity);
 	}
