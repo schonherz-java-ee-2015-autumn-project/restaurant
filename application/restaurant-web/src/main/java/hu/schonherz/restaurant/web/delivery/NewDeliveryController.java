@@ -27,6 +27,7 @@ import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.ProductServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryState;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
+import hu.schonherz.restaurant.service.vo.ItemVo;
 import hu.schonherz.restaurant.service.vo.OrderState;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 import hu.schonherz.restaurant.service.vo.ProductVo;
@@ -47,17 +48,19 @@ public class NewDeliveryController implements Serializable {
 
 	private DeliveryVo delivery;
 	private OrderVo selectedOrder;
-	private ProductVo selectedProduct;
+	private ItemVo selectedItem;
 
 	// FORMS
 
 	private String address;
 	private Date orderDate;
 	private PayType selectedPayType;
-	private List<ProductVo> orderProducts;
+	private List<ItemVo> orderItems;
 
 	private String productName;
 	private String productPrice;
+
+	private int prodQuantity;
 
 	@EJB
 	private DeliveryServiceLocal deliveryService;
@@ -123,7 +126,7 @@ public class NewDeliveryController implements Serializable {
 	public OrderVo initOrder() {
 		OrderVo res = new OrderVo();
 		res.setOrderState(OrderState.IN_PROGRESS);
-		res.setProducts(orderProducts);
+		res.setItems(orderItems);
 		res.setPayType(selectedPayType);
 		res.setAddress(address);
 		res.setDeadline(orderDate);
@@ -138,10 +141,16 @@ public class NewDeliveryController implements Serializable {
 		return res;
 	}
 
+	public ItemVo initItem() {
+		ItemVo res = new ItemVo();
+		res.setQuantity(prodQuantity);
+		return res;
+	}
+
 	public void onAddOrderButtonClick(ActionEvent e) {
-		selectedProduct = null;
+		selectedItem = null;
 		selectedOrder = null;
-		orderProducts = new ArrayList<>();
+		orderItems = new ArrayList<>();
 	}
 
 	public void onSaveOrderButtonClick(ActionEvent e) {
@@ -150,17 +159,15 @@ public class NewDeliveryController implements Serializable {
 
 			orderValidator.validate(order);
 
-			order.setTotalPrice(order.getProducts().stream().mapToInt(p -> p.getPrice()).sum());
+			order.setTotalPrice(
+					order.getItems().stream().mapToInt(i -> i.getProduct().getPrice() * i.getQuantity()).sum());
 
 			if (selectedOrder == null) {
 				delivery.getOrders().add(order);
 			} else {
-				selectedOrder.setAddress(order.getAddress());
-				selectedOrder.setDeadline(order.getDeadline());
-				selectedOrder.setOrderState(order.getOrderState());
-				selectedOrder.setPayType(order.getPayType());
-				selectedOrder.setProducts(order.getProducts());
-				selectedOrder.setTotalPrice(order.getTotalPrice());
+				Long idTmp = selectedOrder.getId();
+				BeanUtils.copyProperties(selectedOrder, order);
+				selectedOrder.setId(idTmp);
 			}
 
 			RequestContext reqContext = RequestContext.getCurrentInstance();
@@ -171,6 +178,8 @@ public class NewDeliveryController implements Serializable {
 			resetOrderInput();
 		} catch (ViolationException ve) {
 			addMessage(ve);
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			// TODO
 		}
 	}
 
@@ -178,7 +187,13 @@ public class NewDeliveryController implements Serializable {
 		address = order.getAddress();
 		selectedPayType = order.getPayType();
 		orderDate = order.getDeadline();
-		orderProducts = new ArrayList<>(order.getProducts());
+		orderItems = new ArrayList<>(order.getItems());
+	}
+
+	private void fillProductInput(ItemVo item) {
+		productName = item.getProduct().getName();
+		productPrice = String.valueOf(item.getProduct().getPrice());
+		prodQuantity = item.getQuantity();
 	}
 
 	private void fillProductInput(ProductVo product) {
@@ -190,12 +205,13 @@ public class NewDeliveryController implements Serializable {
 		address = "";
 		orderDate = new Date();
 		selectedPayType = PayType.MONEY;
-		orderProducts = new ArrayList<>();
+		orderItems = new ArrayList<>();
 	}
 
 	private void resetProductInput() {
 		productName = "";
 		productPrice = "";
+		prodQuantity = 1;
 	}
 
 	public void onModifyOrderButtonClick(ActionEvent e) {
@@ -203,7 +219,7 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onModifyProductButtonClick(ActionEvent e) {
-		fillProductInput(selectedProduct);
+		fillProductInput(selectedItem);
 	}
 
 	public void onCancelOrderButtonClick(ActionEvent e) {
@@ -212,19 +228,22 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onCancelProductButtonClick(ActionEvent e) {
-		selectedProduct = null;
+		selectedItem = null;
 		resetProductInput();
 	}
 
 	public void onAddProductButtonClick(ActionEvent e) {
-		selectedProduct = null;
+		selectedItem = null;
 	}
 
 	public void onSaveProductButtonClick(ActionEvent e) {
 		try {
+			ItemVo item = initItem();
 			ProductVo prod = initProduct();
 
 			productValidator.validate(prod);
+
+			item.setProduct(prod);
 
 			ProductVo productTemp = productService.getProductByNameAndRestaurantId(prod.getName(),
 					prod.getRestaurant().getId());
@@ -238,10 +257,12 @@ public class NewDeliveryController implements Serializable {
 
 			}
 
-			if (selectedProduct != null) {
-				BeanUtils.copyProperties(selectedProduct, prod);
+			if (selectedItem != null) {
+				Long idTemp = selectedItem.getId();
+				BeanUtils.copyProperties(selectedItem, item);
+				selectedItem.setId(idTemp);
 			} else {
-				orderProducts.add(prod);
+				orderItems.add(item);
 			}
 
 			RequestContext reqContext = RequestContext.getCurrentInstance();
@@ -249,7 +270,7 @@ public class NewDeliveryController implements Serializable {
 			reqContext.update("orderDetails");
 
 			resetProductInput();
-			selectedProduct = null;
+			selectedItem = null;
 		} catch (ViolationException ve) {
 			addMessage(ve);
 		} catch (NumberFormatException nfe) {
@@ -266,7 +287,8 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onProductRowSelect(SelectEvent e) {
-		selectedProduct = (ProductVo) e.getObject();
+		selectedItem = (ItemVo) e.getObject();
+		fillProductInput(selectedItem);
 	}
 
 	public void onOrderRowDelete(ActionEvent e) {
@@ -276,31 +298,26 @@ public class NewDeliveryController implements Serializable {
 	}
 
 	public void onProductRowDelete(ActionEvent e) {
-		selectedProduct = null;
-		ProductVo deleted = (ProductVo) e.getComponent().getAttributes().get("deleted");
-		orderProducts.remove(deleted);
+		selectedItem = null;
+		ItemVo deleted = (ItemVo) e.getComponent().getAttributes().get("deleted");
+		orderItems.remove(deleted);
 	}
 
 	public void onProductSelect(SelectEvent e) {
 		ProductVo prod = productService.getProductByNameAndRestaurantId((String) e.getObject(),
 				userSessionBean.getUser().getRestaurant().getId());
-		try {
-			if (selectedProduct == null) {
-				orderProducts.add(prod);
-			} else {
-				BeanUtils.copyProperties(selectedProduct, prod);
-			}
+		// try {
+		fillProductInput(prod);
 
-			RequestContext reqContext = RequestContext.getCurrentInstance();
-			reqContext.execute("PF('newProductW').hide();");
-			reqContext.update("orderDetails");
+		RequestContext reqContext = RequestContext.getCurrentInstance();
+		reqContext.update("productDetails");
 
-			selectedProduct = null;
-		} catch (IllegalAccessException | InvocationTargetException e1) {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, resource.getString("cant_modify_product"),
-					"");
-			addMessage(msg);
-		}
+		// } catch (IllegalAccessException | InvocationTargetException e1) {
+		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// resource.getString("cant_modify_product"),
+		// "");
+		// addMessage(msg);
+		// }
 
 	}
 
@@ -351,12 +368,12 @@ public class NewDeliveryController implements Serializable {
 		this.selectedOrder = selectedOrder;
 	}
 
-	public ProductVo getSelectedProduct() {
-		return selectedProduct;
+	public ItemVo getSelectedItem() {
+		return selectedItem;
 	}
 
-	public void setSelectedProduct(ProductVo selectedProduct) {
-		this.selectedProduct = selectedProduct;
+	public void setSelectedItem(ItemVo selectedItem) {
+		this.selectedItem = selectedItem;
 	}
 
 	public DeliveryServiceLocal getDeliveryService() {
@@ -447,12 +464,28 @@ public class NewDeliveryController implements Serializable {
 		this.orderDate = orderDate;
 	}
 
-	public List<ProductVo> getOrderProducts() {
-		return orderProducts;
+	public List<ItemVo> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setOrderProducts(List<ProductVo> orderProducts) {
-		this.orderProducts = orderProducts;
+	public void setOrderItems(List<ItemVo> orderItems) {
+		this.orderItems = orderItems;
+	}
+
+	public ProductServiceLocal getProductService() {
+		return productService;
+	}
+
+	public void setProductService(ProductServiceLocal productService) {
+		this.productService = productService;
+	}
+
+	public int getProdQuantity() {
+		return prodQuantity;
+	}
+
+	public void setProdQuantity(int prodQuantity) {
+		this.prodQuantity = prodQuantity;
 	}
 
 }

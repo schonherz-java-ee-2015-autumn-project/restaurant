@@ -4,19 +4,9 @@ public class ItemVo extends BaseVo {
 
 	private static final long serialVersionUID = 1L;
 
-	private OrderVo order;
-
 	private ProductVo product;
 
 	private Integer quantity;
-
-	public OrderVo getOrder() {
-		return order;
-	}
-
-	public void setOrder(OrderVo order) {
-		this.order = order;
-	}
 
 	public ProductVo getProduct() {
 		return product;
@@ -32,6 +22,44 @@ public class ItemVo extends BaseVo {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((product == null) ? 0 : product.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof ItemVo)) {
+			return false;
+		}
+		ItemVo other = (ItemVo) obj;
+		if (product == null) {
+			if (other.product != null) {
+				return false;
+			}
+		} else if (!product.equals(other.product)) {
+			return false;
+		}
+		if (quantity == null) {
+			if (other.quantity != null) {
+				return false;
+			}
+		} else if (!quantity.equals(other.quantity)) {
+			return false;
+		}
+		return true;
 	}
 
 }

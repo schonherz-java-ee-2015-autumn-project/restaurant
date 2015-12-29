@@ -12,20 +12,9 @@ public class Item extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(cascade = { CascadeType.ALL })
-	private Order order;
-
-	@ManyToOne(cascade = { CascadeType.ALL })
 	private Product product;
 
 	private Integer quantity;
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 
 	public Product getProduct() {
 		return product;
