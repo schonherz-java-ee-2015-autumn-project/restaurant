@@ -163,11 +163,18 @@ public class NewDeliveryController implements Serializable {
 					order.getItems().stream().mapToInt(i -> i.getProduct().getPrice() * i.getQuantity()).sum());
 
 			if (selectedOrder == null) {
+				for (ItemVo itemVo : order.getItems()) {
+					itemVo.setOfOrder(order);
+				}
 				delivery.getOrders().add(order);
 			} else {
 				Long idTmp = selectedOrder.getId();
 				BeanUtils.copyProperties(selectedOrder, order);
 				selectedOrder.setId(idTmp);
+
+				for (ItemVo itemVo : selectedOrder.getItems()) {
+					itemVo.setOfOrder(selectedOrder);
+				}
 			}
 
 			RequestContext reqContext = RequestContext.getCurrentInstance();

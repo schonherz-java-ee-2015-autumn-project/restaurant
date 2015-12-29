@@ -1,6 +1,5 @@
 package hu.schonherz.restaurant.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,8 +10,11 @@ public class Item extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne
 	private Product product;
+
+	@ManyToOne
+	private Order ofOrder;
 
 	private Integer quantity;
 
@@ -30,6 +32,14 @@ public class Item extends BaseEntity {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public Order getOfOrder() {
+		return ofOrder;
+	}
+
+	public void setOfOrder(Order ofOrder) {
+		this.ofOrder = ofOrder;
 	}
 
 }

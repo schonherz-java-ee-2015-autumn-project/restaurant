@@ -6,7 +6,17 @@ public class ItemVo extends BaseVo {
 
 	private ProductVo product;
 
+	private OrderVo ofOrder;
+
 	private Integer quantity;
+
+	public OrderVo getOfOrder() {
+		return ofOrder;
+	}
+
+	public void setOfOrder(OrderVo ofOrder) {
+		this.ofOrder = ofOrder;
+	}
 
 	public ProductVo getProduct() {
 		return product;

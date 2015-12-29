@@ -21,6 +21,8 @@ import hu.schonherz.restaurant.dao.OrderDao;
 import hu.schonherz.restaurant.dao.ProductDao;
 import hu.schonherz.restaurant.dao.RestaurantDao;
 import hu.schonherz.restaurant.entities.Delivery;
+import hu.schonherz.restaurant.entities.Item;
+import hu.schonherz.restaurant.entities.Order;
 import hu.schonherz.restaurant.service.DeliveryConverter;
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.DeliveryServiceRemote;
@@ -87,6 +89,14 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 		if (entity.getIsDeleted() == null) {
 			entity.setIsDeleted(false);
 		}
+
+		for (Order order : entity.getOrders()) {
+			for (Item item : order.getItems()) {
+				item.setProduct(productDao.save(item.getProduct()));
+			}
+			order.setItems(itemDao.save(order.getItems()));
+		}
+		entity.setOrders(orderDao.save(entity.getOrders()));
 
 		deliveryDao.save(entity);
 	}

@@ -3,7 +3,6 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,7 +32,7 @@ public class Order extends BaseEntity {
 	@Column(name = "pay_type")
 	private PayType payType;
 
-	@OneToMany(cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "ofOrder")
 	private List<Item> items;
 
 	@Column(name = "total_price", length = 50)
