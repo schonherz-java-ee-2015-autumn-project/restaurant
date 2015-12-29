@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-
+		Validate.notNull(username);
 		UserVo user;
 		try {
 			user = userService.findUserByName(username);
@@ -46,11 +47,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	private User buildUserForAuthentication(UserVo user, List<GrantedAuthority> authorities) {
+		Validate.notNull(user);
+		Validate.noNullElements(authorities);
 		return new User(user.getUsername(), user.getPassword(), true, true, true, true, authorities);
 	}
 
 	private List<GrantedAuthority> buildUserAuthority(List<RoleVo> userRoles) {
-
+		Validate.noNullElements(userRoles);
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
 		for (RoleVo userRole : userRoles) {

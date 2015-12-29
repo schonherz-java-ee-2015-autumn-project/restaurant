@@ -4,6 +4,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.lang3.Validate;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,6 +16,7 @@ public class DeliveryRefresherScheduledJob implements Job {
 	public DeliveryRefresherScheduledJob() {
 		super();
 		init();
+		Validate.notNull(refresher);
 	}
 
 	private void init() {

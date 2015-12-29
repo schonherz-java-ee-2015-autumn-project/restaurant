@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -38,16 +39,19 @@ public class RestaurantServiceImpl implements RestaurantServiceLocal, Restaurant
 
 	@Override
 	public RestaurantVo getRestaurantById(Long id) {
+		Validate.notNull(id);
 		return RestaurantConverter.toVo(restaurantDao.findOne(id));
 	}
 
 	@Override
 	public RestaurantVo getRestaurantByName(String name) {
+		Validate.notNull(name);
 		return RestaurantConverter.toVo(restaurantDao.findByName(name));
 	}
 
 	@Override
 	public RestaurantVo getRestaurantByAddress(String address) {
+		Validate.notNull(address);
 		return RestaurantConverter.toVo(restaurantDao.findByAddress(address));
 	}
 }

@@ -10,6 +10,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.xml.ws.WebServiceRef;
 
+import org.apache.commons.lang3.Validate;
+
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 
@@ -17,19 +19,20 @@ import hu.schonherz.restaurant.service.vo.DeliveryVo;
 @Local(RefresherLocal.class)
 @Remote(RefresherRemote.class)
 public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
-	
+
 	Logger logger = Logger.getLogger("DeliveryRefresher");
 
-	@WebServiceRef(wsdlLocation="http://drake:8088/mockAdminRemoteRefreshService?WSDL")
-//	@EJB
+	@WebServiceRef(wsdlLocation = "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
+	// @EJB
 	AdminRemoteRefreshService remoteRefreshService;
-	
+
 	@EJB
 	DeliveryServiceLocal deliveryService;
 
 	@Override
 	public void refresh() {
 		List<DeliveryVo> deliveries = remoteRefreshService.refreshDeliveries();
+		Validate.noNullElements(deliveries);
 		for (DeliveryVo delivery : deliveries) {
 			deliveryService.saveDelivery(delivery);
 		}
@@ -39,6 +42,7 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 	@Override
 	public void refreshSince(Date date) {
 		List<DeliveryVo> deliveries = remoteRefreshService.refreshDeliveriesSince(date);
+		Validate.noNullElements(deliveries);
 		for (DeliveryVo delivery : deliveries) {
 			deliveryService.saveDelivery(delivery);
 		}

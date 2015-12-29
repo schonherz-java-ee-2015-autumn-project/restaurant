@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,12 @@ public class OrderServiceImpl implements OrderServiceLocal, OrderServiceRemote {
 	@Override
 	public List<OrderVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
 			String filterColumnName) {
+		
+		Validate.notNull(pageSize);
+		Validate.notNull(sortField);
+		Validate.notNull(filter);
+		Validate.notNull(filterColumnName);
+		
 		Sort.Direction direction = dir == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(i, pageSize,
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
@@ -59,11 +66,13 @@ public class OrderServiceImpl implements OrderServiceLocal, OrderServiceRemote {
 
 	@Override
 	public OrderVo getOrderById(Long id) {
+		Validate.notNull(id);
 		return OrderConverter.toVo(orderDao.findOne(id));
 	}
 
 	@Override
 	public OrderVo saveOrder(OrderVo orderVo) {
+		Validate.notNull(orderVo);
 		return OrderConverter.toVo(orderDao.save(OrderConverter.toEntity(orderVo)));
 	}
 }

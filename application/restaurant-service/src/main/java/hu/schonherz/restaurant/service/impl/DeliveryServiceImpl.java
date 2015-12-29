@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.service.impl;
 
+import java.nio.file.DirectoryStream.Filter;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -9,6 +10,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,6 +51,12 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	public List<DeliveryVo> getDeliveriesByRestaurantId(Long restId, int i, int pageSize, String sortField, int dir,
 			String filter, String filterColumnName) {
 
+		Validate.notNull(restId);
+		Validate.notNull(pageSize);
+		Validate.notNull(sortField);
+		Validate.notNull(filter);
+		Validate.notNull(filterColumnName);
+
 		Sort.Direction direction = dir == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(i, pageSize,
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
@@ -68,17 +76,20 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 	@Override
 	public int getDeliveryCountByRestaurantId(Long restId) {
+		Validate.notNull(restId);
 		String restaurantNameCode = restaurantDao.findOne(restId).getName().replace(' ', '_');
 		return (int) deliveryDao.countByGuidStartingWith(restaurantNameCode);
 	}
 
 	@Override
 	public DeliveryVo getDeliveryByGuid(String guid) {
+		Validate.notNull(guid);
 		return DeliveryConverter.toVo(deliveryDao.findByGuid(guid));
 	}
 
 	@Override
 	public void saveDelivery(DeliveryVo delivery) {
+		Validate.notNull(delivery);
 		Delivery entity = DeliveryConverter.toEntity(delivery);
 
 		if (entity.getIsDeleted() == null) {
@@ -86,6 +97,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 		}
 
 		for (Order order : entity.getOrders()) {
+			Validate.notNull(order);
 			order.setProducts(productDao.save(order.getProducts()));
 		}
 
@@ -96,11 +108,13 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 
 	@Override
 	public DeliveryVo getDeliveryById(Long id) {
+		Validate.notNull(id);
 		return DeliveryConverter.toVo(deliveryDao.findOne(id));
 	}
 
 	@Override
 	public void deleteDeliveryById(Long id) {
+		Validate.notNull(id);
 		deliveryDao.setIsDeletedById(id);
 	}
 

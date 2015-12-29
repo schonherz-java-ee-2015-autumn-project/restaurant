@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -38,26 +39,33 @@ public class ProductServiceImpl implements ProductServiceLocal, ProductServiceRe
 
 	@Override
 	public ProductVo getProductById(Long id) {
+		Validate.notNull(id);
 		return ProductConverter.toVo(productDao.findOne(id));
 	}
 
 	@Override
 	public ProductVo saveProduct(ProductVo productVo) {
+		Validate.notNull(productVo);
 		return ProductConverter.toVo(productDao.save(ProductConverter.toEntity(productVo)));
 	}
 
 	@Override
 	public List<ProductVo> getProductsByRestaurantId(Long id) {
+		Validate.notNull(id);
 		return ProductConverter.toVo(productDao.findByRestaurantId(id));
 	}
 
 	@Override
 	public ProductVo getProductByNameAndRestaurantId(String name, Long id) {
+		Validate.notNull(name);
+		Validate.notNull(id);
 		return ProductConverter.toVo(productDao.findByNameAndRestaurantId(name, id));
 	}
 
 	@Override
 	public List<ProductVo> getProductsByNameStartingWithAndRestaurantId(String query, Long id) {
+		Validate.notNull(query);
+		Validate.notNull(id);
 		return ProductConverter.toVo(productDao.findByNameStartingWithAndRestaurantId(query, id));
 	}
 
