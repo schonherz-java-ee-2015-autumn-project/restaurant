@@ -27,12 +27,12 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
 	@Override
 	public void refreshSince(Date date) {
-		try {
-			List<WebUserDTO> users = synchronizationService.getUsersByRole(UserRole.RESTAURANT);
-			System.out.println();
-		} catch (NotAllowedRoleException_Exception e) {
-			
-		} 
+//		try {
+//			List<WebUserDTO> users = synchronizationService.getUsersByRole(UserRole.RESTAURANT);
+//			System.out.println();
+//		} catch (NotAllowedRoleException_Exception e) {
+//			
+//		} 
 	}
 
 }

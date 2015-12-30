@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -18,6 +19,7 @@ import hu.schonherz.restaurant.dao.UserDao;
 import hu.schonherz.restaurant.entities.Role;
 import hu.schonherz.restaurant.entities.User;
 import hu.schonherz.restaurant.service.EntityVoConverter;
+import hu.schonherz.restaurant.service.UserConverter;
 import hu.schonherz.restaurant.service.UserServiceLocal;
 import hu.schonherz.restaurant.service.UserServiceRemote;
 import hu.schonherz.restaurant.service.vo.UserVo;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private RoleDao roleDao;
 
@@ -58,11 +60,20 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	@Override
 	public void save(UserVo user) {
 		Validate.notNull(user);
-		Role role = roleDao.findByName("ROLE_USER");
-		if (role==null){
-			roleDao.save(new Role("ROLE_USER"));
+		User u = userDao.findByUsername(user.getUsername());
+		if (u == null) {
+			u = userConverter.toEntity(user);
+			Role role = roleDao.findByName("ROLE_USER");
+			if (role == null) {
+				role = new Role("ROLE_USER");
+				role = roleDao.save(role);
+			}
+			u.setRoles(Arrays.asList(role));
+			userDao.save(u);
+		}else{
+			user.setId(u.getId());
+			userDao.save(userConverter.toEntity(user));
 		}
-		userDao.save(userConverter.toEntity(user));
 	}
 
 }

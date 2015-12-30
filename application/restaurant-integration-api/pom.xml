@@ -6,7 +6,6 @@
 		<artifactId>restaurant-main</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>hu.schonherz.snowwhite</groupId>
 	<artifactId>restaurant-integration-api</artifactId>
 	<properties>
 	<wsdl.property.file>wsdllocation.properties</wsdl.property.file>
@@ -36,7 +35,7 @@
 				<configuration>
 					<wsdlUrls>
 						<wsdlUrl>
-							${wsdl}
+							${user.wsdl}
 						</wsdlUrl>
 					</wsdlUrls>
 					<keep>true</keep>

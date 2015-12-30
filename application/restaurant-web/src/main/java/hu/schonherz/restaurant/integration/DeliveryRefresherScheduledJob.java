@@ -16,7 +16,7 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 	private final int MAX_TRY = 5;
 	private final int WAIT_TIME_MILLISEC = 10000;
 	
-	Refresher refresher;
+	RefresherRemote refresher;
 
 	public DeliveryRefresherScheduledJob() {
 		super();

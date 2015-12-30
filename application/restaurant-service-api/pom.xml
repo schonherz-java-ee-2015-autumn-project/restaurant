@@ -20,5 +20,9 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>hu.schonherz.snowwhite</groupId>
+			<artifactId>restaurant-integration-api</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -139,6 +139,10 @@
 			<artifactId>quartz</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 </project>

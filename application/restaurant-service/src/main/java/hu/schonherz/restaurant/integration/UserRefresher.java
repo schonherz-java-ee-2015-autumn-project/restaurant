@@ -3,6 +3,7 @@ package hu.schonherz.restaurant.integration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -11,16 +12,20 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
-
-import com.sun.xml.ws.api.server.SDDocument.WSDL;
 
 import hu.schonherz.administrator.NotAllowedRoleException_Exception;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.administrator.UserRole;
 import hu.schonherz.administrator.WebUserDTO;
+import hu.schonherz.restaurant.integration.converter.UserConverter;
+import hu.schonherz.restaurant.integration.exception.RefresherException;
 import hu.schonherz.restaurant.service.UserServiceLocal;
+import hu.schonherz.restaurant.service.vo.UserVo;
 
 @Stateless(mappedName = "userRefresher")
 @Local(RefresherLocal.class)
@@ -33,27 +38,35 @@ public class UserRefresher implements RefresherLocal, RefresherRemote {
 	UserServiceLocal userService;
 
 	@Override
-	public void refresh() {
-		refreshSince(new Date());
+	public void refresh() throws RefresherException {
+		refreshSince(new Date(0));
 	}
 
 	@Override
-	public void refreshSince(Date date) {
+	public void refreshSince(Date date) throws RefresherException {
 		try {
-			List<WebUserDTO> users = synchronizationService.getUsersByRole(UserRole.RESTAURANT);
+			GregorianCalendar c = new GregorianCalendar();
+			c.setTime(date);
+			XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+			List<WebUserDTO> users = synchronizationService.getUsersByRoleAndDate(UserRole.RESTAURANT,calendar);
+			List<UserVo> userVos = UserConverter.toVo(users);
+			for (UserVo user:userVos){
+				userService.save(user);
+			}
 			System.out.println();
-		} catch (NotAllowedRoleException_Exception e) {
-			System.out.println("exception happened");
+		} catch (NotAllowedRoleException_Exception | DatatypeConfigurationException e) {
+			throw new RefresherException("Exception happened");
 		}
 	}
 
 	@PostConstruct
 	public void init() {
+		System.out.println("init");
 		Properties prop = new Properties();
 		try {
 			prop.load(this.getClass().getClassLoader().getResourceAsStream("wsdllocation.properties"));
-			URL url = new URL(prop.getProperty("wsdl"));
-			
+			URL url = new URL(prop.getProperty("user.wsdl"));
+
 			QName name = new QName("http://wsserviceapi.administration.schonherz.hu/", "SynchronizationServiceImpl");
 
 			SynchronizationServiceImpl synchronizationServiceImpl = new SynchronizationServiceImpl(url, name);
