@@ -41,32 +41,33 @@ public class UserRefresherScheduledJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		refresher.refresh();
+		System.out.println("userrefresherjob");
 
-		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-		int count = dataMap.getIntValue("count");
-
-		if (count >= MAX_TRY) {
-			JobExecutionException e = new JobExecutionException("The fault retry limit has been exceeded");
-
-			e.setUnscheduleAllTriggers(true);
-			throw e;
-		}
-
-		try {
-			dataMap.putAsString("count", 0);
-		} catch (Exception e) {
-			count++;
-			dataMap.putAsString("count", count);
-			JobExecutionException e2 = new JobExecutionException(e);
-
-			try {
-				Thread.sleep(WAIT_TIME_MILLISEC);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			e2.setRefireImmediately(true);
-			throw e2;
-		}
+//		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+//		int count = dataMap.getIntValue("count");
+//
+//		if (count >= MAX_TRY) {
+//			JobExecutionException e = new JobExecutionException("The fault retry limit has been exceeded");
+//
+//			e.setUnscheduleAllTriggers(true);
+//			throw e;
+//		}
+//
+//		try {
+//			dataMap.putAsString("count", 0);
+//		} catch (Exception e) {
+//			count++;
+//			dataMap.putAsString("count", count);
+//			JobExecutionException e2 = new JobExecutionException(e);
+//
+//			try {
+//				Thread.sleep(WAIT_TIME_MILLISEC);
+//			} catch (InterruptedException e1) {
+//				e1.printStackTrace();
+//			}
+//			e2.setRefireImmediately(true);
+//			throw e2;
+//		}
 	}
 
 }

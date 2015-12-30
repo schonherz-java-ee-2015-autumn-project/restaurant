@@ -3,44 +3,36 @@ package hu.schonherz.restaurant.integration;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
-import org.apache.commons.lang3.Validate;
-
-import hu.schonherz.restaurant.service.DeliveryServiceLocal;
-import hu.schonherz.restaurant.service.vo.DeliveryVo;
+import hu.schonherz.administrator.NotAllowedRoleException_Exception;
+import hu.schonherz.administrator.SynchronizationService;
+import hu.schonherz.administrator.UserRole;
+import hu.schonherz.administrator.WebUserDTO;
 
 @Stateless(mappedName = "deliveryRefresher")
 @Local(RefresherLocal.class)
 @Remote(RefresherRemote.class)
 public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
-//	@WebServiceRef(wsdlLocation = "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
-	 @EJB
-	AdminRemoteRefreshService remoteRefreshService;
-
-	@EJB
-	DeliveryServiceLocal deliveryService;
-
+	//TODO init
+	SynchronizationService synchronizationService;
+	
 	@Override
 	public void refresh() {
-		List<DeliveryVo> deliveries = remoteRefreshService.refreshDeliveries();
-		Validate.noNullElements(deliveries);
-		for (DeliveryVo delivery : deliveries) {
-			deliveryService.saveDelivery(delivery);
-		}
+		refreshSince(new Date());
 	}
 
 	@Override
 	public void refreshSince(Date date) {
-		List<DeliveryVo> deliveries = remoteRefreshService.refreshDeliveriesSince(date);
-		Validate.noNullElements(deliveries);
-		for (DeliveryVo delivery : deliveries) {
-			deliveryService.saveDelivery(delivery);
-		}
+		try {
+			List<WebUserDTO> users = synchronizationService.getUsersByRole(UserRole.RESTAURANT);
+			System.out.println();
+		} catch (NotAllowedRoleException_Exception e) {
+			
+		} 
 	}
 
 }

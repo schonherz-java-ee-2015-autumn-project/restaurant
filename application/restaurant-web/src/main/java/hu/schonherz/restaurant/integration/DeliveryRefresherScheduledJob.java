@@ -42,33 +42,33 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-		int count = dataMap.getIntValue("count");
+//		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+//		int count = dataMap.getIntValue("count");
+//
+//		if (count >= MAX_TRY) {
+//			JobExecutionException e = new JobExecutionException("The fault retry limit has been exceeded");
+//			// make sure it doesn't run again
+//			e.setUnscheduleAllTriggers(true);
+//			throw e;
+//		}
 
-		if (count >= MAX_TRY) {
-			JobExecutionException e = new JobExecutionException("The fault retry limit has been exceeded");
-			// make sure it doesn't run again
-			e.setUnscheduleAllTriggers(true);
-			throw e;
-		}
-
-		refresher.refresh();
-
-		try {
-			dataMap.putAsString("count", 0);
-		} catch (Exception e) {
-			count++;
-			dataMap.putAsString("count", count);
-			JobExecutionException e2 = new JobExecutionException(e);
-
-			try {
-				Thread.sleep(WAIT_TIME_MILLISEC);
-			} catch (InterruptedException e1) {
-				
-			}
-			e2.setRefireImmediately(true);
-			throw e2;
-		}
+//		refresher.refresh();
+//
+//		try {
+//			dataMap.putAsString("count", 0);
+//		} catch (Exception e) {
+//			count++;
+//			dataMap.putAsString("count", count);
+//			JobExecutionException e2 = new JobExecutionException(e);
+//
+//			try {
+//				Thread.sleep(WAIT_TIME_MILLISEC);
+//			} catch (InterruptedException e1) {
+//				
+//			}
+//			e2.setRefireImmediately(true);
+//			throw e2;
+//		}
 	}
 
 }
