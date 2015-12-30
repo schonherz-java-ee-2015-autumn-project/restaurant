@@ -28,7 +28,7 @@ public class User extends BaseEntity {
 	@Column(name = "full_name", nullable = false, length = 60)
 	private String name;
 
-	@Column(name = "banned")
+	@Column(name = "banned", nullable = false)
 	private Boolean banned;
 
 	@ManyToMany
