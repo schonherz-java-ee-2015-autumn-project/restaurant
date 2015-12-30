@@ -52,7 +52,7 @@
 
 				<p:commandLink value="#{out.modify}"
 					oncomplete="PF('newOrderW').show();"
-					actionListener="#{deliveryBean.onModifyOrderButtonClick}"
+					actionListener="#{newDeliveryBean.onModifyOrderButtonClick}"
 					update="newOrderDialog,orderDetails" styleClass="btn-right btn"
 					rendered="#{not empty newDeliveryBean.selectedOrder}" />
 
@@ -111,12 +111,12 @@
 						</p:row>
 						<p:row>
 							<p:column colspan="2">
-								<p:dataTable id="productsList" var="product"
-									value="#{newDeliveryBean.orderProducts}"
+								<p:dataTable id="productsList" var="item"
+									value="#{newDeliveryBean.orderItems}"
 									emptyMessage="#{out.noproducttolist}"
 									styleClass="top-margin-20" selectionMode="single"
-									selection="#{newDeliveryBean.selectedProduct}"
-									rowKey="#{product.name}" tableStyle="table-layout: auto;">
+									selection="#{newDeliveryBean.selectedItem}"
+									rowKey="#{item.product.name}" tableStyle="table-layout: auto;">
 									<p:ajax event="rowSelect"
 										listener="#{newDeliveryBean.onProductRowSelect}"
 										update="orderDetails" />
@@ -124,12 +124,16 @@
 										<h:outputText value="#{out.products}" />
 									</f:facet>
 									<p:column styleClass="nobg" headerText="#{out.productname}">
-										<h:outputText value="#{product.name}" />
+										<h:outputText value="#{item.product.name}" />
 									</p:column>
 									<p:column styleClass="nobg" headerText="#{out.price}">
-										<h:outputText value="#{product.price}">
-											<f:convertNumber type="currency" currencyCode="HUF" />
+										<h:outputText value="#{item.product.price}">
+											<f:convertNumber integerOnly="true" type="currency"
+												currencyCode="HUF" locale="hu-HU" />
 										</h:outputText>
+									</p:column>
+									<p:column styleClass="nobg" headerText="#{out.quantity}">
+										<h:outputText value="#{item.quantity}" />
 									</p:column>
 									<p:column styleClass="nobg"
 										style="width:64px;text-align: center">
@@ -137,7 +141,7 @@
 											styleClass="btn-no-margin btn"
 											actionListener="#{newDeliveryBean.onProductRowDelete}"
 											value="#{out.remove}" oncomplete="PF('newOrderW').show();">
-											<f:attribute name="deleted" value="#{product}" />
+											<f:attribute name="deleted" value="#{item}" />
 										</p:commandLink>
 									</p:column>
 								</p:dataTable>
@@ -159,7 +163,7 @@
 							oncomplete="PF('newProductW').show();"
 							update="newOrderDialog,orderDetails,newProductDialog"
 							styleClass="btn-right btn"
-							rendered="#{not empty newDeliveryBean.selectedProduct}" />
+							rendered="#{not empty newDeliveryBean.selectedItem}" />
 
 						<p:commandLink value="#{out.newProduct}"
 							actionListener="#{newDeliveryBean.onAddProductButtonClick}"
@@ -174,7 +178,7 @@
 		<p:dialog id="newProductDialog" widgetVar="newProductW" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false"
 			header="#{out.newProduct}"
-			visible="#{not empty newDeliveryBean.selectedProduct}"
+			visible="#{not empty newDeliveryBean.selectedItem}"
 			styleClass="custom-dialog">
 			<p:outputPanel id="productDetails">
 				<h:form id="productForm">
@@ -191,10 +195,10 @@
 									minQueryLength="3">
 									<p:ajax event="itemSelect"
 										listener="#{newDeliveryBean.onProductSelect}" update="msg" />
+									<p:ajax event="change"
+										listener="#{newDeliveryBean.onProductNameInputChange}"
+										update="productDetails" />
 								</p:autoComplete>
-
-								<!-- 								<p:inputText id="prodName" -->
-								<!-- 									value="#{newDeliveryBean.productName}" /> -->
 							</p:column>
 
 						</p:row>
@@ -204,7 +208,17 @@
 							</p:column>
 							<p:column>
 								<p:inputText id="prodPrice"
-									value="#{newDeliveryBean.productPrice}" />
+									value="#{newDeliveryBean.productPrice}"
+									disabled="#{newDeliveryBean.selected}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodQuantity" value="#{out.quantity}" />
+							</p:column>
+							<p:column>
+								<p:spinner id="prodQuantity"
+									value="#{newDeliveryBean.prodQuantity}" min="1" />
 							</p:column>
 						</p:row>
 					</h:panelGrid>

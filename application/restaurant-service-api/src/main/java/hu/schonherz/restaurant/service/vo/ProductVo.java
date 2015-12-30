@@ -40,8 +40,9 @@ public class ProductVo extends BaseVo implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		int result = super.hashCode();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((restaurant == null) ? 0 : restaurant.hashCode());
 		return result;
 	}
 
@@ -50,18 +51,25 @@ public class ProductVo extends BaseVo implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof ProductVo)) {
 			return false;
 		}
 		ProductVo other = (ProductVo) obj;
-		if (getId() == null) {
-			if (other.getId() != null) {
+		if (name == null) {
+			if (other.name != null) {
 				return false;
 			}
-		} else if (!getId().equals(other.getId())) {
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (restaurant == null) {
+			if (other.restaurant != null) {
+				return false;
+			}
+		} else if (!restaurant.equals(other.restaurant)) {
 			return false;
 		}
 		return true;

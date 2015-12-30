@@ -10,7 +10,7 @@ import hu.schonherz.restaurant.validation.rule.RuleValidator;
 import hu.schonherz.restaurant.web.validation.rules.OrderAddressRequiredRule;
 import hu.schonherz.restaurant.web.validation.rules.OrderDeadlineNotBeforeNowRule;
 import hu.schonherz.restaurant.web.validation.rules.OrderDeadlineRequiredRule;
-import hu.schonherz.restaurant.web.validation.rules.OrderProductsNotEmptyRule;
+import hu.schonherz.restaurant.web.validation.rules.OrderItemsNotEmptyRule;
 
 @ViewScoped
 @ManagedBean(name = "orderValidator")
@@ -20,7 +20,7 @@ public class OrderValidator extends RuleValidator<OrderVo> {
 
 	public OrderValidator() {
 		super(Arrays.asList(new OrderAddressRequiredRule(), new OrderDeadlineRequiredRule(),
-				new OrderDeadlineNotBeforeNowRule(), new OrderProductsNotEmptyRule()));
+				new OrderDeadlineNotBeforeNowRule(), new OrderItemsNotEmptyRule()));
 	}
 
 }

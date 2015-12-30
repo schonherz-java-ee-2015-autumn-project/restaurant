@@ -21,6 +21,8 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	private List<OrderVo> orders;
 
+	private RestaurantVo restaurant;
+
 	public DeliveryState getDeliveryState() {
 		return deliveryState;
 	}
@@ -59,6 +61,14 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	public void setOrders(List<OrderVo> orders) {
 		this.orders = orders;
+	}
+
+	public RestaurantVo getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(RestaurantVo restaurant) {
+		this.restaurant = restaurant;
 	}
 
 }

@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,8 +32,8 @@ public class Order extends BaseEntity {
 	@Column(name = "pay_type")
 	private PayType payType;
 
-	@ManyToMany
-	private List<Product> products;
+	@OneToMany(mappedBy = "ofOrder")
+	private List<Item> items;
 
 	@Column(name = "total_price", length = 50)
 	private Integer totalPrice;
@@ -74,12 +74,12 @@ public class Order extends BaseEntity {
 		this.payType = payType;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public List<Item> getItems() {
+		return items;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setItems(List<Item> items) {
+		this.items = items;
 	}
 
 	public Integer getTotalPrice() {
