@@ -128,11 +128,12 @@
 									</p:column>
 									<p:column styleClass="nobg" headerText="#{out.price}">
 										<h:outputText value="#{item.product.price}">
-											<f:convertNumber integerOnly="true" type="currency" currencyCode="HUF" locale="hu-HU" />
+											<f:convertNumber integerOnly="true" type="currency"
+												currencyCode="HUF" locale="hu-HU" />
 										</h:outputText>
 									</p:column>
 									<p:column styleClass="nobg" headerText="#{out.quantity}">
-									<h:outputText value="#{item.quantity}"/>
+										<h:outputText value="#{item.quantity}" />
 									</p:column>
 									<p:column styleClass="nobg"
 										style="width:64px;text-align: center">
@@ -194,6 +195,9 @@
 									minQueryLength="3">
 									<p:ajax event="itemSelect"
 										listener="#{newDeliveryBean.onProductSelect}" update="msg" />
+									<p:ajax event="change"
+										listener="#{newDeliveryBean.onProductNameInputChange}"
+										update="productDetails" />
 								</p:autoComplete>
 							</p:column>
 
@@ -204,7 +208,8 @@
 							</p:column>
 							<p:column>
 								<p:inputText id="prodPrice"
-									value="#{newDeliveryBean.productPrice}" />
+									value="#{newDeliveryBean.productPrice}"
+									disabled="#{newDeliveryBean.selected}" />
 							</p:column>
 						</p:row>
 						<p:row>

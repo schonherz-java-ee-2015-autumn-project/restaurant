@@ -17,6 +17,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
@@ -62,6 +63,8 @@ public class NewDeliveryController implements Serializable {
 
 	private int prodQuantity;
 
+	private boolean selected;
+
 	@EJB
 	private DeliveryServiceLocal deliveryService;
 
@@ -89,6 +92,7 @@ public class NewDeliveryController implements Serializable {
 			userSessionBean.init();
 		}
 
+		selected = false;
 		delivery = initDelivery();
 	}
 
@@ -256,11 +260,15 @@ public class NewDeliveryController implements Serializable {
 					prod.getRestaurant().getId());
 
 			if (productTemp != null) {
-				FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						resource.getString("product_already_exist"), "");
 
 				BeanUtils.copyProperties(prod, productTemp);
-				addMessage(fmsg);
+
+				if (!selected) {
+					FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							resource.getString("product_already_exist"), "");
+
+					addMessage(fmsg);
+				}
 
 			}
 
@@ -278,6 +286,7 @@ public class NewDeliveryController implements Serializable {
 
 			resetProductInput();
 			selectedItem = null;
+			selected = false;
 		} catch (ViolationException ve) {
 			addMessage(ve);
 		} catch (NumberFormatException nfe) {
@@ -313,19 +322,18 @@ public class NewDeliveryController implements Serializable {
 	public void onProductSelect(SelectEvent e) {
 		ProductVo prod = productService.getProductByNameAndRestaurantId((String) e.getObject(),
 				userSessionBean.getUser().getRestaurant().getId());
-		// try {
+
 		fillProductInput(prod);
+
+		selected = true;
 
 		RequestContext reqContext = RequestContext.getCurrentInstance();
 		reqContext.update("productDetails");
 
-		// } catch (IllegalAccessException | InvocationTargetException e1) {
-		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		// resource.getString("cant_modify_product"),
-		// "");
-		// addMessage(msg);
-		// }
+	}
 
+	public void onProductNameInputChange(AjaxBehaviorEvent e) {
+		selected = false;
 	}
 
 	public String saveDelivery() {
@@ -493,6 +501,14 @@ public class NewDeliveryController implements Serializable {
 
 	public void setProdQuantity(int prodQuantity) {
 		this.prodQuantity = prodQuantity;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }

@@ -16,14 +16,14 @@ public class DeliveryListingVo implements Serializable {
 
 	private int numberOfAddresses;
 
-	private double total;
+	private int total;
 
 	private DeliveryState state;
 
 	public DeliveryListingVo() {
 	}
 
-	public DeliveryListingVo(Long id, String guid, String courierName, int numberOfAddresses, double total,
+	public DeliveryListingVo(Long id, String guid, String courierName, int numberOfAddresses, int total,
 			DeliveryState state) {
 		super();
 		this.id = id;
@@ -66,11 +66,11 @@ public class DeliveryListingVo implements Serializable {
 		this.numberOfAddresses = numberOfAddresses;
 	}
 
-	public double getTotal() {
+	public int getTotal() {
 		return total;
 	}
 
-	public void setTotal(double total) {
+	public void setTotal(int total) {
 		this.total = total;
 	}
 
