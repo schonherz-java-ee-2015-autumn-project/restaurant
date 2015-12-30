@@ -73,7 +73,7 @@
 						</p:column>
 						<p:column>
 							<h:outputText
-								value="#{out['DeliveryState.'.concat(delivery.state.name())]}" />
+								value="#{out['DeliveryState.'.concat(deliveryBean.selectedDelivery.deliveryState.name())]}" />
 						</p:column>
 					</p:row>
 
