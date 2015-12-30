@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -142,4 +143,145 @@
 		</p:dialog>
 
 	</ui:define>
+=======
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.deliveries}</ui:define>
+	<ui:define name="head-extra">
+		<h:outputStylesheet library="default" name="css/custom.css" />
+	</ui:define>
+	<ui:define name="content">
+
+		<p:panel header="#{out.deliveries}" styleClass="top-margin-20">
+			<h:form id="tableform">
+				<p:dataTable var="delivery" value="#{deliveryBean.tableData}"
+					paginator="true" rows="10" emptyMessage="#{out.noorderstoshow}"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{deliveryBean.selectedDeliveryListing}"
+					id="deliveryTable" lazy="true">
+					<p:ajax event="rowSelect" listener="#{deliveryBean.onRowSelect}"
+						update="deldetails" />
+					<p:column styleClass="nobg" headerText="#{out.id}"
+						sortBy="#{delivery.guid}">
+						<h:outputText value="#{delivery.guid}" />
+					</p:column>
+					<p:column styleClass="nobg" headerText="#{out.state}">
+						<h:outputText
+							value="#{out['DeliveryState.'.concat(delivery.state.name())]}" />
+					</p:column>
+					<p:column styleClass="nobg" headerText="#{out.courier}">
+						<h:outputText value="#{delivery.courierName}" />
+					</p:column>
+					<p:column styleClass="nobg" headerText="#{out.numberofaddresses}">
+						<h:outputText value="#{delivery.numberOfAddresses}" />
+					</p:column>
+					<p:column styleClass="nobg" headerText="#{out.sumtotal}">
+						<h:outputText value="#{delivery.total}">
+							<f:convertNumber type="currency" currencyCode="HUF" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:outputPanel id="deliveryButtons">
+					<h:link styleClass="btn-right btn" value="#{out.new}"
+						outcome="new?faces-redirect=true" />
+				</p:outputPanel>
+			</h:form>
+		</p:panel>
+
+		<p:dialog id="deldetails" widgetVar="detailwidget" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.details}"
+			visible="#{not empty deliveryBean.selectedDelivery}">
+			<h:form id="deldetailsForm">
+				<h:panelGrid id="details" cellpadding="5"
+					style="text-align: center; vertical-align:middle;">
+
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.id}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{deliveryBean.selectedDelivery.guid}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.state}" />
+						</p:column>
+						<p:column>
+							<h:outputText
+								value="#{deliveryBean.selectedDelivery.deliveryState}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.courier}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{deliveryBean.selectedDelivery.courier}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="2">
+							<h:outputText value="#{out.addresses}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:scrollPanel mode="native" styleClass="custom-scrollbar"
+								style="border:none;">
+								<p:dataList value="#{deliveryBean.selectedDelivery.orders}"
+									var="order" styleClass="no-border" type="unordered">
+									<h:outputText value="#{order.address}" />
+								</p:dataList>
+							</p:scrollPanel>
+						</p:column>
+					</p:row>
+
+					<!-- 				<p:row> -->
+					<!-- 					<p:column colspan="2"> -->
+					<!-- 						<p:outputPanel id="orderdetail"></p:outputPanel> -->
+					<!-- 					</p:column> -->
+					<!-- 				</p:row> -->
+
+					<p:row>
+						<p:column>
+							<h:outputText value="#{out.sumtotal}" />
+						</p:column>
+						<p:column>
+							<h:outputText
+								value="#{deliveryBean.selectedDeliveryListing.total}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="2">
+							<h:commandLink styleClass="btn-left btn"
+								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
+								value="#{out.modify}"
+								action="#{deliveryBean.onModifyButtonClick}" />
+							<p:commandLink styleClass="btn-left btn"
+								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
+								value="#{out.delete}"
+								actionListener="#{deliveryBean.onDeleteButtonClick}"
+								update="tableform:deliveryTable"
+								oncomplete="PF('detailwidget').hide();" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+>>>>>>> 79926bfc44dd6a3fb8a489c2759ee4ea869975d9
 </ui:composition>

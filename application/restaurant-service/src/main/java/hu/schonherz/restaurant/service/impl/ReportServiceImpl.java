@@ -34,6 +34,7 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 	
 	@Autowired
 	private OrderDao orderDao;
+	@Autowired
 	private RestaurantDao restaurantDao;
 	
 	public String actualUser(Long id){

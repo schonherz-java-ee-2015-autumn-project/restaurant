@@ -119,8 +119,8 @@ public class ShippingReportBean {
 		dailyFinancialQueryModel.setLegendPosition("ne");
 		yAxis = dailyFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax((dailyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice())).get()
-				.getPrice()) + 10);
+	//	yAxis.setMax((dailyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice())).get()
+	//			.getPrice()) + 10);
 
 		weeklyFinancialQueryModel = initWeeklyFinancialQueryModel();
 		weeklyFinancialQueryModel.setTitle(resources.getString("weeklyfinancialquery"));
@@ -128,8 +128,8 @@ public class ShippingReportBean {
 		weeklyFinancialQueryModel.setLegendPosition("ne");
 		yAxis = weeklyFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax((weeklyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-				.get().getPrice()) + 10);
+//		yAxis.setMax((weeklyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+//				.get().getPrice()) + 10);
 
 		monthlyFinancialQueryModel = initMonthlyFinancialQueryModel();
 		monthlyFinancialQueryModel.setTitle(resources.getString("monthlyfinancialquery"));
@@ -137,8 +137,8 @@ public class ShippingReportBean {
 		monthlyFinancialQueryModel.setLegendPosition("ne");
 		yAxis = monthlyFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax((monthlyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-				.get().getPrice()) + 10);
+//		yAxis.setMax((monthlyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+//				.get().getPrice()) + 10);
 
 		annualFinancialQueryModel = initAnnualFinancialQueryModel();
 		annualFinancialQueryModel.setTitle(resources.getString("annualfinancialquery"));
@@ -146,8 +146,8 @@ public class ShippingReportBean {
 		annualFinancialQueryModel.setLegendPosition("ne");
 		yAxis = annualFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax((annualFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-				.get().getPrice()) + 10);
+//		yAxis.setMax((annualFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+//				.get().getPrice()) + 10);
 
 		overallFinancialQueryModel = initOverallFinancialQueryModel();
 		overallFinancialQueryModel.setTitle(resources.getString("overallfinancialquery"));
@@ -155,8 +155,8 @@ public class ShippingReportBean {
 		overallFinancialQueryModel.setLegendPosition("ne");
 		yAxis = overallFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax((overallFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-				.get().getPrice()) + 10);
+//		yAxis.setMax((overallFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+//				.get().getPrice()) + 10);
 
 	}
 
