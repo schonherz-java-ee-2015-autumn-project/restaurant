@@ -189,13 +189,14 @@
 								<p:outputLabel for="prodName" value="#{out.name} " />
 							</p:column>
 							<p:column>
-								<p:autoComplete id="prodName"
+								<p:autoComplete id="prodName" widgetVar="prodAutoC"
 									value="#{newDeliveryBean.productName}"
 									completeMethod="#{newDeliveryBean.completeProducts}"
 									minQueryLength="3">
 									<p:ajax event="itemSelect"
 										listener="#{newDeliveryBean.onProductSelect}" update="msg" />
 									<p:ajax event="change"
+										onstart="if(PF('prodAutoC').panel.is(':visible')) return false;"
 										listener="#{newDeliveryBean.onProductNameInputChange}"
 										update="productDetails" />
 								</p:autoComplete>
