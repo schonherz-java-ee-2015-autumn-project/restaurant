@@ -76,3 +76,16 @@ table, table td {
 .ui-selectonemenu-filter-container {
 	width: 98% !important;
 }
+.ui-widget-header {
+	border: none !important;
+	background: #ffffff !important;
+	color: #333333;
+	font-weight: bold;
+}
+.remember-me{
+	width: 20px !important;
+}
+.remember-me-text{
+	float: left !important;
+	margin-top: 5px;
+}

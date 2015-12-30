@@ -329,6 +329,7 @@ h1 a img {
 .content {
 	background-color: #fff;
 	padding-bottom: 68px;
+	min-height: 650px !important;
 }
 
 .page1 .content {

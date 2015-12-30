@@ -9,6 +9,7 @@
 	<ui:define name="head-extra">
 		<h:outputStylesheet library="default" name="css/form.css" />
 		<h:outputStylesheet library="default" name="css/grid.css" />
+		<h:outputStylesheet library="default" name="css/custom.css" />
 		<h:outputScript library="default" name="js/forms.js"></h:outputScript>
 	</ui:define>
 
@@ -32,8 +33,11 @@
 									type="password" name="j_password" placeholder="#{out.password}" />
 									<br class="clear" />
 								</label> <label class="remember-me"> <input type="checkbox"
-									name="remember-me" /> #{out.rememberme} <br class="clear" />
+									name="remember-me" />
 								</label>
+								<div class="remember-me-text">
+									#{out.rememberme}
+								</div>
 								<div class="clear" />
 								<div class="btns" style="text-align: center;">
 									<input type="submit" value="#{out.send}" />
