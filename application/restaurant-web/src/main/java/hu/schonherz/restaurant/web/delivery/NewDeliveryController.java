@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +39,7 @@ import hu.schonherz.restaurant.validation.Validator;
 import hu.schonherz.restaurant.validation.Violation;
 import hu.schonherz.restaurant.validation.ViolationException;
 import hu.schonherz.restaurant.web.UserSessionBean;
+import hu.schonherz.restaurant.web.delivery.util.DeliveryUtil;
 import hu.schonherz.restaurant.web.generator.GuidGenerator;
 
 @ViewScoped
@@ -123,8 +126,11 @@ public class NewDeliveryController implements Serializable {
 	public List<String> completeProducts(String query) {
 		List<ProductVo> products = productService.getProductsByNameStartingWithAndRestaurantId(query,
 				userSessionBean.getUser().getRestaurant().getId());
-
-		return products.stream().map(p -> p.getName()).collect(Collectors.toList());
+		Set<String> set = new TreeSet<String>();
+		set.addAll(products.stream().map(p -> p.getName()).collect(Collectors.toList()));
+		set.addAll(DeliveryUtil.products(delivery).stream().map(p -> p.getName()).filter(pn -> pn.startsWith(query))
+				.collect(Collectors.toList()));
+		return new ArrayList<>(set);
 	}
 
 	public OrderVo initOrder() {
@@ -254,14 +260,10 @@ public class NewDeliveryController implements Serializable {
 
 			productValidator.validate(prod);
 
-			item.setProduct(prod);
-
-			ProductVo productTemp = productService.getProductByNameAndRestaurantId(prod.getName(),
-					prod.getRestaurant().getId());
-
+			ProductVo productTemp = findExistingProduct(prod);
 			if (productTemp != null) {
 
-				BeanUtils.copyProperties(prod, productTemp);
+				prod = productTemp;
 
 				if (!selected) {
 					FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -272,7 +274,12 @@ public class NewDeliveryController implements Serializable {
 
 			}
 
-			if (selectedItem != null) {
+			item.setProduct(prod);
+
+			ItemVo containerItem = findProductsItemInOrderItems(prod);
+			if (containerItem != null) {
+				containerItem.setQuantity(containerItem.getQuantity() + item.getQuantity());
+			} else if (selectedItem != null) {
 				Long idTemp = selectedItem.getId();
 				BeanUtils.copyProperties(selectedItem, item);
 				selectedItem.setId(idTemp);
@@ -295,6 +302,36 @@ public class NewDeliveryController implements Serializable {
 			// TODO addMessage
 			logger.error("BeanUtils exception", e1);
 		}
+	}
+
+	private ItemVo findProductsItemInOrderItems(ProductVo prod) {
+		for (ItemVo itemVo : orderItems) {
+			if (itemVo.getProduct().equals(prod) && itemVo != selectedItem) {
+				return itemVo;
+			}
+		}
+		return null;
+	}
+
+	private ProductVo findExistingProduct(ProductVo prod) {
+		ProductVo productTemp = productService.getProductByNameAndRestaurantId(prod.getName(),
+				prod.getRestaurant().getId());
+
+		if (productTemp == null) {
+			for (OrderVo order : delivery.getOrders()) {
+				if (order != selectedOrder) {
+
+					for (ItemVo itemVo : order.getItems()) {
+						if (itemVo.getProduct().equals(prod)) {
+							return itemVo.getProduct();
+						}
+					}
+
+				}
+			}
+		}
+
+		return productTemp;
 	}
 
 	public void onOrderRowSelect(SelectEvent e) {
@@ -322,6 +359,11 @@ public class NewDeliveryController implements Serializable {
 	public void onProductSelect(SelectEvent e) {
 		ProductVo prod = productService.getProductByNameAndRestaurantId((String) e.getObject(),
 				userSessionBean.getUser().getRestaurant().getId());
+
+		if (prod == null) {
+			prod = DeliveryUtil.getProductByNameAndRestaurantId(delivery, (String) e.getObject(),
+					userSessionBean.getUser().getRestaurant().getId());
+		}
 
 		fillProductInput(prod);
 
