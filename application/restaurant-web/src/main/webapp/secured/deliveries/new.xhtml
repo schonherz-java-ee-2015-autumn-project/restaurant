@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -223,4 +224,246 @@
 			</p:outputPanel>
 		</p:dialog>
 	</ui:define>
+=======
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">#{out.newdelivery}</ui:define>
+	<ui:define name="head-extra">
+		<h:outputStylesheet library="default" name="css/custom.css" />
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msg" />
+		<p:panel id="orderPanel" header="#{out.new}"
+			styleClass="top-margin-20">
+			<h:form id="form">
+				<p:outputPanel id="courierDatePanel">
+					<p:outputLabel for="delDate" value="#{out.packageDoneBy}" />
+					<p:calendar id="delDate"
+						value="#{newDeliveryBean.delivery.deliveryDate}"
+						pattern="yyyy.MM.dd HH:mm">
+						<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+					</p:calendar>
+				</p:outputPanel>
+
+				<p:dataTable id="ordersDT" var="order" styleClass="top-margin-20"
+					value="#{newDeliveryBean.delivery.orders}" selectionMode="single"
+					selection="#{newDeliveryBean.selectedOrder}"
+					rowKey="#{order.address}" emptyMessage="#{out.noorderstoshow}"
+					tableStyle="table-layout: auto;">
+					<f:facet name="header">
+						<h:outputText value="#{out.orders}" />
+					</f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{newDeliveryBean.onOrderRowSelect}" update="orderPanel" />
+					<p:column styleClass="nobg" headerText="#{out.address}">
+						<h:outputText value="#{order.address}" />
+					</p:column>
+					<p:column styleClass="nobg" headerText="#{out.deadline}">
+						<h:outputText value="#{order.deadline}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="nobg" style="width:64px;text-align: center">
+						<p:commandLink update="ordersDT" styleClass="btn-no-margin btn"
+							actionListener="#{newDeliveryBean.onOrderRowDelete}"
+							value="#{out.remove}" oncomplete="PF('newOrderW').hide();">
+							<f:attribute name="deleted" value="#{order}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+
+				<p:commandLink value="#{out.modify}"
+					oncomplete="PF('newOrderW').show();"
+					actionListener="#{newDeliveryBean.onModifyOrderButtonClick}"
+					update="newOrderDialog,orderDetails" styleClass="btn-right btn"
+					rendered="#{not empty newDeliveryBean.selectedOrder}" />
+
+				<p:commandLink value="#{out.newOrder}"
+					actionListener="#{newDeliveryBean.onAddOrderButtonClick}"
+					oncomplete="PF('newOrderW').show();" update="newOrderDialog"
+					styleClass="btn-right btn" />
+
+				<p:commandLink value="#{out.save}" styleClass="btn-left btn"
+					action="#{newDeliveryBean.saveDelivery}" update="msg" />
+
+			</h:form>
+		</p:panel>
+
+		<p:dialog id="newOrderDialog" widgetVar="newOrderW" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.newOrder}"
+			visible="#{not empty newDeliveryBean.selectedOrder}"
+			styleClass="custom-dialog">
+			<p:outputPanel id="orderDetails">
+				<h:form id="orderForm">
+
+					<h:panelGrid columnClasses="label,value">
+						<p:row>
+							<p:column>
+								<p:outputLabel for="orderAddr" value="#{out.address}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="orderAddr" value="#{newDeliveryBean.address}"
+									style="width:170px;" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="payTypeDropdown" value="#{out.payType}" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="payTypeDropdown" style="width:150px;"
+									value="#{newDeliveryBean.selectedPayType}">
+									<f:selectItems value="#{newDeliveryBean.payTypes}" var="pt"
+										itemValue="#{pt}"
+										itemLabel="#{out['PayType.'.concat(pt.name())]}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="datetime" value="#{out.deadline}" />
+							</p:column>
+							<p:column>
+								<p:calendar id="datetime" value="#{newDeliveryBean.orderDate}"
+									pattern="yyyy.MM.dd HH:mm" style="width:150px;">
+									<f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+								</p:calendar>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:dataTable id="productsList" var="item"
+									value="#{newDeliveryBean.orderItems}"
+									emptyMessage="#{out.noproducttolist}"
+									styleClass="top-margin-20" selectionMode="single"
+									selection="#{newDeliveryBean.selectedItem}"
+									rowKey="#{item.product.name}" tableStyle="table-layout: auto;">
+									<p:ajax event="rowSelect"
+										listener="#{newDeliveryBean.onProductRowSelect}"
+										update="orderDetails" />
+									<f:facet name="header">
+										<h:outputText value="#{out.products}" />
+									</f:facet>
+									<p:column styleClass="nobg" headerText="#{out.productname}">
+										<h:outputText value="#{item.product.name}" />
+									</p:column>
+									<p:column styleClass="nobg" headerText="#{out.price}">
+										<h:outputText value="#{item.product.price}">
+											<f:convertNumber integerOnly="true" type="currency"
+												currencyCode="HUF" locale="hu-HU" />
+										</h:outputText>
+									</p:column>
+									<p:column styleClass="nobg" headerText="#{out.quantity}">
+										<h:outputText value="#{item.quantity}" />
+									</p:column>
+									<p:column styleClass="nobg"
+										style="width:64px;text-align: center">
+										<p:commandLink update="productsList"
+											styleClass="btn-no-margin btn"
+											actionListener="#{newDeliveryBean.onProductRowDelete}"
+											value="#{out.remove}" oncomplete="PF('newOrderW').show();">
+											<f:attribute name="deleted" value="#{item}" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</p:column>
+						</p:row>
+					</h:panelGrid>
+
+					<p:outputPanel id="productsButton">
+
+						<p:commandLink value="#{out.save}"
+							actionListener="#{newDeliveryBean.onSaveOrderButtonClick}"
+							styleClass="btn-left btn" update="msg" />
+						<p:commandLink value="#{out.cancel}"
+							actionListener="#{newDeliveryBean.onCancelOrderButtonClick}"
+							oncomplete="PF('newOrderW').hide();" styleClass="btn-left btn" />
+
+						<p:commandLink value="#{out.modify}"
+							actionListener="#{newDeliveryBean.onModifyProductButtonClick}"
+							oncomplete="PF('newProductW').show();"
+							update="newOrderDialog,orderDetails,newProductDialog"
+							styleClass="btn-right btn"
+							rendered="#{not empty newDeliveryBean.selectedItem}" />
+
+						<p:commandLink value="#{out.newProduct}"
+							actionListener="#{newDeliveryBean.onAddProductButtonClick}"
+							oncomplete="PF('newProductW').show();" update="newProductDialog"
+							styleClass="btn-right btn" />
+					</p:outputPanel>
+
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog id="newProductDialog" widgetVar="newProductW" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			header="#{out.newProduct}"
+			visible="#{not empty newDeliveryBean.selectedItem}"
+			styleClass="custom-dialog">
+			<p:outputPanel id="productDetails">
+				<h:form id="productForm">
+					<h:panelGrid columnClasses="label,value" cellpadding="5">
+
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodName" value="#{out.name} " />
+							</p:column>
+							<p:column>
+								<p:autoComplete id="prodName" widgetVar="prodAutoC"
+									value="#{newDeliveryBean.productName}"
+									completeMethod="#{newDeliveryBean.completeProducts}"
+									minQueryLength="3">
+									<p:ajax event="itemSelect"
+										listener="#{newDeliveryBean.onProductSelect}" update="msg" />
+									<p:ajax event="change"
+										onstart="if(PF('prodAutoC').panel.is(':visible')) return false;"
+										listener="#{newDeliveryBean.onProductNameInputChange}"
+										update="productDetails" />
+								</p:autoComplete>
+							</p:column>
+
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodPrice" value="#{out.price}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="prodPrice"
+									value="#{newDeliveryBean.productPrice}"
+									disabled="#{newDeliveryBean.selected}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="prodQuantity" value="#{out.quantity}" />
+							</p:column>
+							<p:column>
+								<p:spinner id="prodQuantity"
+									value="#{newDeliveryBean.prodQuantity}" min="1" />
+							</p:column>
+						</p:row>
+					</h:panelGrid>
+
+					<p:outputPanel id="productDialogButtons">
+
+						<p:commandLink value="#{out.save}"
+							actionListener="#{newDeliveryBean.onSaveProductButtonClick}"
+							styleClass="btn-left btn" update="msg" />
+						<p:commandLink value="#{out.cancel}"
+							actionListener="#{newDeliveryBean.onCancelProductButtonClick}"
+							oncomplete="PF('newProductW').hide();" styleClass="btn-right btn" />
+
+					</p:outputPanel>
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+	</ui:define>
+>>>>>>> e2cb697d62ba0a7dcb8a03a0c03fea39a54909fb
 </ui:composition>

@@ -183,7 +183,8 @@
 					</p:column>
 					<p:column styleClass="nobg" headerText="#{out.sumtotal}">
 						<h:outputText value="#{delivery.total}">
-							<f:convertNumber type="currency" currencyCode="HUF" />
+							<f:convertNumber integerOnly="true" type="currency"
+								currencyCode="HUF" locale="hu-HU" />
 						</h:outputText>
 					</p:column>
 				</p:dataTable>
@@ -218,7 +219,7 @@
 						</p:column>
 						<p:column>
 							<h:outputText
-								value="#{deliveryBean.selectedDelivery.deliveryState}" />
+								value="#{out['DeliveryState.'.concat(deliveryBean.selectedDelivery.deliveryState.name())]}" />
 						</p:column>
 					</p:row>
 
@@ -260,7 +261,10 @@
 						</p:column>
 						<p:column>
 							<h:outputText
-								value="#{deliveryBean.selectedDeliveryListing.total}" />
+								value="#{deliveryBean.selectedDeliveryListing.total}">
+								<f:convertNumber integerOnly="true" type="currency"
+									currencyCode="HUF" locale="hu-HU" />
+							</h:outputText>
 						</p:column>
 					</p:row>
 

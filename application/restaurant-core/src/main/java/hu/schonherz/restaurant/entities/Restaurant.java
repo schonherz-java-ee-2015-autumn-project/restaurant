@@ -1,7 +1,11 @@
 package hu.schonherz.restaurant.entities;
 
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "restaurant")
@@ -18,7 +22,7 @@ public class Restaurant extends BaseEntity {
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products;
 
-	@Column(name = "banned")
+	@Column(name = "banned", nullable = false)
 	private Boolean banned;
 
 	public String getName() {
@@ -36,7 +40,6 @@ public class Restaurant extends BaseEntity {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 
 	public List<Product> getProducts() {
 		return products;

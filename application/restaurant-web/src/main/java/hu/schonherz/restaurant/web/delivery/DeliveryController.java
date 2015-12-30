@@ -31,7 +31,7 @@ public class DeliveryController implements Serializable {
 	private DeliveryListingVo selectedDeliveryListing;
 
 	public void onRowSelect(SelectEvent e) {
-		selectedDelivery = deliveryService.getDeliveryByGuid(selectedDeliveryListing.getGuid());
+		selectedDelivery = deliveryService.getDeliveryById(selectedDeliveryListing.getId());
 	}
 
 	public String onModifyButtonClick() {
@@ -40,7 +40,7 @@ public class DeliveryController implements Serializable {
 		}
 
 		StringBuilder sb = new StringBuilder("new?faces-redirect=true");
-		sb.append("&deliveryId=").append(selectedDelivery.getGuid());
+		sb.append("&deliveryId=").append(selectedDelivery.getId());
 		sb.append("&includeViewParams=true");
 		return sb.toString();
 	}
@@ -84,3 +84,4 @@ public class DeliveryController implements Serializable {
 	}
 
 }
+

@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.restaurant.dao.OrderDao;
-import hu.schonherz.restaurant.dao.RestaurantDao;
-import hu.schonherz.restaurant.entities.Restaurant;
 import hu.schonherz.restaurant.service.AddressReportConverter;
 import hu.schonherz.restaurant.service.FinancialReportConverter;
 import hu.schonherz.restaurant.service.OrderCountReportConverter;
@@ -34,21 +32,6 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 	
 	@Autowired
 	private OrderDao orderDao;
-	@Autowired
-	private RestaurantDao restaurantDao;
-	
-	public String actualUser(Long id){
-		
-		Restaurant rest = restaurantDao.findOne(id);
-		String name = rest.getName().replace(' ', '_');
-		
-		
-		return name;
-		
-		
-		
-	}
-
 	@Override
 	public List<OrderCountReportVo> dailyQuery() {
 		
@@ -88,31 +71,31 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 	@Override
 	public List<FinancialReportVo> dailyFinancialQuery(Long id) {
 		
-		return FinancialReportConverter.toVo(orderDao.dailyFinancialQuery(actualUser(id)));
+		return FinancialReportConverter.toVo(orderDao.dailyFinancialQuery(id));
 	}
 
 	@Override
 	public List<FinancialReportVo> weeklyFinancialQuery(Long id) {
 		// TODO Auto-generated method stub
-		return FinancialReportConverter.toVo(orderDao.weeklyFinancialQuery(actualUser(id)));
+		return FinancialReportConverter.toVo(orderDao.weeklyFinancialQuery(id));
 	}
 
 	@Override
 	public List<FinancialReportVo> monthlyFinancialQuery(Long id) {
 		// TODO Auto-generated method stub
-		return FinancialReportConverter.toVo(orderDao.monthlyFinancialQuery(actualUser(id)));
+		return FinancialReportConverter.toVo(orderDao.monthlyFinancialQuery(id));
 	}
 
 	@Override
 	public List<FinancialReportVo> annualFinancialQuery(Long id) {
 		// TODO Auto-generated method stub
-		return FinancialReportConverter.toVo(orderDao.annualFinancialQuery(actualUser(id)));
+		return FinancialReportConverter.toVo(orderDao.annualFinancialQuery(id));
 	}
 
 	@Override
 	public List<FinancialReportVo> overallFinancialQuery(Long id) {
 		
-			return FinancialReportConverter.toVo(orderDao.overallFinancialQuery(actualUser(id)));
+			return FinancialReportConverter.toVo(orderDao.overallFinancialQuery(id));
 		
 	}
 
