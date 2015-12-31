@@ -18,9 +18,9 @@ import hu.schonherz.restaurant.service.vo.UserVo;
 @Remote(RefresherRemote.class)
 public class UserRefresher implements RefresherLocal, RefresherRemote {
 
-
-//	@WebServiceRef(wsdlLocation = "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
-	 @EJB
+	// @WebServiceRef(wsdlLocation =
+	// "http://drake:8088/mockAdminRemoteRefreshService?WSDL")
+	@EJB
 	AdminRemoteRefreshService remoteRefreshService;
 
 	@EJB

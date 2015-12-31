@@ -15,7 +15,8 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 
 	private final int MAX_TRY = 5;
 	private final int WAIT_TIME_MILLISEC = 10000;
-	
+	private final String UNSUCCESFUL_TRIES = "user_unsuccessful_asks";
+
 	Refresher refresher;
 
 	public DeliveryRefresherScheduledJob() {
@@ -43,32 +44,35 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-		int count = dataMap.getIntValue("count");
-
-		if (count >= MAX_TRY) {
-			JobExecutionException e = new JobExecutionException("The fault retry limit has been exceeded");
-			// make sure it doesn't run again
-			e.setUnscheduleAllTriggers(true);
-			throw e;
+		int count = 0;
+		try {
+			count = dataMap.getIntValue(UNSUCCESFUL_TRIES);
+		} catch (Exception ex) {
+			dataMap.putAsString(UNSUCCESFUL_TRIES, 0);
 		}
 
-		refresher.refresh();
+		if (count >= MAX_TRY) {
+			JobExecutionException e1 = new JobExecutionException("The fault retry limit has been exceeded");
+
+			e1.setUnscheduleAllTriggers(true);
+			throw e1;
+		}
 
 		try {
-			dataMap.putAsString("count", 0);
-		} catch (Exception e) {
+			refresher.refresh();
+			dataMap.putAsString(UNSUCCESFUL_TRIES, 0);
+		} catch (Exception e1) {
 			count++;
-			dataMap.putAsString("count", count);
-			JobExecutionException e2 = new JobExecutionException(e);
+			dataMap.putAsString(UNSUCCESFUL_TRIES, count);
+			JobExecutionException e3 = new JobExecutionException(e1);
 
 			try {
 				Thread.sleep(WAIT_TIME_MILLISEC);
-			} catch (InterruptedException e1) {
-				
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
 			}
-			e2.setRefireImmediately(true);
-			throw e2;
+			e3.setRefireImmediately(true);
+			throw e3;
 		}
 	}
-
 }
