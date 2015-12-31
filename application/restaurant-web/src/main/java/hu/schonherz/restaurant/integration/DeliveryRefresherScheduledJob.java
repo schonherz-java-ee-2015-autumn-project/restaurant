@@ -5,13 +5,16 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang3.Validate;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.StatefulJob;
+import org.quartz.PersistJobDataAfterExecution;
 
-@SuppressWarnings("deprecation")
-public class DeliveryRefresherScheduledJob implements StatefulJob {
+@PersistJobDataAfterExecution
+@DisallowConcurrentExecution
+public class DeliveryRefresherScheduledJob implements Job {
 
 	private final int MAX_TRY = 5;
 	private final int WAIT_TIME_MILLISEC = 10000;
