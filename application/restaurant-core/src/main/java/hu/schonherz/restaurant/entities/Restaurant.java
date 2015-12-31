@@ -24,6 +24,17 @@ public class Restaurant extends BaseEntity {
 
 	@Column(name = "banned", nullable = false)
 	private Boolean banned;
+	
+	@Column(name = "cost_of_service", nullable = false)
+	private float costOfService;
+
+	public float getCostOfService() {
+		return costOfService;
+	}
+
+	public void setCostOfService(float costOfService) {
+		this.costOfService = costOfService;
+	}
 
 	public String getName() {
 		return name;

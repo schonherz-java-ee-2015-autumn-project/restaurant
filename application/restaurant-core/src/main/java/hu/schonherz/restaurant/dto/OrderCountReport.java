@@ -1,20 +1,22 @@
 package hu.schonherz.restaurant.dto;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class OrderCountReport implements Serializable{
 	
 	private static final long   serialVersionUID    = 1L;
 
-	Date groupped;
+	Object groupped;
 	Long quantity;
 
-	public Date getGroupped() {
+	public Object getGroupped() {
+		
 		return groupped;
 	}
 
-	public void setGroupped(Date groupped) {
+	public void setGroupped(Object groupped) {
 		this.groupped = groupped;
 	}
 
@@ -26,10 +28,14 @@ public class OrderCountReport implements Serializable{
 		this.quantity = quantity;
 	}
 
-	public OrderCountReport(Date groupped, Long quantity) {
+	public OrderCountReport(Object groupped, Long quantity) {
 		super();
 		this.groupped = groupped;
 		this.quantity = quantity;
 	}
 
+	public OrderCountReport() {
+		super();
+	}
+	
 }

@@ -1,5 +1,7 @@
 package hu.schonherz.restaurant.web;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -12,6 +14,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.map.MapModel;
 
 import hu.schonherz.restaurant.service.ReportServiceLocal;
@@ -50,7 +53,8 @@ public class ShippingReportBean {
 	private List<FinancialReportVo> monthlyFinancialQueryList;
 	private List<FinancialReportVo> annualFinancialQueryList;
 	private List<FinancialReportVo> overallFinancialQueryList;
-
+	
+	
 	@EJB
 	ReportServiceLocal reportService;
 
@@ -82,10 +86,12 @@ public class ShippingReportBean {
 		weeklyQueryModel.setAnimate(true);
 		weeklyQueryModel.setLegendPosition("ne");
 		yAxis = weeklyQueryModel.getAxis(AxisType.Y);
+		DateAxis axis = new DateAxis("Dates");
 		yAxis.setMin(0);
 		yAxis.setMax((weeklyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
 				.getQuantity()) + 10);
-
+		axis.setTickFormat("%#d");
+		
 		monthlyQueryModel = initMonthlyQueryModel();
 		monthlyQueryModel.setTitle(resources.getString("monthlyquery"));
 		monthlyQueryModel.setAnimate(true);
@@ -117,6 +123,7 @@ public class ShippingReportBean {
 		dailyFinancialQueryModel.setTitle(resources.getString("dailyfinancialquery"));
 		dailyFinancialQueryModel.setAnimate(true);
 		dailyFinancialQueryModel.setLegendPosition("ne");
+		
 		yAxis = dailyFinancialQueryModel.getAxis(AxisType.Y);
 		yAxis.setMin(0);
 	//	yAxis.setMax((dailyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice())).get()
@@ -164,13 +171,12 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		order.setLabel(resources.getString("number_of_orders"));
-		dailyQueryList = reportService.dailyQuery();
-		dailyQueryList.add(new OrderCountReportVo("2011", (long) 5.0));
+		dailyQueryList = reportService.dailyQuery(userSessionBean.getUser().getRestaurant().getId());
 
 		for (OrderCountReportVo daily : dailyQueryList) {
 			order.set(daily.getGroupped(), daily.getQuantity());
 		}
-		order.set("2012", 4);
+		
 		model.addSeries(order);
 		return model;
 	}
@@ -179,14 +185,13 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		order.setLabel(resources.getString("number_of_orders"));
-		weeklyQueryList = reportService.weeklyQuery();
-		weeklyQueryList.add(new OrderCountReportVo("2011", (long) 5.0));
+		weeklyQueryList = reportService.weeklyQuery(userSessionBean.getUser().getRestaurant().getId());
 
 		for (OrderCountReportVo weekly : weeklyQueryList) {
 			order.set(weekly.getGroupped(), weekly.getQuantity());
 		}
 
-		order.set("2012", 4);
+		
 		model.addSeries(order);
 		return model;
 	}
@@ -195,13 +200,12 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		order.setLabel(resources.getString("number_of_orders"));
-		monthlyQueryList = reportService.monthlyQuery();
-		monthlyQueryList.add(new OrderCountReportVo("2011", (long) 5.0));
+		monthlyQueryList = reportService.monthlyQuery(userSessionBean.getUser().getRestaurant().getId());
 
 		for (OrderCountReportVo monthly : monthlyQueryList) {
 			order.set(monthly.getGroupped(), monthly.getQuantity());
 		}
-		order.set("2012", 4);
+		
 		model.addSeries(order);
 		return model;
 	}
@@ -210,13 +214,13 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		order.setLabel(resources.getString("number_of_orders"));
-		annualQueryList = reportService.annualQuery();
-		annualQueryList.add(new OrderCountReportVo("2011", (long) 5.0));
+		annualQueryList = reportService.annualQuery(userSessionBean.getUser().getRestaurant().getId());
+		
 
 		for (OrderCountReportVo annual : annualQueryList) {
 			order.set(annual.getGroupped(), annual.getQuantity());
 		}
-		order.set("2012", 4);
+		
 		model.addSeries(order);
 		return model;
 	}
@@ -225,13 +229,12 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		order.setLabel(resources.getString("number_of_orders"));
-		overallQueryList = reportService.overallQuery();
-		overallQueryList.add(new OrderCountReportVo("2011", (long) 5.0));
+		overallQueryList = reportService.overallQuery(userSessionBean.getUser().getRestaurant().getId());
 
 		for (OrderCountReportVo overall : overallQueryList) {
 			order.set(overall.getGroupped(), overall.getQuantity());
 		}
-		order.set("2012", 4);
+		
 		model.addSeries(order);
 		return model;
 	}
@@ -239,74 +242,99 @@ public class ShippingReportBean {
 	private BarChartModel initDailyFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 		order.setLabel(resources.getString("income"));
+		orderWithCost.setLabel(resources.getString("incomeWithCost"));
 		dailyFinancialQueryList = reportService.dailyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-
-		for (FinancialReportVo daily : dailyFinancialQueryList) {
-			order.set(daily.getDate(), daily.getPrice());
+		
+		for (FinancialReportVo item : dailyFinancialQueryList) {
+			order.set(item.getDate(), item.getPrice());
+			orderWithCost.set(item.getDate(),  item.getPrice()-item.getPrice()*cost);
 		}
-
+		model.addSeries(orderWithCost);
 		model.addSeries(order);
+		
+		
 		return model;
 	}
 
 	private BarChartModel initWeeklyFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 		order.setLabel(resources.getString("income"));
-		weeklyFinancialQueryList = reportService
-				.weeklyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-
-		for (FinancialReportVo weekly : weeklyFinancialQueryList) {
-			order.set(weekly.getDate(), weekly.getPrice());
+		orderWithCost.setLabel(resources.getString("incomeWithCost"));
+		weeklyFinancialQueryList = reportService.weeklyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		
+		for (FinancialReportVo item : weeklyFinancialQueryList) {
+			order.set(item.getDate(), item.getPrice());
+			orderWithCost.set(item.getDate(),  item.getPrice()-item.getPrice()*cost);
 		}
-
+		model.addSeries(orderWithCost);
 		model.addSeries(order);
+		
+		
 		return model;
 	}
-
 	private BarChartModel initMonthlyFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 		order.setLabel(resources.getString("income"));
-		monthlyFinancialQueryList = reportService
-				.monthlyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-
-		for (FinancialReportVo monthly : monthlyFinancialQueryList) {
-			order.set(monthly.getDate(), monthly.getPrice());
+		orderWithCost.setLabel(resources.getString("incomeWithCost"));
+		monthlyFinancialQueryList = reportService.monthlyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		
+		for (FinancialReportVo item : monthlyFinancialQueryList) {
+			order.set(item.getDate(), item.getPrice());
+			orderWithCost.set(item.getDate(),  item.getPrice()-item.getPrice()*cost);
 		}
-
+		model.addSeries(orderWithCost);
 		model.addSeries(order);
+		
+		
 		return model;
 	}
 
 	private BarChartModel initAnnualFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 		order.setLabel(resources.getString("income"));
-		annualFinancialQueryList = reportService
-				.annualFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-
-		for (FinancialReportVo annual : annualFinancialQueryList) {
-			order.set(annual.getDate(), annual.getPrice());
+		orderWithCost.setLabel(resources.getString("incomeWithCost"));
+		annualFinancialQueryList = reportService.annualFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		
+		for (FinancialReportVo item : annualFinancialQueryList) {
+			order.set(item.getDate(), item.getPrice());
+			orderWithCost.set(item.getDate(),  item.getPrice()-item.getPrice()*cost);
 		}
-
+		model.addSeries(orderWithCost);
 		model.addSeries(order);
+		
+		
 		return model;
 	}
 
 	private BarChartModel initOverallFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 		order.setLabel(resources.getString("income"));
-		overallFinancialQueryList = reportService
-				.overallFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-
-		for (FinancialReportVo overall : overallFinancialQueryList) {
-			order.set(overall.getDate(), overall.getPrice());
+		orderWithCost.setLabel(resources.getString("incomeWithCost"));
+		overallFinancialQueryList = reportService.overallFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		
+		for (FinancialReportVo item : overallFinancialQueryList) {
+			order.set(item.getDate(), item.getPrice());
+			orderWithCost.set(item.getDate(),  item.getPrice()-item.getPrice()*cost);
 		}
-
+		model.addSeries(orderWithCost);
 		model.addSeries(order);
+		
+		
 		return model;
 	}
 

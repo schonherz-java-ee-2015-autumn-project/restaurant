@@ -1,17 +1,21 @@
 package hu.schonherz.restaurant.service.vo;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class OrderCountReportVo {
 	
 	private static final long serialVersionUID = 1L;
 
-	String groupped;
+	Object groupped;
 	Long quantity;
 
-	public String getGroupped() {
+	public Object getGroupped() {
+		
 		return groupped;
 	}
 
-	public void setGroupped(String groupped) {
+	public void setGroupped(Object groupped) {
 		this.groupped = groupped;
 	}
 
@@ -23,7 +27,7 @@ public class OrderCountReportVo {
 		this.quantity = quantity;
 	}
 
-	public OrderCountReportVo(String groupped, Long quantity) {
+	public OrderCountReportVo(Object groupped, Long quantity) {
 		super();
 		this.groupped = groupped;
 		this.quantity = quantity;

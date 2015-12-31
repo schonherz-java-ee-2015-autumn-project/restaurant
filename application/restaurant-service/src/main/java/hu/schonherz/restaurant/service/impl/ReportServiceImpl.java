@@ -33,38 +33,38 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 	@Autowired
 	private OrderDao orderDao;
 	@Override
-	public List<OrderCountReportVo> dailyQuery() {
+	public List<OrderCountReportVo> dailyQuery(Long id) {
 		
-		return OrderCountReportConverter.toVo(orderDao.dailyQuery());
+		return OrderCountReportConverter.toVo(orderDao.dailyQuery(id));
 	}
 
 	@Override
-	public List<OrderCountReportVo> weeklyQuery() {
-		return OrderCountReportConverter.toVo(orderDao.weeklyQuery());
+	public List<OrderCountReportVo> weeklyQuery(Long id) {
+		return OrderCountReportConverter.toVo(orderDao.weeklyQuery(id));
 		
 	}
 
 	@Override
-	public List<OrderCountReportVo> monthlyQuery() {
-		return OrderCountReportConverter.toVo(orderDao.monthlyQuery());
+	public List<OrderCountReportVo> monthlyQuery(Long id) {
+		return OrderCountReportConverter.toVo(orderDao.monthlyQuery(id));
 //		return null;
 	}
 
 	@Override
-	public List<OrderCountReportVo> annualQuery() {
-		return OrderCountReportConverter.toVo(orderDao.annualQuery());
+	public List<OrderCountReportVo> annualQuery(Long id) {
+		return OrderCountReportConverter.toVo(orderDao.annualQuery(id));
 //		return null;
 	}
 
 	@Override
-	public List<OrderCountReportVo> overallQuery() {
-		return OrderCountReportConverter.toVo(orderDao.overallQuery());
+	public List<OrderCountReportVo> overallQuery(Long id) {
+		return OrderCountReportConverter.toVo(orderDao.overallQuery(id));
 //		return null;
 	}
 
 	@Override
-	public List<AddressReportVo> addressQuery() {
-		return AddressReportConverter.toVo(orderDao.addressQuery());
+	public List<AddressReportVo> addressQuery(Long id) {
+		return AddressReportConverter.toVo(orderDao.addressQuery(id));
 //		return null;
 	}
 

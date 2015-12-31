@@ -6,27 +6,34 @@ public class FinancialReportVo {
 
 	
 	private static final long serialVersionUID = 1L;
-	Integer price;
-	Date date;
-	public Integer getPrice() {
+	Long price;
+	Object date;
+	public Long getPrice() {
 		return price;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
-	public Date getDate() {
+	public Object getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(Object date) {
 		this.date = date;
 	}
 	
 	
-	public FinancialReportVo(Integer price, Date date) {
+	public FinancialReportVo(Long price, Object date) {
 		super();
 		this.price = price;
 		this.date = date;
+	
+		
 	}
+	public FinancialReportVo() {
+		super();
+		
+	}
+	
 	
 	
 }

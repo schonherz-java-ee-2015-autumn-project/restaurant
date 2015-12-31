@@ -14,6 +14,16 @@ public class RestaurantVo extends BaseVo implements Serializable {
 	private List<ProductVo> products;
 
 	private Boolean banned;
+	
+	private float costOfService;
+
+	public float getCostOfService() {
+		return costOfService;
+	}
+
+	public void setCostOfService(float costOfService) {
+		this.costOfService = costOfService;
+	}
 
 	public List<ProductVo> getProducts() {
 		return products;
