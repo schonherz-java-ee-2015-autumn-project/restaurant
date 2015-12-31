@@ -77,6 +77,14 @@
 							<h:outputText styleClass="detail-value" value="#{order.address}" />
 						</p:dataList>
 					</p:panel>
+					
+					<p:outputLabel value="#{out.items}" />
+					<p:panel>
+						<p:dataList value="#{deliveryBean.items}"
+							var="item" styleClass="no-border" type="unordered">
+							<h:outputText styleClass="detail-value" value="#{item.name} - #{item.quantity} #{out.pieces}" />
+						</p:dataList>
+					</p:panel>
 
 					<p:outputLabel value="#{out.sumtotal}" />
 					<p:outputLabel styleClass="detail-value"

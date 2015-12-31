@@ -1,6 +1,7 @@
 package hu.schonherz.restaurant.web.delivery;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -12,8 +13,11 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
+import hu.schonherz.restaurant.service.ItemServiceLocal;
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
+import hu.schonherz.restaurant.web.vo.DeliveryItem;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
+import hu.schonherz.restaurant.web.vo.converter.ItemVosToDeliveryItemsConverter;
 
 @ViewScoped
 @ManagedBean(name = "deliveryBean")
@@ -27,11 +31,17 @@ public class DeliveryController implements Serializable {
 	@EJB
 	private DeliveryServiceLocal deliveryService;
 
+	@EJB
+	private ItemServiceLocal itemService;
+
 	private DeliveryVo selectedDelivery;
 	private DeliveryListingVo selectedDeliveryListing;
+	private List<DeliveryItem> items;
 
 	public void onRowSelect(SelectEvent e) {
 		selectedDelivery = deliveryService.getDeliveryById(selectedDeliveryListing.getId());
+		items = ItemVosToDeliveryItemsConverter
+				.toDeliveryItems(itemService.getItemsByDeliveryId(selectedDelivery.getId()));
 	}
 
 	public String onModifyButtonClick() {
@@ -81,6 +91,22 @@ public class DeliveryController implements Serializable {
 
 	public void setSelectedDeliveryListing(DeliveryListingVo selectedDeliveryListing) {
 		this.selectedDeliveryListing = selectedDeliveryListing;
+	}
+
+	public ItemServiceLocal getItemService() {
+		return itemService;
+	}
+
+	public void setItemService(ItemServiceLocal itemService) {
+		this.itemService = itemService;
+	}
+
+	public List<DeliveryItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<DeliveryItem> items) {
+		this.items = items;
 	}
 
 }
