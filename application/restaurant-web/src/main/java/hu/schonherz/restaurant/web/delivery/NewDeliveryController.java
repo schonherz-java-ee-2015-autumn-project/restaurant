@@ -86,6 +86,9 @@ public class NewDeliveryController implements Serializable {
 	@ManagedProperty("#{productValidator}")
 	private Validator<ProductVo> productValidator;
 
+	@ManagedProperty("#{itemValidator}")
+	private Validator<ItemVo> itemValidator;
+
 	@ManagedProperty("#{out}")
 	private ResourceBundle resource;
 
@@ -275,10 +278,15 @@ public class NewDeliveryController implements Serializable {
 			}
 
 			item.setProduct(prod);
+			itemValidator.validate(item);
 
 			ItemVo containerItem = findProductsItemInOrderItems(prod);
 			if (containerItem != null) {
-				containerItem.setQuantity(containerItem.getQuantity() + item.getQuantity());
+				ItemVo tmp = new ItemVo();
+				BeanUtils.copyProperties(tmp, containerItem);
+				tmp.setQuantity(tmp.getQuantity() + item.getQuantity());
+				itemValidator.validate(tmp);
+				BeanUtils.copyProperties(containerItem, tmp);
 			} else if (selectedItem != null) {
 				Long idTemp = selectedItem.getId();
 				BeanUtils.copyProperties(selectedItem, item);
@@ -551,6 +559,14 @@ public class NewDeliveryController implements Serializable {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public Validator<ItemVo> getItemValidator() {
+		return itemValidator;
+	}
+
+	public void setItemValidator(Validator<ItemVo> itemValidator) {
+		this.itemValidator = itemValidator;
 	}
 
 }
