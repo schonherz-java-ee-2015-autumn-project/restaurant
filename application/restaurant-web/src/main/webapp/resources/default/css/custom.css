@@ -89,3 +89,9 @@ table, table td {
 	float: left !important;
 	margin-top: 7px;
 }
+.detail-labels{
+	padding-right: 50px;
+}
+.detail-value{
+	font-weight: normal !important;
+}
