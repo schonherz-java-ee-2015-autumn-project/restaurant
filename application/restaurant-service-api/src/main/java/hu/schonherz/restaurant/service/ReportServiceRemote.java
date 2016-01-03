@@ -5,6 +5,7 @@ import java.util.List;
 import hu.schonherz.restaurant.service.vo.AddressReportVo;
 import hu.schonherz.restaurant.service.vo.FinancialReportVo;
 import hu.schonherz.restaurant.service.vo.OrderCountReportVo;
+import hu.schonherz.restaurant.service.vo.PayTypeReportVo;
 
 public interface ReportServiceRemote {
 
@@ -21,4 +22,10 @@ public interface ReportServiceRemote {
 	public List<FinancialReportVo> monthlyFinancialQuery(Long id);
 	public List<FinancialReportVo> annualFinancialQuery(Long id);
 	public List<FinancialReportVo> overallFinancialQuery(Long id);
+	
+	public List<PayTypeReportVo>dailyPayTypeQuery(Long id);
+	public List<PayTypeReportVo>weeklyPayTypeQuery(Long id);
+	public List<PayTypeReportVo>monthlyPayTypeQuery(Long id);
+	public List<PayTypeReportVo>annualPayTypeQuery(Long id);
+	public List<PayTypeReportVo>overallPayTypeQuery(Long id);
 }

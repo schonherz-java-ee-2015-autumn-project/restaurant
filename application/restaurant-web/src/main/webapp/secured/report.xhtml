@@ -22,16 +22,18 @@
 			</h3>
 			<p:tabView responsive="true">
 				<p:tab title="#{out.orderstat}">
-					<p:accordionPanel>
+					<p:accordionPanel dynamic="true">
 						<p:tab title="#{out.dailyquery}">
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 								<p:chart type="bar"
 									model="#{shippingReportBean.dailyQueryModel}"
 									style="width:600px" responsive="true" />
 							</h:panelGrid>
 						</p:tab>
 						<p:tab title="#{out.weeklyquery}">
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 
 								<p:chart type="bar"
 									model="#{shippingReportBean.weeklyQueryModel}"
@@ -40,7 +42,8 @@
 							</h:panelGrid>
 						</p:tab>
 						<p:tab title="#{out.monthlyquery}">
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 
 
 								<p:chart type="bar"
@@ -50,17 +53,19 @@
 						</p:tab>
 
 						<p:tab title="#{out.annualquery}">
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 
 
 								<p:chart type="bar"
 									model="#{shippingReportBean.annualQueryModel}"
-									style="width:600px" responsive="true"/>
+									style="width:600px" responsive="true" />
 							</h:panelGrid>
 
 						</p:tab>
 						<p:tab title="#{out.overallquery}">
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 
 
 								<p:chart type="bar"
@@ -73,51 +78,56 @@
 					</p:accordionPanel>
 				</p:tab>
 				<p:tab title="#{out.financialstat}">
-				<p:accordionPanel>
-					<p:tab title="#{out.dailyfinancialquery}">
+					<p:accordionPanel dynamic="true">
+						<p:tab title="#{out.dailyfinancialquery}">
 
 
-						<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
-							<p:chart type="bar"
-								model="#{shippingReportBean.dailyFinancialQueryModel}"
-								style="width:600px" responsive="true" />
-						</h:panelGrid>
-					</p:tab>>
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.dailyFinancialQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
+						</p:tab>>
 						<p:tab title="#{out.weeklyfinancialquery}">
 
 
-						<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
-							<p:chart type="bar"
-								model="#{shippingReportBean.weeklyFinancialQueryModel}"
-								style="width:600px" responsive="true" />
-						</h:panelGrid>
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.weeklyFinancialQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
 
 
-					</p:tab>
+						</p:tab>
 
-					<p:tab title="#{out.monthlyfinancialquery}">
+						<p:tab title="#{out.monthlyfinancialquery}">
 
 
-						<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
-							<p:chart type="bar"
-								model="#{shippingReportBean.monthlyFinancialQueryModel}"
-								style="width:600px" responsive="true" />
-						</h:panelGrid>
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.monthlyFinancialQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
 
-					</p:tab>
+						</p:tab>
 
-					<p:tab title="#{out.annualfinancialquery}">
+						<p:tab title="#{out.annualfinancialquery}">
 
-						<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
-							<p:chart type="bar"
-								model="#{shippingReportBean.annualFinancialQueryModel}"
-								style="width:600px" responsive="true" />
-						</h:panelGrid>
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.annualFinancialQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
 
-</p:tab>
+						</p:tab>
 						<p:tab title="#{out.overallfinancialquery}">
 
-							<h:panelGrid columns="1" cellpadding="10" styleClass="reportChart">
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
 								<p:chart type="bar"
 									model="#{shippingReportBean.overallFinancialQueryModel}"
 									style="width:600px" responsive="true" />
@@ -125,8 +135,72 @@
 							</h:panelGrid>
 
 						</p:tab>
-				</p:accordionPanel>
+					</p:accordionPanel>
 				</p:tab>
+
+
+				<p:tab title="#{out.paytypestat}">
+					<p:accordionPanel dynamic="true">
+						<p:tab title="#{out.dailypaytypequery}">
+
+
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.dailyPayTypeQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
+						</p:tab>>
+						<p:tab title="#{out.weeklypaytypequery}">
+
+
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.weeklyPayTypeQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
+
+
+						</p:tab>
+
+						<p:tab title="#{out.monthlypaytypequery}">
+
+
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.monthlyPayTypeQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
+
+						</p:tab>
+
+						<p:tab title="#{out.annualpaytypequery}">
+
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.annualPayTypeQueryModel}"
+									style="width:600px" responsive="true" />
+							</h:panelGrid>
+
+						</p:tab>
+						<p:tab title="#{out.overallpaytypequery}">
+
+							<h:panelGrid columns="1" cellpadding="10"
+								styleClass="reportChart">
+								<p:chart type="bar"
+									model="#{shippingReportBean.overallPayTypeQueryModel}"
+									style="width:600px" responsive="true" />
+
+							</h:panelGrid>
+
+						</p:tab>
+					</p:accordionPanel>
+				</p:tab>
+
+
 			</p:tabView>
 
 		</h:form>

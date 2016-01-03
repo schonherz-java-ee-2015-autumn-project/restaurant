@@ -16,11 +16,13 @@ import hu.schonherz.restaurant.dao.OrderDao;
 import hu.schonherz.restaurant.service.AddressReportConverter;
 import hu.schonherz.restaurant.service.FinancialReportConverter;
 import hu.schonherz.restaurant.service.OrderCountReportConverter;
+import hu.schonherz.restaurant.service.PayTypeReportConverter;
 import hu.schonherz.restaurant.service.ReportServiceLocal;
 import hu.schonherz.restaurant.service.ReportServiceRemote;
 import hu.schonherz.restaurant.service.vo.AddressReportVo;
 import hu.schonherz.restaurant.service.vo.FinancialReportVo;
 import hu.schonherz.restaurant.service.vo.OrderCountReportVo;
+import hu.schonherz.restaurant.service.vo.PayTypeReportVo;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -97,6 +99,32 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 		
 			return FinancialReportConverter.toVo(orderDao.overallFinancialQuery(id));
 		
+	}
+
+	@Override
+	public List<PayTypeReportVo> dailyPayTypeQuery(Long id) {
+		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+
+	}
+
+	@Override
+	public List<PayTypeReportVo> weeklyPayTypeQuery(Long id) {
+		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+	}
+
+	@Override
+	public List<PayTypeReportVo> monthlyPayTypeQuery(Long id) {
+		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+	}
+
+	@Override
+	public List<PayTypeReportVo> annualPayTypeQuery(Long id) {
+		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+	}
+
+	@Override
+	public List<PayTypeReportVo> overallPayTypeQuery(Long id) {
+		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
 	}
 
 	
