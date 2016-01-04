@@ -24,9 +24,12 @@ public class Restaurant extends BaseEntity {
 
 	@Column(name = "banned", nullable = false)
 	private Boolean banned;
-	
+
 	@Column(name = "cost_of_service", nullable = false)
 	private float costOfService;
+
+	@Column(name = "global_id", nullable = false, unique = true)
+	private Long globalId;
 
 	public float getCostOfService() {
 		return costOfService;
@@ -66,5 +69,13 @@ public class Restaurant extends BaseEntity {
 
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 }

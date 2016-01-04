@@ -14,11 +14,10 @@ public class UserConverter {
 	public static UserVo toVo(WebUserDTO user){
 		UserVo userVo = new UserVo();
 		userVo.setBanned(user.isRemove());
-		userVo.setId(user.getId());
 		userVo.setModDate(user.getModdate().toGregorianCalendar().getTime());
 		userVo.setUsername(user.getUsername());
 		userVo.setName(user.getName());
-		userVo.setPassword(user.getPassword());		
+		userVo.setPassword(user.getPassword());
 		return userVo;
 	}
 	

@@ -13,8 +13,9 @@ public class RestaurantConverter {
 		
 		restaurantVo.setAddress(restaurant.getAddress());
 		restaurantVo.setBanned(restaurant.isIsDeleted());
-		restaurantVo.setId(restaurant.getId());
+		restaurantVo.setGlobalId(restaurant.getId());
 		restaurantVo.setName(restaurant.getName());
+		restaurantVo.setCostOfService(restaurant.getPrice()/100f);
 		
 		return restaurantVo;
 	}

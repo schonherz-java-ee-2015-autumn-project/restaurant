@@ -14,12 +14,14 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
+import hu.schonherz.restaurant.dao.RestaurantDao;
 import hu.schonherz.restaurant.dao.RoleDao;
 import hu.schonherz.restaurant.dao.UserDao;
+import hu.schonherz.restaurant.entities.Restaurant;
 import hu.schonherz.restaurant.entities.Role;
 import hu.schonherz.restaurant.entities.User;
 import hu.schonherz.restaurant.service.EntityVoConverter;
-import hu.schonherz.restaurant.service.UserConverter;
+import hu.schonherz.restaurant.service.RestaurantConverter;
 import hu.schonherz.restaurant.service.UserServiceLocal;
 import hu.schonherz.restaurant.service.UserServiceRemote;
 import hu.schonherz.restaurant.service.vo.UserVo;
@@ -36,6 +38,9 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Autowired
 	private RoleDao roleDao;
+	
+	@Autowired
+	private RestaurantDao restaurantDao;
 
 	@Autowired
 	private EntityVoConverter<UserVo, User> userConverter;
@@ -61,6 +66,10 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	public void save(UserVo user) {
 		Validate.notNull(user);
 		User u = userDao.findByUsername(user.getUsername());
+		Restaurant restaurant = null;
+		if (restaurantDao.findByName(user.getRestaurant().getName())==null){
+			restaurant = restaurantDao.save(RestaurantConverter.toEntity(user.getRestaurant()));
+		}
 		if (u == null) {
 			u = userConverter.toEntity(user);
 			Role role = roleDao.findByName("ROLE_USER");
@@ -69,10 +78,13 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 				role = roleDao.save(role);
 			}
 			u.setRoles(Arrays.asList(role));
+			u.setRestaurant(restaurant);
 			userDao.save(u);
 		}else{
 			user.setId(u.getId());
-			userDao.save(userConverter.toEntity(user));
+			u = userConverter.toEntity(user);
+			u.setRestaurant(restaurant);
+			userDao.save(u);
 		}
 	}
 

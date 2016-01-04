@@ -14,8 +14,10 @@ public class RestaurantVo extends BaseVo implements Serializable {
 	private List<ProductVo> products;
 
 	private Boolean banned;
-	
+
 	private float costOfService;
+
+	private Long globalId;
 
 	public float getCostOfService() {
 		return costOfService;
@@ -93,6 +95,14 @@ public class RestaurantVo extends BaseVo implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 }
