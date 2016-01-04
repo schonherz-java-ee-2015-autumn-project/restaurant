@@ -62,7 +62,7 @@ public class UserRefresher implements RefresherLocal, RefresherRemote {
 				
 				userService.save(userVo);
 			}
-			System.out.println();
+
 		} catch (NotAllowedRoleException_Exception | DatatypeConfigurationException | NoRestaurantAssignedUserException_Exception e) {
 			throw new RefresherException("Exception happened");
 		}
@@ -70,7 +70,6 @@ public class UserRefresher implements RefresherLocal, RefresherRemote {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("init");
 		Properties prop = new Properties();
 		try {
 			prop.load(this.getClass().getClassLoader().getResourceAsStream("wsdllocation.properties"));
