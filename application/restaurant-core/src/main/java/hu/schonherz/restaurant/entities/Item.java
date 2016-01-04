@@ -8,10 +8,10 @@ public class Item extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
+	@ManyToOne
 	private Product product;
 
-	@ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
+	@ManyToOne
 	private Order ofOrder;
 
 	private Integer quantity;

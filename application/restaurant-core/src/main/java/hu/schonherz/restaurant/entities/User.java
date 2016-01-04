@@ -29,7 +29,7 @@ public class User extends BaseEntity {
 	@JoinTable(name = "users_roles_sw", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id") )
 	private List<Role> roles;
 
-	@ManyToOne(cascade={CascadeType.REFRESH,CascadeType.DETACH})
+	@ManyToOne
 	private Restaurant restaurant;
 
 	public String getUsername() {

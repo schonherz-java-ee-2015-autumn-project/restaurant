@@ -15,7 +15,7 @@ public class Product extends BaseEntity {
 	@Column(name = "product_price", nullable = false, length = 50)
 	private Integer price;
 
-	@ManyToOne(cascade={CascadeType.REFRESH,CascadeType.DETACH})
+	@ManyToOne
 	private Restaurant restaurant;
 
 	public String getName() {

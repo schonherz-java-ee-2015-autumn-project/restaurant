@@ -26,7 +26,7 @@ public class Order extends BaseEntity {
 	@Column(name = "pay_type")
 	private PayType payType;
 
-	@OneToMany(cascade={CascadeType.REFRESH,CascadeType.DETACH},mappedBy = "ofOrder")
+	@OneToMany(mappedBy = "ofOrder")
 	private List<Item> items;
 
 	@Column(name = "total_price", length = 50)

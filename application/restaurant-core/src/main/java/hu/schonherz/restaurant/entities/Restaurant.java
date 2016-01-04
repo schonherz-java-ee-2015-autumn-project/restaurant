@@ -16,7 +16,7 @@ public class Restaurant extends BaseEntity {
 	@Column(name = "resturant_address")
 	private String address;
 
-	@OneToMany(cascade={CascadeType.REFRESH,CascadeType.DETACH},mappedBy = "restaurant")
+	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products;
 
 	@Column(name = "banned", nullable = false)

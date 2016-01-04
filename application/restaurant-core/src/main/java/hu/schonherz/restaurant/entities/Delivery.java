@@ -35,7 +35,7 @@ public class Delivery extends BaseEntity {
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 
-	@ManyToOne(cascade={CascadeType.REFRESH,CascadeType.DETACH})
+	@ManyToOne
 	private Restaurant restaurant;
 
 	public String getCourier() {
