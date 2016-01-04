@@ -45,6 +45,7 @@ public class UserDaoTest {
 		user.setPassword(password);
 		user.setPhoneNumber(phoneNumber);
 		user.setUsername(username);
+		user.setBanned(false);
 
 		return user;
 	}

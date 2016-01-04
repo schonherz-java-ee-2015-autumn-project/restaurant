@@ -4,14 +4,7 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import hu.schonherz.restaurant.type.PayType;
 
@@ -33,7 +26,7 @@ public class Order extends BaseEntity {
 	@Column(name = "pay_type")
 	private PayType payType;
 
-	@OneToMany(mappedBy = "ofOrder")
+	@OneToMany(cascade={CascadeType.REFRESH,CascadeType.DETACH},mappedBy = "ofOrder")
 	private List<Item> items;
 
 	@Column(name = "total_price", length = 50)

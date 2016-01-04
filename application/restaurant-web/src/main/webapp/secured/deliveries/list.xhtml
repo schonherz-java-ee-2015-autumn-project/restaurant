@@ -55,87 +55,53 @@
 			header="#{out.details}"
 			visible="#{not empty deliveryBean.selectedDelivery}">
 			<h:form id="deldetailsForm">
-				<h:panelGrid id="details" cellpadding="5"
-					style="text-align: center; vertical-align:middle;">
+				<h:panelGrid id="details" columns="2" cellpadding="5"
+					style="text-align: left; vertical-align:middle;">
 
-					<p:row>
-						<p:column>
-							<h:outputText value="#{out.id}" />
-						</p:column>
-						<p:column>
-							<h:outputText value="#{deliveryBean.selectedDelivery.guid}" />
-						</p:column>
-					</p:row>
+					<p:outputLabel value="#{out.id}" />
+					<p:outputLabel styleClass="detail-value"
+						value="#{deliveryBean.selectedDelivery.guid}" />
 
-					<p:row>
-						<p:column>
-							<h:outputText value="#{out.state}" />
-						</p:column>
-						<p:column>
-							<h:outputText
-								value="#{out['DeliveryState.'.concat(deliveryBean.selectedDelivery.deliveryState.name())]}" />
-						</p:column>
-					</p:row>
+					<p:outputLabel value="#{out.state}" />
+					<p:outputLabel styleClass="detail-value"
+						value="#{out['DeliveryState.'.concat(deliveryBean.selectedDelivery.deliveryState.name())]}" />
 
-					<p:row>
-						<p:column>
-							<h:outputText value="#{out.courier}" />
-						</p:column>
-						<p:column>
-							<h:outputText value="#{deliveryBean.selectedDelivery.courier}" />
-						</p:column>
-					</p:row>
+					<p:outputLabel value="#{out.courier}" />
+					<p:outputLabel styleClass="detail-value"
+						value="#{deliveryBean.selectedDelivery.courier}" />
 
-					<p:row>
-						<p:column colspan="2">
-							<h:outputText value="#{out.addresses}" />
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="2">
-							<p:scrollPanel mode="native" styleClass="custom-scrollbar"
-								style="border:none;">
-								<p:dataList value="#{deliveryBean.selectedDelivery.orders}"
-									var="order" styleClass="no-border" type="unordered">
-									<h:outputText value="#{order.address}" />
-								</p:dataList>
-							</p:scrollPanel>
-						</p:column>
-					</p:row>
+					<p:outputLabel value="#{out.addresses}" />
+					<p:panel>
+						<p:dataList value="#{deliveryBean.selectedDelivery.orders}"
+							var="order" styleClass="no-border" type="unordered">
+							<h:outputText styleClass="detail-value" value="#{order.address}" />
+						</p:dataList>
+					</p:panel>
+					
+					<p:outputLabel value="#{out.items}" />
+					<p:panel>
+						<p:dataList value="#{deliveryBean.items}"
+							var="item" styleClass="no-border" type="unordered">
+							<h:outputText styleClass="detail-value" value="#{item.name} - #{item.quantity} #{out.pieces}" />
+						</p:dataList>
+					</p:panel>
 
-					<!-- 				<p:row> -->
-					<!-- 					<p:column colspan="2"> -->
-					<!-- 						<p:outputPanel id="orderdetail"></p:outputPanel> -->
-					<!-- 					</p:column> -->
-					<!-- 				</p:row> -->
+					<p:outputLabel value="#{out.sumtotal}" />
+					<p:outputLabel styleClass="detail-value"
+						value="#{deliveryBean.selectedDeliveryListing.total}">
+						<f:convertNumber integerOnly="true" type="currency"
+							currencyCode="HUF" locale="hu-HU" />
+					</p:outputLabel>
 
-					<p:row>
-						<p:column>
-							<h:outputText value="#{out.sumtotal}" />
-						</p:column>
-						<p:column>
-							<h:outputText
-								value="#{deliveryBean.selectedDeliveryListing.total}">
-								<f:convertNumber integerOnly="true" type="currency"
-									currencyCode="HUF" locale="hu-HU" />
-							</h:outputText>
-						</p:column>
-					</p:row>
-
-					<p:row>
-						<p:column colspan="2">
-							<h:commandLink styleClass="btn-left btn"
-								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
-								value="#{out.modify}"
-								action="#{deliveryBean.onModifyButtonClick}" />
-							<p:commandLink styleClass="btn-left btn"
-								rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
-								value="#{out.delete}"
-								actionListener="#{deliveryBean.onDeleteButtonClick}"
-								update="tableform:deliveryTable"
-								oncomplete="PF('detailwidget').hide();" />
-						</p:column>
-					</p:row>
+					<h:commandLink styleClass="btn-left btn"
+						rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
+						value="#{out.modify}" action="#{deliveryBean.onModifyButtonClick}" />
+					<p:commandLink styleClass="btn-left btn"
+						rendered="#{deliveryBean.selectedDelivery.deliveryState == 'FREE'}"
+						value="#{out.delete}"
+						actionListener="#{deliveryBean.onDeleteButtonClick}"
+						update="tableform:deliveryTable"
+						oncomplete="PF('detailwidget').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .top-margin-20 {
 	margin-top: 20px !important;
 }
@@ -79,4 +80,102 @@ table, table td {
 
 .reportChart{
 	margin: 0 auto;
+=======
+.top-margin-20 {
+	margin-top: 20px !important;
+}
+
+.no-border .ui-widget-content {
+	border: none;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.custom-scrollbar {
+	max-height: 150px;
+	width: 250px;
+	max-width: 250px;
+}
+
+label {
+	vertical-align: middle !important;
+	margin-right: 10px !important;
+	font-weight: bold;
+}
+
+a.btn:HOVER {
+	color: #fff;
+	background-color: #FD9220;
+	border-color: #985610;
+}
+
+a.btn {
+	text-align: center;
+	border: 1px solid #004B54;
+	min-width: 50px;
+	color: #fff;
+	padding: 5px;
+	background-color: #009FB3;
+}
+
+a.btn-right {
+	float: right !important;
+	margin-left: 5px;
+}
+
+a.btn-left {
+	margin-right: 5px;
+}
+
+a.btn-no-margin {
+	margin-top: 0;
+}
+
+.custom-dialog {
+	max-width: 500px;
+}
+
+td.label {
+	margin-right: 10px !important;
+	text-align: right !important;
+	padding: 2px 4px;
+}
+
+th.nobg {
+	background-color: #F9F9F9 !important;
+	background-image: none !important;
+}
+
+table, table td {
+	vertical-align: middle !important;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: left !important;
+}
+
+.ui-selectonemenu-filter-container {
+	width: 98% !important;
+}
+.ui-widget-header {
+	border: none !important;
+	background: #ffffff !important;
+	color: #333333;
+	font-weight: bold;
+}
+.remember-me{
+	width: 18px !important;
+}
+.remember-me-text{
+	float: left !important;
+	margin-top: 7px;
+}
+.detail-labels{
+	padding-right: 50px;
+}
+.detail-value{
+	font-weight: normal !important;
+>>>>>>> 37a994114181b03016748f1d32f958f1cad18170
 }

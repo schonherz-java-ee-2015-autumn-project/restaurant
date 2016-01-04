@@ -5,12 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import hu.schonherz.restaurant.service.vo.DeliveryVo;
 import hu.schonherz.restaurant.web.vo.DeliveryListingVo;
 
-@Service("deliveryListingConverter")
 public class DeliveryListingConverter implements Serializable {
 
 	private static final long serialVersionUID = 1L;

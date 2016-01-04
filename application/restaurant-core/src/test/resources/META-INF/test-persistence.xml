@@ -3,8 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
-	
-	<persistence-unit name="hu.schonherz.restaurant.test.jpa" transaction-type="RESOURCE_LOCAL">
+
+	<persistence-unit name="hu.schonherz.restaurant.test.jpa"
+		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>hu.schonherz.restaurant.entities.BaseEntity</class>
 		<class>hu.schonherz.restaurant.entities.User</class>
@@ -13,8 +14,9 @@
 		<class>hu.schonherz.restaurant.entities.Order</class>
 		<class>hu.schonherz.restaurant.entities.Product</class>
 		<class>hu.schonherz.restaurant.entities.Restaurant</class>
+		<class>hu.schonherz.restaurant.entities.Item</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
-		
+
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />

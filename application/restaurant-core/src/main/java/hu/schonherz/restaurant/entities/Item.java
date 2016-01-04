@@ -1,8 +1,6 @@
 package hu.schonherz.restaurant.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "items")
@@ -10,10 +8,10 @@ public class Item extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
 	private Product product;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
 	private Order ofOrder;
 
 	private Integer quantity;
