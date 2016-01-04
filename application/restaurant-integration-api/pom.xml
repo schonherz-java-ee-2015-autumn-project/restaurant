@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>restaurant-integration-api</artifactId>
 	<properties>
-	<wsdl.property.file>wsdllocation.properties</wsdl.property.file>
+		<wsdl.property.file>wsdllocation.properties</wsdl.property.file>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,6 +36,9 @@
 					<wsdlUrls>
 						<wsdlUrl>
 							${user.wsdl}
+						</wsdlUrl>
+						<wsdlUrl>
+							${restaurant.wsdl}
 						</wsdlUrl>
 					</wsdlUrls>
 					<keep>true</keep>
