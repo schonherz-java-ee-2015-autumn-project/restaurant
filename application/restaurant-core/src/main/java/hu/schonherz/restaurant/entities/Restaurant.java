@@ -2,10 +2,7 @@ package hu.schonherz.restaurant.entities;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "restaurant")
@@ -19,7 +16,7 @@ public class Restaurant extends BaseEntity {
 	@Column(name = "resturant_address")
 	private String address;
 
-	@OneToMany(mappedBy = "restaurant")
+	@OneToMany(cascade={CascadeType.REFRESH,CascadeType.DETACH},mappedBy = "restaurant")
 	private List<Product> products;
 
 	@Column(name = "banned", nullable = false)

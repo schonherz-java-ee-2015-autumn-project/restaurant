@@ -2,13 +2,7 @@ package hu.schonherz.restaurant.entities;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -35,7 +29,7 @@ public class User extends BaseEntity {
 	@JoinTable(name = "users_roles_sw", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id") )
 	private List<Role> roles;
 
-	@ManyToOne
+	@ManyToOne(cascade={CascadeType.REFRESH,CascadeType.DETACH})
 	private Restaurant restaurant;
 
 	public String getUsername() {
