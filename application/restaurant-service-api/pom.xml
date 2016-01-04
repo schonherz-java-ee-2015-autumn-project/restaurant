@@ -24,9 +24,5 @@
 			<groupId>hu.schonherz.snowwhite</groupId>
 			<artifactId>restaurant-integration-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-		</dependency>
 	</dependencies>
 </project>
