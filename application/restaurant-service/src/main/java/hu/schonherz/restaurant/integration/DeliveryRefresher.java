@@ -17,12 +17,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import hu.schonherz.administrator.InvalidDateException_Exception;
-import hu.schonherz.administrator.RemoteOrderDTO;
-import hu.schonherz.administrator.RestaurantService;
+import hu.schonherz.administrator.RemoteCargoDTO;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.restaurant.integration.exception.RefresherException;
-import hu.schonherz.restaurant.service.impl.RestaurantServiceImpl;
 
 @Stateless(mappedName = "deliveryRefresher")
 @Local(RefresherLocal.class)
@@ -43,9 +41,11 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		try {
 			XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 
-//			synchronizationService.getCargosByDate(date);
+			List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar);
 			
-		} catch (DatatypeConfigurationException e) {
+			//TODO convert to our dto
+
+		} catch (DatatypeConfigurationException | InvalidDateException_Exception e) {
 			throw new RefresherException();
 		}
 	}

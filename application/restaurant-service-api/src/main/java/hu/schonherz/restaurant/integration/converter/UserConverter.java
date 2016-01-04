@@ -1,8 +1,6 @@
 package hu.schonherz.restaurant.integration.converter;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -45,22 +43,6 @@ public class UserConverter {
 		userDto.setUsername(user.getUsername());
 		
 		return userDto;
-	}
-	
-	public static List<UserVo> toVo(List<WebUserDTO> users){
-		List<UserVo> result = new ArrayList<UserVo>();
-		for (WebUserDTO user :users){
-			result.add(toVo(user));
-		}
-		return result;
-	}
-	
-	public static List<WebUserDTO> toWebDto(List<UserVo> users){
-		List<WebUserDTO> result = new ArrayList<WebUserDTO>();
-		for (UserVo user :users){
-			result.add(toWebDTO(user));
-		}
-		return result;
 	}
 	
 }

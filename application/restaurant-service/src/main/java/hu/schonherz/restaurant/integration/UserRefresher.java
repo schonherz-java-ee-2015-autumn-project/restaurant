@@ -17,11 +17,14 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
+import hu.schonherz.administrator.NoRestaurantAssignedUserException_Exception;
 import hu.schonherz.administrator.NotAllowedRoleException_Exception;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.administrator.UserRole;
+import hu.schonherz.administrator.WebRestaurantDTO;
 import hu.schonherz.administrator.WebUserDTO;
+import hu.schonherz.restaurant.integration.converter.RestaurantConverter;
 import hu.schonherz.restaurant.integration.converter.UserConverter;
 import hu.schonherz.restaurant.integration.exception.RefresherException;
 import hu.schonherz.restaurant.service.UserServiceLocal;
@@ -49,12 +52,18 @@ public class UserRefresher implements RefresherLocal, RefresherRemote {
 			c.setTime(date);
 			XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 			List<WebUserDTO> users = synchronizationService.getUsersByRoleAndDate(UserRole.RESTAURANT,calendar);
-			List<UserVo> userVos = UserConverter.toVo(users);
-			for (UserVo user:userVos){
-				userService.save(user);
+			for (WebUserDTO user:users){
+				
+				WebRestaurantDTO restaurant = synchronizationService.findRestaurantByUserId(user.getId());
+				
+				UserVo userVo = UserConverter.toVo(user);
+				
+				userVo.setRestaurant(RestaurantConverter.toVo(restaurant));
+				
+				userService.save(userVo);
 			}
 			System.out.println();
-		} catch (NotAllowedRoleException_Exception | DatatypeConfigurationException e) {
+		} catch (NotAllowedRoleException_Exception | DatatypeConfigurationException | NoRestaurantAssignedUserException_Exception e) {
 			throw new RefresherException("Exception happened");
 		}
 	}
