@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +42,9 @@ public class Delivery extends BaseEntity {
 
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
+
+	@ManyToOne
+	private Restaurant restaurant;
 
 	public String getCourier() {
 		return courier;
@@ -88,6 +92,14 @@ public class Delivery extends BaseEntity {
 
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
 }

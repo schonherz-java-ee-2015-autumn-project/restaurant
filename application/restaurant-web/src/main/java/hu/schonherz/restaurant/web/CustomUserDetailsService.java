@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		try {
 			user = userService.findUserByName(username);
 
-			if (user == null) {
+			if (user == null || user.getBanned() || user.getRestaurant().getBanned()) {
 				throw new UsernameNotFoundException(username);
 			}
 			List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
@@ -64,5 +64,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		return Result;
 	}
+
 
 }

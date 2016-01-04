@@ -10,8 +10,7 @@
 <f:view>
 	<h:head>
 		<title><ui:insert name="pageTitle"></ui:insert></title>
-		<!-- 		primefaces conflict?? -->
-		<!-- 		<h:outputScript library="default" name="js/jquery.js"></h:outputScript> -->
+
 		<h:outputScript library="default" name="js/jquery-migrate-1.1.1.js"></h:outputScript>
 		<h:outputScript library="default" name="js/superfish.js"></h:outputScript>
 		<h:outputScript library="default" name="js/jquery.equalheights.js"></h:outputScript>
@@ -50,7 +49,11 @@
 					<ul class="sf-menu">
 						<sec:authorize ifAnyGranted="ROLE_USER">
 							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
+
 							<li><a href="#{request.contextPath}/secured/deliveries/list.xhtml">#{out.deliveries}</a></li>
+
+							<li><a href= "#{request.contextPath}/secured/report.xhtml">#{out.reports}</a></li>
+
 						</sec:authorize>
 						<ui:insert name="menu"></ui:insert>
 					</ul>

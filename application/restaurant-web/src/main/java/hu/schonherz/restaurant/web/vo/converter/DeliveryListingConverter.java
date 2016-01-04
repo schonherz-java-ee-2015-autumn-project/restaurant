@@ -1,3 +1,4 @@
+
 package hu.schonherz.restaurant.web.vo.converter;
 
 import java.io.Serializable;
@@ -18,8 +19,9 @@ public class DeliveryListingConverter implements Serializable {
 		if (source == null) {
 			return null;
 		}
-		DeliveryListingVo res = new DeliveryListingVo(source.getGuid(), source.getCourier(), source.getOrders().size(),
-				source.getOrders().stream().mapToInt(ord -> ord.getTotalPrice()).sum(), source.getDeliveryState());
+		DeliveryListingVo res = new DeliveryListingVo(source.getId(), source.getGuid(), source.getCourier(),
+				source.getOrders().size(), source.getOrders().stream().mapToInt(ord -> ord.getTotalPrice()).sum(),
+				source.getDeliveryState());
 		return res;
 	}
 
@@ -32,3 +34,4 @@ public class DeliveryListingConverter implements Serializable {
 	}
 
 }
+

@@ -1,7 +1,7 @@
 package hu.schonherz.restaurant.integration;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 
 import hu.schonherz.restaurant.integration.exception.RefresherException;
 
@@ -11,8 +11,13 @@ public class UserRefresherManagedBean {
 	@EJB(mappedName="userRefresher")
 	RefresherLocal userRefresher;
 	
-	public void refresh() throws RefresherException{
-		userRefresher.refresh();
+	public void refresh(){
+		try {
+			userRefresher.refresh();
+		} catch (RefresherException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

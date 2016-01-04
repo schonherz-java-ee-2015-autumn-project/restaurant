@@ -11,13 +11,15 @@ import hu.schonherz.restaurant.type.PayType;
  */
 public class OrderVo extends BaseVo implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private String address;
 
 	private Date deadline;
 
 	private PayType payType;
 
-	private List<ProductVo> products;
+	private List<ItemVo> items;
 
 	private Integer totalPrice;
 
@@ -47,12 +49,12 @@ public class OrderVo extends BaseVo implements Serializable {
 		this.payType = payType;
 	}
 
-	public List<ProductVo> getProducts() {
-		return products;
+	public List<ItemVo> getItems() {
+		return items;
 	}
 
-	public void setProducts(List<ProductVo> products) {
-		this.products = products;
+	public void setItems(List<ItemVo> items) {
+		this.items = items;
 	}
 
 	public Integer getTotalPrice() {

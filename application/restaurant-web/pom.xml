@@ -146,3 +146,149 @@
 	</dependencies>
 	<packaging>war</packaging>
 </project>
+
+<!-- <?xml version="1.0"?> -->
+<!-- <project -->
+<!-- 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" -->
+<!-- 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> -->
+<!-- 	<modelVersion>4.0.0</modelVersion> -->
+<!-- 	<parent> -->
+<!-- 		<groupId>hu.schonherz.snowwhite</groupId> -->
+<!-- 		<artifactId>restaurant-main</artifactId> -->
+<!-- 		<version>0.0.1-SNAPSHOT</version> -->
+<!-- 	</parent> -->
+<!-- 	<artifactId>restaurant-web</artifactId> -->
+<!-- 	<name>restaurant-web</name> -->
+<!-- 	<url>http://maven.apache.org</url> -->
+<!-- 	<properties> -->
+<!-- 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
+<!-- 	</properties> -->
+
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>prime-repo</id> -->
+<!-- 			<name>PrimeFaces Maven Repository</name> -->
+<!-- 			<url>http://repository.primefaces.org</url> -->
+<!-- 			<layout>default</layout> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
+
+<!-- 	<dependencies> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>junit</groupId> -->
+<!-- 			<artifactId>junit</artifactId> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.servlet</groupId> -->
+<!-- 			<artifactId>javax.servlet-api</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.servlet</groupId> -->
+<!-- 			<artifactId>servlet-api</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax</groupId> -->
+<!-- 			<artifactId>javaee-api</artifactId> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>log4j</groupId> -->
+<!-- 			<artifactId>log4j</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces</groupId> -->
+<!-- 			<artifactId>primefaces</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces.themes</groupId> -->
+<!-- 			<artifactId>bootstrap</artifactId> -->
+<!-- 		</dependency> -->
+
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-context</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-core</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-beans</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-web</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.webflow</groupId> -->
+<!-- 			<artifactId>spring-webflow</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.webflow</groupId> -->
+<!-- 			<artifactId>spring-faces</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security</groupId> -->
+<!-- 			<artifactId>spring-security-config</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security</groupId> -->
+<!-- 			<artifactId>spring-security-core</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security</groupId> -->
+<!-- 			<artifactId>spring-security-web</artifactId> -->
+<!-- 		</dependency> -->
+
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security</groupId> -->
+<!-- 			<artifactId>spring-security-taglibs</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>hu.schonherz.snowwhite</groupId> -->
+<!-- 			<artifactId>restaurant-service-api</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+
+<!-- 			<groupId>hu.schonherz.snowwhite</groupId> -->
+<!-- 			<artifactId>restaurant-validation-api</artifactId> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>commons-beanutils</groupId> -->
+<!-- 			<artifactId>commons-beanutils</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.quartz-scheduler</groupId> -->
+<!-- 			<artifactId>quartz-jobs</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.quartz-scheduler</groupId> -->
+<!-- 			<artifactId>quartz</artifactId> -->
+<!-- 		</dependency> -->
+
+<!-- 	</dependencies> -->
+<!-- 	<packaging>war</packaging> -->
+<!-- </project> -->
+<!-- >>>>>>> f6eba8e74bb7ece51e9a870b5e67884af9ac5045 -->

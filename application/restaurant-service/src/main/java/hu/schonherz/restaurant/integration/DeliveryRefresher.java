@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -21,6 +22,7 @@ import hu.schonherz.administrator.RemoteCargoDTO;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
 import hu.schonherz.restaurant.integration.exception.RefresherException;
+import hu.schonherz.restaurant.service.DeliveryServiceLocal;
 
 @Stateless(mappedName = "deliveryRefresher")
 @Local(RefresherLocal.class)
@@ -28,6 +30,10 @@ import hu.schonherz.restaurant.integration.exception.RefresherException;
 public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
 	SynchronizationService synchronizationService;
+
+	@EJB
+	DeliveryServiceLocal deliveryService;
+
 
 	@Override
 	public void refresh() throws RefresherException {
