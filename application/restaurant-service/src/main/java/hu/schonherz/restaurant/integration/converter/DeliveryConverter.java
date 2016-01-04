@@ -22,6 +22,7 @@ public class DeliveryConverter implements Serializable {
 		// TODO
 		// res.setOrders(OrderConverter.toRemote(vo.getOrders()));
 		res.setState(DeliveryStateConverter.toRemote(vo.getDeliveryState()));
+		res.setCourierId(null);
 
 		return res;
 	}
@@ -45,12 +46,21 @@ public class DeliveryConverter implements Serializable {
 
 		DeliveryVo res = new DeliveryVo();
 
-		// TODO ???
-		// res.setCourier("?????");
 		res.setDeliveryState(DeliveryStateConverter.toLocal(rdto.getState()));
 		res.setId(rdto.getId());
 		res.setOrders(OrderConverter.toLocal(rdto.getOrders()));
-		// res.setRestaurant(rdto.getRestaurantId());
+
+		return res;
+	}
+
+	public static List<DeliveryVo> toLocal(List<RemoteCargoDTO> vos) {
+		List<DeliveryVo> res = new ArrayList<>(vos.size());
+
+		if (vos != null) {
+			for (RemoteCargoDTO cargo : vos) {
+				res.add(toLocal(cargo));
+			}
+		}
 
 		return res;
 	}

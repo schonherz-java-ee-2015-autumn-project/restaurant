@@ -54,4 +54,9 @@ public class RestaurantServiceImpl implements RestaurantServiceLocal, Restaurant
 		Validate.notNull(address);
 		return RestaurantConverter.toVo(restaurantDao.findByAddress(address));
 	}
+
+	@Override
+	public RestaurantVo getRestaurantByGlobalId(Long globalId) {
+		return RestaurantConverter.toVo(restaurantDao.findByGlobalId(globalId));
+	}
 }

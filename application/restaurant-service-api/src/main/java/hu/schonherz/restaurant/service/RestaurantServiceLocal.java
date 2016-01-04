@@ -16,4 +16,6 @@ public interface RestaurantServiceLocal {
     RestaurantVo getRestaurantByName(String name);
 
     RestaurantVo getRestaurantByAddress(String address);
+    
+    RestaurantVo getRestaurantByGlobalId(Long globalId);
 }

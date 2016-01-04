@@ -15,4 +15,6 @@ public interface RestaurantDao extends JpaRepository<Restaurant, Long> {
 
 	Restaurant findByAddress(String address);
 
+	Restaurant findByGlobalId(Long globalId);
+
 }
