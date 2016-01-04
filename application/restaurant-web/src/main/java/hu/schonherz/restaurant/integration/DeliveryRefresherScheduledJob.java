@@ -7,15 +7,17 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang3.Validate;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.StatefulJob;
-
+import org.quartz.PersistJobDataAfterExecution;
 import hu.schonherz.restaurant.integration.exception.RefresherException;
 
-@SuppressWarnings("deprecation")
-public class DeliveryRefresherScheduledJob implements StatefulJob {
+@PersistJobDataAfterExecution
+@DisallowConcurrentExecution
+public class DeliveryRefresherScheduledJob implements Job {
 
 	private final int MAX_TRY = 5;
 	private final int WAIT_TIME_MILLISEC = 10000;
@@ -49,6 +51,21 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+
+		int count = 0;
+		try {
+			count = dataMap.getIntValue(UNSUCCESFUL_TRIES);
+		} catch (Exception ex) {
+			dataMap.putAsString(UNSUCCESFUL_TRIES, 0);
+		}
+
+		if (count >= MAX_TRY) {
+			JobExecutionException e1 = new JobExecutionException("The fault retry limit has been exceeded");
+
+			e1.setUnscheduleAllTriggers(true);
+			throw e1;
+		}
+
 		Date date = (Date) dataMap.get(SUCCESS_ASK);
 		try {
 			if (date == null) {
@@ -58,30 +75,17 @@ public class DeliveryRefresherScheduledJob implements StatefulJob {
 			}
 			dataMap.put(SUCCESS_ASK, new Date());
 		} catch (RefresherException e) {
-			int count = dataMap.getIntValue(UNSUCCESFUL_TRIES);
-
-			if (count >= MAX_TRY) {
-				JobExecutionException e1 = new JobExecutionException("The fault retry limit has been exceeded");
-
-				e1.setUnscheduleAllTriggers(true);
-				throw e1;
-			}
+			count++;
+			dataMap.putAsString(UNSUCCESFUL_TRIES, count);
+			JobExecutionException e3 = new JobExecutionException(e);
 
 			try {
-				dataMap.putAsString(UNSUCCESFUL_TRIES, 0);
-			} catch (Exception e1) {
-				count++;
-				dataMap.putAsString(UNSUCCESFUL_TRIES, count);
-				JobExecutionException e3 = new JobExecutionException(e1);
-
-				try {
-					Thread.sleep(WAIT_TIME_MILLISEC);
-				} catch (InterruptedException e2) {
-					e2.printStackTrace();
-				}
-				e3.setRefireImmediately(true);
-				throw e3;
+				Thread.sleep(WAIT_TIME_MILLISEC);
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
 			}
+			e3.setRefireImmediately(true);
+			throw e3;
 		}
 	}
 
