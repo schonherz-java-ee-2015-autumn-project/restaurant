@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -11,7 +10,6 @@
 <f:view>
 	<h:head>
 		<title><ui:insert name="pageTitle"></ui:insert></title>
-
 		<h:outputScript library="default" name="js/jquery-migrate-1.1.1.js"></h:outputScript>
 		<h:outputScript library="default" name="js/superfish.js"></h:outputScript>
 		<h:outputScript library="default" name="js/jquery.equalheights.js"></h:outputScript>
@@ -49,12 +47,12 @@
 					<nav>
 					<ul class="sf-menu">
 						<sec:authorize ifAnyGranted="ROLE_USER">
+							<li><a
+								href="#{request.contextPath}/secured/deliveries/list.xhtml">#{out.deliveries}</a></li>
+
+							<li><a href="#{request.contextPath}/secured/report.xhtml">#{out.reports}</a></li>
+
 							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
-
-							<li><a href="#{request.contextPath}/secured/deliveries/list.xhtml">#{out.deliveries}</a></li>
-
-							<li><a href= "#{request.contextPath}/secured/report.xhtml">#{out.reports}</a></li>
-
 						</sec:authorize>
 						<ui:insert name="menu"></ui:insert>
 					</ul>
@@ -79,96 +77,10 @@
 				<div class="copy">
 					Web Design &copy; 2015 | Design by: <a href="#{out.creatorlink}"><h:outputText
 							value="#{out.creatorlink}"></h:outputText></a>
-
 				</div>
 			</div>
 		</div>
 		</footer>
 	</h:body>
-
 </f:view>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:p="http://primefaces.org/ui">
-<f:view>
-	<h:head>
-		<title><ui:insert name="pageTitle"></ui:insert></title>
-		<!-- 		primefaces conflict?? -->
-		<!-- 		<h:outputScript library="default" name="js/jquery.js"></h:outputScript> -->
-		<h:outputScript library="default" name="js/jquery-migrate-1.1.1.js"></h:outputScript>
-		<h:outputScript library="default" name="js/superfish.js"></h:outputScript>
-		<h:outputScript library="default" name="js/jquery.equalheights.js"></h:outputScript>
-		<h:outputScript library="default" name="js/jquery.easing.1.3.js"></h:outputScript>
-		<h:outputScript library="default" name="js/camera.js"></h:outputScript>
-		<h:outputStylesheet library="default" name="css/style.css" />
-		<h:outputStylesheet library="default" name="css/camera.css" />
-		<f:verbatim>
-			<script>
-				$(document).ready(function() {
-					jQuery('#camera_wrap').camera({
-						loader : false,
-						pagination : false,
-						thumbnails : false,
-						height : '32.92857142857143%',
-						minHeight : '300',
-						caption : false,
-						navigation : true,
-						fx : 'mosaic'
-					});
-				});
-			</script>
-		</f:verbatim>
-		<ui:insert name="head-extra" />
-	</h:head>
-	<h:body>
-		<header>
-		<div class="container_12">
-			<div class="grid_12">
-				<h1>
-					<a href="#{request.contextPath}/index.xhtml"> <h:graphicImage
-							library="default" name="images/logo.png" /></a>
-				</h1>
-				<div class="menu_block">
-					<nav>
-					<ul class="sf-menu">
-						<sec:authorize ifAnyGranted="ROLE_USER">
-							<li><a href="#{request.contextPath}/secured/deliveries/list.xhtml">#{out.deliveries}</a></li>
-							<li><a href="#{request.contextPath}/logout">#{out.logout}</a></li>
-						</sec:authorize>
-						<ui:insert name="menu"></ui:insert>
-					</ul>
-					</nav>
-					<div class="clear"></div>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>
-		</header>
-		<div class="content">
-			<div class="container_12">
-				<ui:insert name="content"></ui:insert>
-			</div>
-		</div>
-		<footer>
-		<div class="container_12">
-			<div class="grid_12">
-				<div class="copy">
-					Web Design &copy; 2015 | Design by: <a href="#{out.creatorlink}"><h:outputText
-							value="#{out.creatorlink}"></h:outputText></a>
-
-				</div>
-			</div>
-		</div>
-		</footer>
-	</h:body>
-
-</f:view>
->>>>>>> 37a994114181b03016748f1d32f958f1cad18170
 </html>
