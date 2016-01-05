@@ -25,6 +25,8 @@ public class OrderVo extends BaseVo implements Serializable {
 
 	private OrderState orderState;
 
+	private Long globalId;
+
 	public String getAddress() {
 		return address;
 	}
@@ -71,6 +73,14 @@ public class OrderVo extends BaseVo implements Serializable {
 
 	public void setOrderState(OrderState orderState) {
 		this.orderState = orderState;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 	@Override

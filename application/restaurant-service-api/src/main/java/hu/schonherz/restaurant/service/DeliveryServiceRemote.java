@@ -15,7 +15,7 @@ public interface DeliveryServiceRemote {
 
 	int getDeliveryCountByRestaurantId(Long restId);
 
-	DeliveryVo getDeliveryByGuid(String guid);
+	DeliveryVo getDeliveryByGuid(Long guid);
 
 	void saveDelivery(DeliveryVo delivery);
 

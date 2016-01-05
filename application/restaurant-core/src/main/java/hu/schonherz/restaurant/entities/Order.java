@@ -4,7 +4,14 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import hu.schonherz.restaurant.type.PayType;
 
@@ -35,6 +42,9 @@ public class Order extends BaseEntity {
 	@Column(name = "order_state", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private OrderState orderState;
+
+	@Column(name = "global_id", unique = true)
+	private Long globalId;
 
 	public OrderState getOrderState() {
 		return orderState;
@@ -84,5 +94,12 @@ public class Order extends BaseEntity {
 		this.totalPrice = totalPrice;
 	}
 
-}
+	public Long getGlobalId() {
+		return globalId;
+	}
 
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
+	}
+
+}

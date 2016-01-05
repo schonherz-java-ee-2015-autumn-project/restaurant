@@ -13,8 +13,6 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	private DeliveryState deliveryState;
 
-	private String guid;
-
 	private String courier;
 
 	private Date deliveryDate;
@@ -23,20 +21,14 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	private RestaurantVo restaurant;
 
+	private Long globalId;
+
 	public DeliveryState getDeliveryState() {
 		return deliveryState;
 	}
 
 	public void setDeliveryState(DeliveryState deliveryState) {
 		this.deliveryState = deliveryState;
-	}
-
-	public String getGuid() {
-		return guid;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
 	}
 
 	public String getCourier() {
@@ -69,6 +61,14 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	public void setRestaurant(RestaurantVo restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 }

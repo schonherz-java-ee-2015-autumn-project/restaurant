@@ -41,7 +41,6 @@ import hu.schonherz.restaurant.validation.Violation;
 import hu.schonherz.restaurant.validation.ViolationException;
 import hu.schonherz.restaurant.web.UserSessionBean;
 import hu.schonherz.restaurant.web.delivery.util.DeliveryUtil;
-import hu.schonherz.restaurant.web.generator.GuidGenerator;
 
 @ViewScoped
 @ManagedBean(name = "newDeliveryBean")
@@ -390,10 +389,6 @@ public class NewDeliveryController implements Serializable {
 	public String saveDelivery() {
 		try {
 			deliveryValidator.validate(delivery);
-
-			if (delivery.getGuid() == null || "".equals(delivery.getGuid())) {
-				delivery.setGuid(GuidGenerator.generate(userSessionBean.getUser().getRestaurant()));
-			}
 			deliveryService.saveDelivery(delivery);
 			return "list?faces-redirect=true";
 		} catch (ViolationException ve) {
@@ -571,4 +566,3 @@ public class NewDeliveryController implements Serializable {
 	}
 
 }
-

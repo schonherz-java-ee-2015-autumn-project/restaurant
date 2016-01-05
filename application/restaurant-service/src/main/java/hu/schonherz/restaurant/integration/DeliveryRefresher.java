@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,10 +20,13 @@ import javax.xml.namespace.QName;
 
 import hu.schonherz.administrator.InvalidDateException_Exception;
 import hu.schonherz.administrator.RemoteCargoDTO;
+import hu.schonherz.administrator.RemoteCargoState;
 import hu.schonherz.administrator.SynchronizationService;
 import hu.schonherz.administrator.SynchronizationServiceImpl;
+import hu.schonherz.restaurant.integration.converter.DeliveryConverter;
 import hu.schonherz.restaurant.integration.exception.RefresherException;
 import hu.schonherz.restaurant.service.DeliveryServiceLocal;
+import hu.schonherz.restaurant.service.vo.DeliveryVo;
 
 @Stateless(mappedName = "deliveryRefresher")
 @Local(RefresherLocal.class)
@@ -33,7 +37,6 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
 	@EJB
 	DeliveryServiceLocal deliveryService;
-
 
 	@Override
 	public void refresh() throws RefresherException {
@@ -47,9 +50,12 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		try {
 			XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 
-			List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar);
-			
-			//TODO convert to our dto
+			// Gets the list of taken/reserved deliveries only
+			List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar).stream()
+					.filter(crg -> crg.getCourierId() != null && crg.getState() != RemoteCargoState.FREE)
+					.collect(Collectors.toList());
+
+			List<DeliveryVo> deliveries = DeliveryConverter.toLocal(cargos);
 
 		} catch (DatatypeConfigurationException | InvalidDateException_Exception e) {
 			throw new RefresherException();

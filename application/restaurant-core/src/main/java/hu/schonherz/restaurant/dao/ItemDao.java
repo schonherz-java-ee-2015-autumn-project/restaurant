@@ -12,4 +12,7 @@ public interface ItemDao extends JpaRepository<Item, Long> {
 
 	@Query("SELECT i FROM Delivery d JOIN d.orders o JOIN o.items i WHERE d.id = :deliveryId")
 	List<Item> findByDeliveryId(@Param("deliveryId") Long id);
+
+	Item findByGlobalId(Long globalId);
+
 }

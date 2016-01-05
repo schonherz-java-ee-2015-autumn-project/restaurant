@@ -3,7 +3,15 @@ package hu.schonherz.restaurant.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Where;
 
@@ -22,8 +30,8 @@ public class Delivery extends BaseEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deliveryDate;
 
-	@Column(name = "guid", unique = true, nullable = false)
-	private String guid;
+	@Column(name = "global_id", unique = true)
+	private Long globalId;
 
 	@ManyToMany
 	private List<Order> orders;
@@ -54,12 +62,12 @@ public class Delivery extends BaseEntity {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public String getGuid() {
-		return guid;
+	public Long getGlobalId() {
+		return globalId;
 	}
 
-	public void setGuid(String guid) {
-		this.guid = guid;
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 	public List<Order> getOrders() {

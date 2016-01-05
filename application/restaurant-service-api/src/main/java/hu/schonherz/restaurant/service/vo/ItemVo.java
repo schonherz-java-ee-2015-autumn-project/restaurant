@@ -10,6 +10,8 @@ public class ItemVo extends BaseVo {
 
 	private Integer quantity;
 
+	private Long globalId;
+
 	public OrderVo getOfOrder() {
 		return ofOrder;
 	}
@@ -32,6 +34,14 @@ public class ItemVo extends BaseVo {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 	@Override

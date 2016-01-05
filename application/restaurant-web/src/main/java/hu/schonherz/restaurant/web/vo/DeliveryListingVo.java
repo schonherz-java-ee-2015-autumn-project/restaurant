@@ -10,7 +10,7 @@ public class DeliveryListingVo implements Serializable {
 
 	private Long id;
 
-	private String guid;
+	private Long globalId;
 
 	private String courierName;
 
@@ -23,11 +23,11 @@ public class DeliveryListingVo implements Serializable {
 	public DeliveryListingVo() {
 	}
 
-	public DeliveryListingVo(Long id, String guid, String courierName, int numberOfAddresses, int total,
+	public DeliveryListingVo(Long id, Long guid, String courierName, int numberOfAddresses, int total,
 			DeliveryState state) {
 		super();
 		this.id = id;
-		this.guid = guid;
+		this.globalId = guid;
 		this.courierName = courierName;
 		this.numberOfAddresses = numberOfAddresses;
 		this.total = total;
@@ -42,12 +42,12 @@ public class DeliveryListingVo implements Serializable {
 		this.id = id;
 	}
 
-	public String getGuid() {
-		return guid;
+	public Long getGlobalId() {
+		return globalId;
 	}
 
-	public void setGuid(String guid) {
-		this.guid = guid;
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 	public String getCourierName() {
@@ -83,4 +83,3 @@ public class DeliveryListingVo implements Serializable {
 	}
 
 }
-

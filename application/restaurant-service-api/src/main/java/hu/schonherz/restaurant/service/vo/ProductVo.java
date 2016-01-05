@@ -13,6 +13,8 @@ public class ProductVo extends BaseVo implements Serializable {
 
 	private RestaurantVo restaurant;
 
+	private Long globalId;
+
 	public String getName() {
 		return name;
 	}
@@ -35,6 +37,14 @@ public class ProductVo extends BaseVo implements Serializable {
 
 	public void setRestaurant(RestaurantVo restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	public Long getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(Long globalId) {
+		this.globalId = globalId;
 	}
 
 	@Override

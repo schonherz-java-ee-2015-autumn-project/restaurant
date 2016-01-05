@@ -17,11 +17,11 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 
 	Page<Delivery> findByCourierContaining(String filter, Pageable pageable);
 
-	Delivery findByGuid(String guid);
+	Delivery findByGlobalId(Long globalId);
 
-	Page<Delivery> findByGuidStartingWith(String restaurantNameCode, Pageable pageable);
+	Page<Delivery> findByRestaurantId(Long restId, Pageable pageable);
 
-	long countByGuidStartingWith(String restaurantNameCode);
+	long countByRestaurantId(Long restId);
 
 	@Modifying
 	@Query("update Delivery d set d.isDeleted=true where d.id=?1")

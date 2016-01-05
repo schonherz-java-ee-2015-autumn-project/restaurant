@@ -22,8 +22,8 @@
 					<p:ajax event="rowSelect" listener="#{deliveryBean.onRowSelect}"
 						update="deldetails" />
 					<p:column styleClass="nobg" headerText="#{out.id}"
-						sortBy="#{delivery.guid}">
-						<h:outputText value="#{delivery.guid}" />
+						sortBy="#{delivery.globalId}">
+						<h:outputText value="#{delivery.globalId}" />
 					</p:column>
 					<p:column styleClass="nobg" headerText="#{out.state}">
 						<h:outputText
@@ -60,7 +60,7 @@
 
 					<p:outputLabel value="#{out.id}" />
 					<p:outputLabel styleClass="detail-value"
-						value="#{deliveryBean.selectedDelivery.guid}" />
+						value="#{deliveryBean.selectedDelivery.globalId}" />
 
 					<p:outputLabel value="#{out.state}" />
 					<p:outputLabel styleClass="detail-value"

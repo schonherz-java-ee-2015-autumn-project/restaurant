@@ -19,8 +19,7 @@ public class DeliveryConverter implements Serializable {
 
 		res.setId(vo.getId());
 		res.setRestaurantId(vo.getRestaurant().getGlobalId());
-		// TODO
-		// res.setOrders(OrderConverter.toRemote(vo.getOrders()));
+		res.getOrders().addAll(OrderConverter.toRemote(vo.getOrders()));
 		res.setState(DeliveryStateConverter.toRemote(vo.getDeliveryState()));
 		res.setCourierId(null);
 

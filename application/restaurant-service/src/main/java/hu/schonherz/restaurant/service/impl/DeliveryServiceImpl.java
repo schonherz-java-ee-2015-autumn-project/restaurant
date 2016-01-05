@@ -1,6 +1,5 @@
 package hu.schonherz.restaurant.service.impl;
 
-import java.nio.file.DirectoryStream.Filter;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -21,7 +20,6 @@ import hu.schonherz.restaurant.dao.DeliveryDao;
 import hu.schonherz.restaurant.dao.ItemDao;
 import hu.schonherz.restaurant.dao.OrderDao;
 import hu.schonherz.restaurant.dao.ProductDao;
-import hu.schonherz.restaurant.dao.RestaurantDao;
 import hu.schonherz.restaurant.entities.Delivery;
 import hu.schonherz.restaurant.entities.Item;
 import hu.schonherz.restaurant.entities.Order;
@@ -49,9 +47,6 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Autowired
 	private ItemDao itemDao;
 
-	@Autowired
-	private RestaurantDao restaurantDao;
-
 	@Override
 	public List<DeliveryVo> getDeliveriesByRestaurantId(Long restId, int i, int pageSize, String sortField, int dir,
 			String filter, String filterColumnName) {
@@ -67,9 +62,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
 		Page<Delivery> entities;
 
-		String restaurantNameCode = restaurantDao.findOne(restId).getName().replace(' ', '_');
-
-		entities = deliveryDao.findByGuidStartingWith(restaurantNameCode, pageRequest);
+		entities = deliveryDao.findByRestaurantId(restId, pageRequest);
 
 		return DeliveryConverter.toVo(entities.getContent());
 	}
@@ -82,14 +75,13 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Override
 	public int getDeliveryCountByRestaurantId(Long restId) {
 		Validate.notNull(restId);
-		String restaurantNameCode = restaurantDao.findOne(restId).getName().replace(' ', '_');
-		return (int) deliveryDao.countByGuidStartingWith(restaurantNameCode);
+		return (int) deliveryDao.countByRestaurantId(restId);
 	}
 
 	@Override
-	public DeliveryVo getDeliveryByGuid(String guid) {
+	public DeliveryVo getDeliveryByGuid(Long guid) {
 		Validate.notNull(guid);
-		return DeliveryConverter.toVo(deliveryDao.findByGuid(guid));
+		return DeliveryConverter.toVo(deliveryDao.findByGlobalId(guid));
 	}
 
 	@Override

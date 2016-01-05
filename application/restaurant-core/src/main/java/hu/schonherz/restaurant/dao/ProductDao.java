@@ -13,6 +13,8 @@ import hu.schonherz.restaurant.entities.Product;
 @Repository
 public interface ProductDao extends JpaRepository<Product, Long> {
 
+	Product findByGlobalId(Long globalId);
+
 	List<Product> findByRestaurantId(Long id);
 
 	Product findByNameAndRestaurantId(String name, Long id);
