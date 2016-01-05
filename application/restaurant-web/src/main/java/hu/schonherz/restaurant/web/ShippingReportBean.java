@@ -1,13 +1,17 @@
 package hu.schonherz.restaurant.web;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -28,12 +32,13 @@ public class ShippingReportBean {
 
 	@ManagedProperty("#{out}")
 	ResourceBundle resources;
-	
+
 	Calendar now = Calendar.getInstance();
 	Calendar c = Calendar.getInstance();
 	Calendar d = Calendar.getInstance();
 	Calendar e = Calendar.getInstance();
-	
+	Calendar f = Calendar.getInstance();
+
 	private BarChartModel dailyQueryModel;
 	private BarChartModel weeklyQueryModel;
 	private BarChartModel monthlyQueryModel;
@@ -49,7 +54,12 @@ public class ShippingReportBean {
 	private BarChartModel monthlyPayTypeQueryModel;
 	private BarChartModel annualPayTypeQueryModel;
 	private BarChartModel overallPayTypeQueryModel;
-	
+	private BarChartModel customQueryModel;
+	private BarChartModel customFinancialModel;
+	private BarChartModel customPayTypeModel;
+
+	Date beginDate;
+	Date endDate;
 
 	private MapModel geoModel;
 
@@ -69,8 +79,12 @@ public class ShippingReportBean {
 	private List<PayTypeReportVo> monthlyPayTypeQueryList;
 	private List<PayTypeReportVo> annualPayTypeQueryList;
 	private List<PayTypeReportVo> overallPayTypeQueryList;
-	
-	
+	private List<OrderCountReportVo> customQueryList;
+	private List<FinancialReportVo> customFinancialQueryList;
+	private List<PayTypeReportVo> customPayTypeQueryList;
+
+	String option;
+
 	@EJB
 	ReportServiceLocal reportService;
 
@@ -79,314 +93,179 @@ public class ShippingReportBean {
 
 	@PostConstruct
 	public void init() {
-		createAnimatedModels();
-		
+
 		if (userSessionBean.getUser() == null) {
-				userSessionBean.init();
-			}
+			userSessionBean.init();
+		}
+		dateSetting();
 	}
 
-	private void createAnimatedModels() {
-
-		dailyQueryModel = initDailyQueryModel();
-		
-		String title = resources.getString("dailyquery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+now.get(Calendar.DATE);
-		dailyQueryModel.setTitle(title);
-		dailyQueryModel.setAnimate(true);
-		dailyQueryModel.setLegendPosition("ne");
-		Axis yAxis = dailyQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!dailyQueryList.isEmpty())
-		yAxis.setMax((dailyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
-				.getQuantity()) + 10);
-		else {
-			dailyQueryModel=emptyModel();
-				}
-
-		weeklyQueryModel = initWeeklyQueryModel();
-		c.set(Calendar.DAY_OF_WEEK, (Calendar.MONDAY)-1);
-		d.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		d.add(Calendar.DATE, 6);
-		title = resources.getString("weeklyquery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+d.get(Calendar.YEAR)+"."+(d.get(Calendar.MONTH)+1)+"."+(d.get(Calendar.DATE));
-
-		weeklyQueryModel.setTitle(title);
-		weeklyQueryModel.setAnimate(true);
-		weeklyQueryModel.setLegendPosition("ne");
-		yAxis = weeklyQueryModel.getAxis(AxisType.Y);
-		DateAxis axis = new DateAxis("Dates");
-		yAxis.setMin(0);
-		if (!weeklyQueryList.isEmpty())
-			yAxis.setMax((weeklyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
-					.getQuantity()) + 10);
-		else {
-			weeklyQueryModel=emptyModel();
-				}
-
-		axis.setTickFormat("%#d");
-		
-		monthlyQueryModel = initMonthlyQueryModel();
-		c.set(Calendar.DAY_OF_MONTH, 1);
-		e.set(Calendar.DAY_OF_MONTH,1);
+	public void dateSetting() {
+		c.set(Calendar.DAY_OF_WEEK, (Calendar.MONDAY));
+		if (now.get(Calendar.DAY_OF_WEEK) == 1) {
+			c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			d.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+			d.add(Calendar.DATE, 6);
+		} else
+			c.add(Calendar.DATE, -1);
+		d.set(Calendar.DAY_OF_WEEK, 7);
+		// d.add(Calendar.DATE, 6);
+		f.set(Calendar.DAY_OF_MONTH, 1);
+		e.set(Calendar.DAY_OF_MONTH, 1);
 		e.add(Calendar.MONTH, 1);
 		e.add(Calendar.DATE, -1);
-		title = resources.getString("monthlyquery")+" "+c.get(Calendar.YEAR)+"."+(c.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+e.get(Calendar.YEAR)+"."+(e.get(Calendar.MONTH)+1)+"."+(e.get(Calendar.DATE));
-		monthlyQueryModel.setTitle(title);
-		monthlyQueryModel.setAnimate(true);
-		monthlyQueryModel.setLegendPosition("ne");
-		yAxis = monthlyQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!monthlyQueryList.isEmpty())
-			yAxis.setMax((monthlyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
-					.getQuantity()) + 10);
-			else {
-				monthlyQueryModel=emptyModel();
-					}
+	}
 
+	public void action(ActionEvent event) {
+		try {
+			customQueryModel = createCustomQuery(option, beginDate, endDate);
 
-		annualQueryModel = initAnnualQueryModel();
-		title = resources.getString("annualquery")+" "+now.get(Calendar.YEAR);
+		} catch (Exception e) {
+			addMessage(resources.getString("error_message"));
+			e.printStackTrace();
+		}
+	}
 
-		annualQueryModel.setTitle(title);
-		annualQueryModel.setAnimate(true);
-		annualQueryModel.setLegendPosition("ne");
-		yAxis = annualQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!annualQueryList.isEmpty())
-			yAxis.setMax((annualQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
-					.getQuantity()) + 10);
-		else {
-			annualQueryModel=emptyModel();
-				}
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
 
+	public void actionFinancial(ActionEvent event) {
+		try {
+			customFinancialModel = createCustomFinancialQuery(option, beginDate, endDate);
 
-		overallQueryModel = initOverallQueryModel();
-		overallQueryModel.setTitle(resources.getString("overallquery"));
-		overallQueryModel.setAnimate(true);
-		overallQueryModel.setLegendPosition("ne");
-		yAxis = overallQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!overallQueryList.isEmpty())
-			yAxis.setMax((overallQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity())).get()
-					.getQuantity()) + 10);
-		else {
-			overallQueryModel=emptyModel();
-				}
+		} catch (Exception e) {
+			addMessage(resources.getString("error_message"));
+			e.printStackTrace();
+		}
+	}
 
+	public void actionPayType(ActionEvent event) {
+		try {
+			customPayTypeModel = createCustomPayTypeQuery(option, beginDate, endDate);
 
-		dailyFinancialQueryModel = initDailyFinancialQueryModel();
-		title = resources.getString("dailyfinancialquery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+now.get(Calendar.DATE);
-		dailyFinancialQueryModel.setTitle(title);
-		dailyFinancialQueryModel.setAnimate(true);
-		dailyFinancialQueryModel.setLegendPosition("ne");
-		
-		yAxis = dailyFinancialQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!dailyFinancialQueryList.isEmpty())
-			yAxis.setMax((dailyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			dailyFinancialQueryModel=emptyModel();
-				}
-
-		weeklyFinancialQueryModel = initWeeklyFinancialQueryModel();
-		
-		title = resources.getString("weeklyfinancialquery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+d.get(Calendar.YEAR)+"."+(d.get(Calendar.MONTH)+1)+"."+(d.get(Calendar.DATE));
-
-		weeklyFinancialQueryModel.setTitle(title);
-		weeklyFinancialQueryModel.setAnimate(true);
-		weeklyFinancialQueryModel.setLegendPosition("ne");
-		yAxis = weeklyFinancialQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!weeklyFinancialQueryList.isEmpty())
-			yAxis.setMax((weeklyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			weeklyFinancialQueryModel=emptyModel();
-				}
-
-		monthlyFinancialQueryModel = initMonthlyFinancialQueryModel();
-		
-		title = resources.getString("monthlyfinancialquery")+" "+c.get(Calendar.YEAR)+"."+(c.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+e.get(Calendar.YEAR)+"."+(e.get(Calendar.MONTH)+1)+"."+(e.get(Calendar.DATE));
-		monthlyFinancialQueryModel.setTitle(title);
-		monthlyFinancialQueryModel.setAnimate(true);
-		monthlyFinancialQueryModel.setLegendPosition("ne");
-		yAxis = monthlyFinancialQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!monthlyFinancialQueryList.isEmpty())
-			yAxis.setMax((monthlyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			monthlyFinancialQueryModel=emptyModel();
-				}
-					
-
-		annualFinancialQueryModel = initAnnualFinancialQueryModel();
-		title = resources.getString("annualfinancialquery")+" "+now.get(Calendar.YEAR);
-		annualFinancialQueryModel.setTitle(title);
-		annualFinancialQueryModel.setAnimate(true);
-		annualFinancialQueryModel.setLegendPosition("ne");
-		yAxis = annualFinancialQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!annualFinancialQueryList.isEmpty())
-			yAxis.setMax((annualFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			annualFinancialQueryModel=emptyModel();
-				}
-
-		overallFinancialQueryModel = initOverallFinancialQueryModel();
-		overallFinancialQueryModel.setTitle(resources.getString("overallfinancialquery"));
-		overallFinancialQueryModel.setAnimate(true);
-		overallFinancialQueryModel.setLegendPosition("ne");
-		yAxis = overallFinancialQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!overallFinancialQueryList.isEmpty())
-			yAxis.setMax((overallFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			overallFinancialQueryModel=emptyModel();
-				}
-
-		dailyPayTypeQueryModel = initDailyPayTypeQueryModel();
-		title = resources.getString("dailypaytypequery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+now.get(Calendar.DATE);
-
-		dailyPayTypeQueryModel.setTitle(title);
-		dailyPayTypeQueryModel.setAnimate(true);
-		dailyPayTypeQueryModel.setLegendPosition("ne");
-		
-		yAxis = dailyPayTypeQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!dailyPayTypeQueryList.isEmpty())
-			yAxis.setMax((dailyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			dailyPayTypeQueryModel=emptyModel();
-				}
-
-		weeklyPayTypeQueryModel = initWeeklyPayTypeQueryModel();
-		
-		title = resources.getString("weeklypaytypequery")+" "+now.get(Calendar.YEAR)+"."+(now.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+d.get(Calendar.YEAR)+"."+(d.get(Calendar.MONTH)+1)+"."+(d.get(Calendar.DATE));
-
-		weeklyPayTypeQueryModel.setTitle(title);
-		weeklyPayTypeQueryModel.setAnimate(true);
-		weeklyPayTypeQueryModel.setLegendPosition("ne");
-		yAxis = weeklyPayTypeQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!weeklyPayTypeQueryList.isEmpty())
-			yAxis.setMax((weeklyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			weeklyPayTypeQueryModel=emptyModel();
-				}
-
-		monthlyPayTypeQueryModel = initMonthlyPayTypeQueryModel();
-		
-		title = resources.getString("monthlypaytypequery")+" "+c.get(Calendar.YEAR)+"."+(c.get(Calendar.MONTH) + 1)+"."+c.get(Calendar.DATE)+" - "+e.get(Calendar.YEAR)+"."+(e.get(Calendar.MONTH)+1)+"."+(e.get(Calendar.DATE));
-		monthlyPayTypeQueryModel.setTitle(title);
-		monthlyPayTypeQueryModel.setAnimate(true);
-		monthlyPayTypeQueryModel.setLegendPosition("ne");
-		yAxis = monthlyPayTypeQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!monthlyPayTypeQueryList.isEmpty())
-			yAxis.setMax((monthlyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			monthlyPayTypeQueryModel=emptyModel();
-				}
-					
-
-		annualPayTypeQueryModel = initAnnualPayTypeQueryModel();
-		title = resources.getString("annualpaytypequery")+" "+now.get(Calendar.YEAR);
-
-		annualPayTypeQueryModel.setTitle(title);
-		annualPayTypeQueryModel.setAnimate(true);
-		annualPayTypeQueryModel.setLegendPosition("ne");
-		yAxis = annualPayTypeQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!annualPayTypeQueryList.isEmpty())
-			yAxis.setMax((annualPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			annualPayTypeQueryModel=emptyModel();
-				}
-
-		overallPayTypeQueryModel = initOverallPayTypeQueryModel();
-		overallPayTypeQueryModel.setTitle(resources.getString("overallpaytypequery"));
-		overallPayTypeQueryModel.setAnimate(true);
-		overallPayTypeQueryModel.setLegendPosition("ne");
-		yAxis = overallPayTypeQueryModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		if (!overallPayTypeQueryList.isEmpty())
-			yAxis.setMax((overallPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
-					.get().getPrice()) + 1000);
-		else {
-			overallPayTypeQueryModel=emptyModel();
-				}
-
-
+		} catch (Exception e) {
+			addMessage(resources.getString("error_message"));
+			e.printStackTrace();
+		}
 	}
 
 	private BarChartModel initDailyQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("number_of_orders"));
 		dailyQueryList = reportService.dailyQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!dailyQueryList.isEmpty()) {
 
-		for (OrderCountReportVo daily : dailyQueryList) {
-			order.set(daily.getGroupped(), daily.getQuantity());
+			order.setLabel(resources.getString("number_of_orders"));
+
+			for (OrderCountReportVo daily : dailyQueryList) {
+				order.set(daily.getGroupped(), daily.getQuantity());
+			}
+
+			String title = resources.getString("dailyquery") + " " + now.get(Calendar.YEAR) + "."
+					+ (now.get(Calendar.MONTH) + 1) + "." + now.get(Calendar.DATE);
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			model.addSeries(order);
+			model.setShowPointLabels(true);
+			yAxis.setMax((dailyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(order);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
 
 	private BarChartModel initWeeklyQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("number_of_orders"));
 		weeklyQueryList = reportService.weeklyQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!weeklyQueryList.isEmpty()) {
+			order.setLabel(resources.getString("number_of_orders"));
+			for (OrderCountReportVo weekly : weeklyQueryList) {
+				order.set(weekly.getGroupped(), weekly.getQuantity());
+			}
+			String title = resources.getString("weeklyquery") + " " + c.get(Calendar.YEAR) + "."
+					+ (c.get(Calendar.MONTH) + 1) + "." + (c.get(Calendar.DATE)) + " - " + d.get(Calendar.YEAR) + "."
+					+ (d.get(Calendar.MONTH) + 1) + "." + (d.get(Calendar.DATE));
 
-		for (OrderCountReportVo weekly : weeklyQueryList) {
-			order.set(weekly.getGroupped(), weekly.getQuantity());
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			DateAxis axis = new DateAxis("Dates");
+			yAxis.setMin(0);
+			yAxis.setMax((weeklyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+			axis.setTickFormat("%#d");
+
+			model.addSeries(order);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
 
-		
-		model.addSeries(order);
-		model.setShowPointLabels(true);
 		return model;
 	}
 
 	private BarChartModel initMonthlyQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("number_of_orders"));
 		monthlyQueryList = reportService.monthlyQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!monthlyQueryList.isEmpty()) {
+			order.setLabel(resources.getString("number_of_orders"));
+			for (OrderCountReportVo monthly : monthlyQueryList) {
+				order.set(monthly.getGroupped(), monthly.getQuantity());
+			}
 
-		for (OrderCountReportVo monthly : monthlyQueryList) {
-			order.set(monthly.getGroupped(), monthly.getQuantity());
+			String title = resources.getString("monthlyquery") + " " + f.get(Calendar.YEAR) + "."
+					+ (f.get(Calendar.MONTH) + 1) + "." + f.get(Calendar.DATE) + " - " + e.get(Calendar.YEAR) + "."
+					+ (e.get(Calendar.MONTH) + 1) + "." + (e.get(Calendar.DATE));
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((monthlyQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+			model.addSeries(order);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		model.addSeries(order);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
 
 	private BarChartModel initAnnualQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("number_of_orders"));
 		annualQueryList = reportService.annualQuery(userSessionBean.getUser().getRestaurant().getId());
-		
+		if (!annualQueryList.isEmpty()) {
+		order.setLabel(resources.getString("number_of_orders"));
+			for (OrderCountReportVo annual : annualQueryList) {
+				order.set(annual.getGroupped(), annual.getQuantity());
+			}
 
-		for (OrderCountReportVo annual : annualQueryList) {
-			order.set(annual.getGroupped(), annual.getQuantity());
+			String title = resources.getString("annualquery") + " " + now.get(Calendar.YEAR);
+
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((annualQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+			model.addSeries(order);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-	
-		model.addSeries(order);
-		model.setShowPointLabels(true);
 
 		return model;
 	}
@@ -394,14 +273,25 @@ public class ShippingReportBean {
 	private BarChartModel initOverallQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("number_of_orders"));
 		overallQueryList = reportService.overallQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!overallQueryList.isEmpty()) {
+			order.setLabel(resources.getString("number_of_orders"));
+			for (OrderCountReportVo overall : overallQueryList) {
+				order.set(overall.getGroupped(), overall.getQuantity());
+			}
 
-		for (OrderCountReportVo overall : overallQueryList) {
-			order.set(overall.getGroupped(), overall.getQuantity());
+			model.setTitle(resources.getString("overallquery"));
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((overallQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+			model.addSeries(order);
+		} else {
+			model = emptyModel();
 		}
-		
-		model.addSeries(order);
+
 		return model;
 	}
 
@@ -409,21 +299,37 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
-		order.setLabel(resources.getString("income"));
-		orderWithCost.setLabel(resources.getString("incomeWithCost"));
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
 		dailyFinancialQueryList = reportService.dailyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-		
-		for (FinancialReportVo item : dailyFinancialQueryList) {
-			order.set(item.getDate(), item.getPrice()-item.getPrice()*cost);
-			orderWithCost.set(item.getDate(), item.getPrice()*cost);
-		}
-		model.addSeries(order);
-		model.addSeries(orderWithCost);
-		model.setShowPointLabels(true);
+		if (!dailyFinancialQueryList.isEmpty()) {
 
-		model.setStacked(true);
-		
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+
+			for (FinancialReportVo item : dailyFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+
+			String title = resources.getString("dailyfinancialquery") + " " + now.get(Calendar.YEAR) + "."
+					+ (now.get(Calendar.MONTH) + 1) + "." + now.get(Calendar.DATE);
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((dailyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+
+			model.setStacked(true);
+		} else {
+			model = emptyModel();
+		}
+
 		return model;
 	}
 
@@ -431,42 +337,70 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
-		order.setLabel(resources.getString("income"));
-		orderWithCost.setLabel(resources.getString("incomeWithCost"));
-		weeklyFinancialQueryList = reportService.weeklyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-		
-		for (FinancialReportVo item : weeklyFinancialQueryList) {
-			order.set(item.getDate(), item.getPrice()-item.getPrice()*cost);
-			orderWithCost.set(item.getDate(),  item.getPrice()*cost);
-		}
-		model.addSeries(order);
-		model.addSeries(orderWithCost);
-		model.setShowPointLabels(true);
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
 
-		model.setStacked(true);
-		
+		weeklyFinancialQueryList = reportService
+				.weeklyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!weeklyFinancialQueryList.isEmpty()) {
+
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+			for (FinancialReportVo item : weeklyFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+
+			model.setStacked(true);
+			yAxis.setMax((weeklyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+		} else {
+			model = emptyModel();
+		}
+
 		return model;
 	}
+
 	private BarChartModel initMonthlyFinancialQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
-		order.setLabel(resources.getString("income"));
-		orderWithCost.setLabel(resources.getString("incomeWithCost"));
-		monthlyFinancialQueryList = reportService.monthlyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-		
-		for (FinancialReportVo item : monthlyFinancialQueryList) {
-			order.set(item.getDate(), item.getPrice()-item.getPrice()*cost);
-			orderWithCost.set(item.getDate(), item.getPrice()*cost);
-		}
-		model.addSeries(order);
-		model.addSeries(orderWithCost);
-		model.setShowPointLabels(true);
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
 
-		model.setStacked(true);
-		
+		monthlyFinancialQueryList = reportService
+				.monthlyFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!monthlyFinancialQueryList.isEmpty()) {
+
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+			for (FinancialReportVo item : monthlyFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+
+			String title = resources.getString("monthlyfinancialquery") + " " + c.get(Calendar.YEAR) + "."
+					+ (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.DATE) + " - " + e.get(Calendar.YEAR) + "."
+					+ (e.get(Calendar.MONTH) + 1) + "." + (e.get(Calendar.DATE));
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((monthlyFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+
+			model.setStacked(true);
+		} else {
+			model = emptyModel();
+		}
+
 		return model;
 	}
 
@@ -474,21 +408,35 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
-		order.setLabel(resources.getString("income"));
-		orderWithCost.setLabel(resources.getString("incomeWithCost"));
-		annualFinancialQueryList = reportService.annualFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-		
-		for (FinancialReportVo item : annualFinancialQueryList) {
-			order.set(item.getDate(), item.getPrice()-item.getPrice()*cost);
-			orderWithCost.set(item.getDate(),  item.getPrice()*cost);
-		}
-		model.addSeries(order);
-		model.addSeries(orderWithCost);
-		model.setShowPointLabels(true);
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
 
-		model.setStacked(true);
-		
+		annualFinancialQueryList = reportService
+				.annualFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!annualFinancialQueryList.isEmpty()) {
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+			for (FinancialReportVo item : annualFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+			String title = resources.getString("annualfinancialquery") + " " + now.get(Calendar.YEAR);
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+
+			yAxis.setMax((annualFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+
+			model.setStacked(true);
+		} else {
+			model = emptyModel();
+		}
+
 		return model;
 	}
 
@@ -496,133 +444,328 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
-		order.setLabel(resources.getString("income"));
-		orderWithCost.setLabel(resources.getString("incomeWithCost"));
-		overallFinancialQueryList = reportService.overallFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
-		
-		for (FinancialReportVo item : overallFinancialQueryList) {
-			order.set(item.getDate(), item.getPrice()-item.getPrice()*cost);
-			orderWithCost.set(item.getDate(),  item.getPrice()*cost);
-		}
-		
-		model.addSeries(order);
-		model.addSeries(orderWithCost);
-		model.setShowPointLabels(true);
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
 
-		model.setStacked(true);
-		
+		overallFinancialQueryList = reportService
+				.overallFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!overallFinancialQueryList.isEmpty()) {
+
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+			for (FinancialReportVo item : overallFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+			model.setTitle(resources.getString("overallfinancialquery"));
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((overallFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+
+			model.setStacked(true);
+		} else {
+			model = emptyModel();
+		}
+
 		return model;
 	}
-	
+
 	private BarChartModel initEmptyModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
-		order.setLabel(resources.getString("empty_chart"));
+		model.setTitle(resources.getString("empty_chart"));
+		order.setLabel(" ");
 		order.set("0", 0);
-		
+
 		model.addSeries(order);
 		model.setShowPointLabels(true);
 		return model;
 	}
 
-	
 	private BarChartModel initDailyPayTypeQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries payType = new ChartSeries();
-		payType.setLabel(resources.getString("paytype"));
 		dailyPayTypeQueryList = reportService.dailyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!dailyPayTypeQueryList.isEmpty()) {
+			payType.setLabel(resources.getString("paytype"));
 
-		for (PayTypeReportVo item : dailyPayTypeQueryList) {
-			payType.set( item.getPayType(),item.getPrice() );
+			for (PayTypeReportVo item : dailyPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+			String title = resources.getString("dailypaytypequery") + " " + now.get(Calendar.YEAR) + "."
+					+ (now.get(Calendar.MONTH) + 1) + "." + now.get(Calendar.DATE);
+
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+
+			yAxis.setMax((dailyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(payType);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
 
 	private BarChartModel initWeeklyPayTypeQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries payType = new ChartSeries();
-		payType.setLabel(resources.getString("paytype"));
 		weeklyPayTypeQueryList = reportService.weeklyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!weeklyPayTypeQueryList.isEmpty()) {
 
-		for (PayTypeReportVo item : weeklyPayTypeQueryList) {
-			payType.set( item.getPayType(),item.getPrice() );
+			payType.setLabel(resources.getString("paytype"));
+
+			for (PayTypeReportVo item : weeklyPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+			String title = resources.getString("weeklypaytypequery") + " " + now.get(Calendar.YEAR) + "."
+					+ (now.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.DATE) + " - " + d.get(Calendar.YEAR) + "."
+					+ (d.get(Calendar.MONTH) + 1) + "." + (d.get(Calendar.DATE));
+
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((weeklyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(payType);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
-
 
 	private BarChartModel initMonthlyPayTypeQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries payType = new ChartSeries();
-		payType.setLabel(resources.getString("paytype"));
 		monthlyPayTypeQueryList = reportService.monthlyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 
-		for (PayTypeReportVo item : monthlyPayTypeQueryList) {
-			payType.set( item.getPayType(),item.getPrice() );
+		if (!monthlyPayTypeQueryList.isEmpty()) {
+			payType.setLabel(resources.getString("paytype"));
+			for (PayTypeReportVo item : monthlyPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+
+			String title = resources.getString("monthlypaytypequery") + " " + c.get(Calendar.YEAR) + "."
+					+ (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.DATE) + " - " + e.get(Calendar.YEAR) + "."
+					+ (e.get(Calendar.MONTH) + 1) + "." + (e.get(Calendar.DATE));
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((monthlyPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(payType);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
 
 	private BarChartModel initAnnualPayTypeQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries payType = new ChartSeries();
-		payType.setLabel(resources.getString("paytype"));
 		annualPayTypeQueryList = reportService.annualPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!annualPayTypeQueryList.isEmpty()) {
 
-		for (PayTypeReportVo item : annualPayTypeQueryList) {
-			payType.set( item.getPayType(),item.getPrice() );
+			payType.setLabel(resources.getString("paytype"));
+
+			for (PayTypeReportVo item : annualPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+
+			String title = resources.getString("annualpaytypequery") + " " + now.get(Calendar.YEAR);
+
+			model.setTitle(title);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((annualPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(payType);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
-
 
 	private BarChartModel initOverallPayTypeQueryModel() {
 		BarChartModel model = new BarChartModel();
 		ChartSeries payType = new ChartSeries();
-		payType.setLabel(resources.getString("paytype"));
 		overallPayTypeQueryList = reportService.overallPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
+		if (!overallPayTypeQueryList.isEmpty()) {
 
-		for (PayTypeReportVo item : overallPayTypeQueryList) {
-			payType.set( item.getPayType(),item.getPrice() );
+			payType.setLabel(resources.getString("paytype"));
+
+			for (PayTypeReportVo item : overallPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+			model.setTitle(resources.getString("overallpaytypequery"));
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((overallPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+		} else {
+			model = emptyModel();
 		}
-		
-		
-		model.addSeries(payType);
-		model.setShowPointLabels(true);
+
 		return model;
 	}
-	
-	public BarChartModel emptyModel(){
+
+	public BarChartModel emptyModel() {
 		BarChartModel model = new BarChartModel();
-		model=initEmptyModel();
-		model.setTitle(resources.getString("empty_chart"));
+		model = initEmptyModel();
 		model.setAnimate(true);
 		model.setLegendPosition("ne");
 		Axis yAxis = model.getAxis(AxisType.Y);
 		yAxis.setMin(0);
 		yAxis.setMax(1);
-		
+
 		return model;
 	}
 
-	
+	BarChartModel createCustomQuery(String option, Date beginDate, Date endDate) {
+		BarChartModel model = new BarChartModel();
+		ChartSeries order = new ChartSeries();
+		if (option.equals("Day")) {
+			customQueryList = reportService.customDailyQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Month")) {
+			customQueryList = reportService.customMonthQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Year")) {
+			customQueryList = reportService.customOverallQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (!customQueryList.isEmpty()) {
+
+			order.setLabel(resources.getString("number_of_orders"));
+
+			for (OrderCountReportVo item : customQueryList) {
+				order.set(item.getGroupped(), item.getQuantity());
+			}
+
+			model.addSeries(order);
+			model.setShowPointLabels(true);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+
+			yAxis.setMax((customQueryList.stream().max((q1, q2) -> Long.compare(q1.getQuantity(), q2.getQuantity()))
+					.get().getQuantity()) * 1.1);
+		} else {
+			model = emptyModel();
+		}
+
+		return model;
+	}
+
+	BarChartModel createCustomFinancialQuery(String option, Date beginDate, Date endDate) {
+		BarChartModel model = new BarChartModel();
+		ChartSeries order = new ChartSeries();
+		ChartSeries orderWithCost = new ChartSeries();
+		if (option.equals("Day")) {
+			customFinancialQueryList = reportService.customDailyFinancialQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Month")) {
+			customFinancialQueryList = reportService.customMonthFinancialQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Year")) {
+			customFinancialQueryList = reportService.customOverallFinancialQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (!customFinancialQueryList.isEmpty()) {
+
+			float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
+			order.setLabel(resources.getString("income"));
+			orderWithCost.setLabel(resources.getString("incomeWithCost"));
+			for (FinancialReportVo item : customFinancialQueryList) {
+				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
+				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+			}
+
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			model.addSeries(order);
+			model.addSeries(orderWithCost);
+			model.setShowPointLabels(true);
+			yAxis.setMax((customFinancialQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+			model.setStacked(true);
+		} else {
+			model = emptyModel();
+		}
+
+		return model;
+	}
+
+	BarChartModel createCustomPayTypeQuery(String option, Date beginDate, Date endDate) {
+		BarChartModel model = new BarChartModel();
+		ChartSeries payType = new ChartSeries();
+		if (option.equals("Day")) {
+			customPayTypeQueryList = reportService.customDailyPayTypeQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Month")) {
+			customPayTypeQueryList = reportService.customMonthPayTypeQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (option.equals("Year")) {
+			customPayTypeQueryList = reportService.customOverallPayTypeQuery(beginDate, endDate,
+					userSessionBean.getUser().getRestaurant().getId());
+		}
+		if (!customPayTypeQueryList.isEmpty()) {
+
+			payType.setLabel(resources.getString("paytype"));
+
+			for (PayTypeReportVo item : customPayTypeQueryList) {
+				payType.set(item.getPayType(), item.getPrice());
+			}
+
+			model.addSeries(payType);
+			model.setShowPointLabels(true);
+			model.setAnimate(true);
+			model.setLegendPosition("ne");
+			Axis yAxis = model.getAxis(AxisType.Y);
+			yAxis.setMin(0);
+			yAxis.setMax((customPayTypeQueryList.stream().max((q1, q2) -> Long.compare(q1.getPrice(), q2.getPrice()))
+					.get().getPrice()) * 1.1);
+		} else {
+			model = emptyModel();
+		}
+		return model;
+	}
 	// public void addAddressToTheMap() {
 	// addressQueryList = reportService.addressQuery();
 	//
@@ -643,7 +786,8 @@ public class ShippingReportBean {
 	// }
 
 	public BarChartModel getDailyQueryModel() {
-		return dailyQueryModel;
+
+		return initDailyQueryModel();
 	}
 
 	public void setDailyQueryModel(BarChartModel dailyQueryModel) {
@@ -651,7 +795,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getWeeklyQueryModel() {
-		return weeklyQueryModel;
+		return initWeeklyQueryModel();
 	}
 
 	public void setWeeklyQueryModel(BarChartModel weeklyQueryModel) {
@@ -659,7 +803,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getMonthlyQueryModel() {
-		return monthlyQueryModel;
+		return initMonthlyQueryModel();
 	}
 
 	public void setMonthlyQueryModel(BarChartModel monthlyQueryModel) {
@@ -667,7 +811,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getAnnualQueryModel() {
-		return annualQueryModel;
+		return initAnnualQueryModel();
 	}
 
 	public void setAnnualQueryModel(BarChartModel annualQueryModel) {
@@ -675,7 +819,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getOverallQueryModel() {
-		return overallQueryModel;
+		return initOverallQueryModel();
 	}
 
 	public void setOverallQueryModel(BarChartModel overallQueryModel) {
@@ -691,7 +835,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getDailyFinancialQueryModel() {
-		return dailyFinancialQueryModel;
+		return initDailyFinancialQueryModel();
 	}
 
 	public void setDailyFinancialQueryModel(BarChartModel dailyFinancialQueryModel) {
@@ -699,7 +843,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getWeeklyFinancialQueryModel() {
-		return weeklyFinancialQueryModel;
+		return initWeeklyFinancialQueryModel();
 	}
 
 	public void setWeeklyFinancialQueryModel(BarChartModel weeklyFinancialQueryModel) {
@@ -707,7 +851,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getMonthlyFinancialQueryModel() {
-		return monthlyFinancialQueryModel;
+		return initMonthlyFinancialQueryModel();
 	}
 
 	public void setMonthlyFinancialQueryModel(BarChartModel monthlyFinancialQueryModel) {
@@ -715,7 +859,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getAnnualFinancialQueryModel() {
-		return annualFinancialQueryModel;
+		return initAnnualFinancialQueryModel();
 	}
 
 	public void setAnnualFinancialQueryModel(BarChartModel annualFinancialQueryModel) {
@@ -723,7 +867,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getOverallFinancialQueryModel() {
-		return overallFinancialQueryModel;
+		return initOverallFinancialQueryModel();
 	}
 
 	public void setOverallFinancialQueryModel(BarChartModel overallFinancialQueryModel) {
@@ -779,7 +923,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getDailyPayTypeQueryModel() {
-		return dailyPayTypeQueryModel;
+		return initDailyPayTypeQueryModel();
 	}
 
 	public void setDailyPayTypeQueryModel(BarChartModel dailyPayTypeQueryModel) {
@@ -787,7 +931,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getWeeklyPayTypeQueryModel() {
-		return weeklyPayTypeQueryModel;
+		return initWeeklyPayTypeQueryModel();
 	}
 
 	public void setWeeklyPayTypeQueryModel(BarChartModel weeklyPayTypeQueryModel) {
@@ -795,7 +939,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getMonthlyPayTypeQueryModel() {
-		return monthlyPayTypeQueryModel;
+		return initMonthlyPayTypeQueryModel();
 	}
 
 	public void setMonthlyPayTypeQueryModel(BarChartModel monthlyPayTypeQueryModel) {
@@ -803,7 +947,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getAnnualPayTypeQueryModel() {
-		return annualPayTypeQueryModel;
+		return initAnnualPayTypeQueryModel();
 	}
 
 	public void setAnnualPayTypeQueryModel(BarChartModel annualPayTypeQueryModel) {
@@ -811,7 +955,7 @@ public class ShippingReportBean {
 	}
 
 	public BarChartModel getOverallPayTypeQueryModel() {
-		return overallPayTypeQueryModel;
+		return initOverallPayTypeQueryModel();
 	}
 
 	public void setOverallPayTypeQueryModel(BarChartModel overallPayTypeQueryModel) {
@@ -857,5 +1001,80 @@ public class ShippingReportBean {
 	public void setOverallPayTypeQueryList(List<PayTypeReportVo> overallPayTypeQueryList) {
 		this.overallPayTypeQueryList = overallPayTypeQueryList;
 	}
+
+	public String getOption() {
+		return option;
+	}
+
+	public void setOption(String option) {
+		this.option = option;
+		System.out.println(option);
+	}
+
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public BarChartModel getCustomQueryModel() {
+		return customQueryModel;
+	}
+
+	public void setCustomQueryModel(BarChartModel customQueryModel) {
+		this.customQueryModel = customQueryModel;
+	}
+
+	public BarChartModel getCustomFinancialModel() {
+		return customFinancialModel;
+	}
+
+	public void setCustomFinancialModel(BarChartModel customFinancialModel) {
+		this.customFinancialModel = customFinancialModel;
+	}
+
+	public BarChartModel getCustomPayTypeModel() {
+		return customPayTypeModel;
+	}
+
+	public void setCustomPayTypeModel(BarChartModel customPayTypeModel) {
+		this.customPayTypeModel = customPayTypeModel;
+	}
+
+	public List<OrderCountReportVo> getCustomQueryList() {
+		return customQueryList;
+	}
+
+	public void setCustomQueryList(List<OrderCountReportVo> customQueryList) {
+		this.customQueryList = customQueryList;
+	}
+	public List<OrderCountReportVo> getDailyQueryList() {
+		return dailyQueryList;
+	}
+
+	public void setDailyQueryList(List<OrderCountReportVo> dailyQueryList) {
+		this.dailyQueryList = dailyQueryList;
+	}
+	
+	public List<OrderCountReportVo> getWeeklyQueryList() {
+		return weeklyQueryList;
+	}
+
+	public void setWeeklyQueryList(List<OrderCountReportVo> weeklyQueryList) {
+		this.weeklyQueryList = weeklyQueryList;
+	}
+
+	
+
 
 }

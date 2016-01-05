@@ -80,3 +80,7 @@ table, table td {
 .reportChart{
 	margin: 0 auto;
 }
+
+.chartp{
+	border: black solid 0px !important;
+}
