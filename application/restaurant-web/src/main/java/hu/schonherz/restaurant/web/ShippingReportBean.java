@@ -106,8 +106,9 @@ public class ShippingReportBean {
 			c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			d.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 			d.add(Calendar.DATE, 6);
-		} else
+		} else {
 			c.add(Calendar.DATE, -1);
+		}
 		d.set(Calendar.DAY_OF_WEEK, 7);
 		// d.add(Calendar.DATE, 6);
 		f.set(Calendar.DAY_OF_MONTH, 1);
@@ -247,7 +248,7 @@ public class ShippingReportBean {
 		ChartSeries order = new ChartSeries();
 		annualQueryList = reportService.annualQuery(userSessionBean.getUser().getRestaurant().getId());
 		if (!annualQueryList.isEmpty()) {
-		order.setLabel(resources.getString("number_of_orders"));
+			order.setLabel(resources.getString("number_of_orders"));
 			for (OrderCountReportVo annual : annualQueryList) {
 				order.set(annual.getGroupped(), annual.getQuantity());
 			}
@@ -495,7 +496,7 @@ public class ShippingReportBean {
 			payType.setLabel(resources.getString("paytype"));
 
 			for (PayTypeReportVo item : dailyPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 			String title = resources.getString("dailypaytypequery") + " " + now.get(Calendar.YEAR) + "."
 					+ (now.get(Calendar.MONTH) + 1) + "." + now.get(Calendar.DATE);
@@ -527,7 +528,7 @@ public class ShippingReportBean {
 			payType.setLabel(resources.getString("paytype"));
 
 			for (PayTypeReportVo item : weeklyPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 			String title = resources.getString("weeklypaytypequery") + " " + now.get(Calendar.YEAR) + "."
 					+ (now.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.DATE) + " - " + d.get(Calendar.YEAR) + "."
@@ -1058,6 +1059,7 @@ public class ShippingReportBean {
 	public void setCustomQueryList(List<OrderCountReportVo> customQueryList) {
 		this.customQueryList = customQueryList;
 	}
+
 	public List<OrderCountReportVo> getDailyQueryList() {
 		return dailyQueryList;
 	}
@@ -1065,7 +1067,7 @@ public class ShippingReportBean {
 	public void setDailyQueryList(List<OrderCountReportVo> dailyQueryList) {
 		this.dailyQueryList = dailyQueryList;
 	}
-	
+
 	public List<OrderCountReportVo> getWeeklyQueryList() {
 		return weeklyQueryList;
 	}
@@ -1073,8 +1075,5 @@ public class ShippingReportBean {
 	public void setWeeklyQueryList(List<OrderCountReportVo> weeklyQueryList) {
 		this.weeklyQueryList = weeklyQueryList;
 	}
-
-	
-
 
 }
