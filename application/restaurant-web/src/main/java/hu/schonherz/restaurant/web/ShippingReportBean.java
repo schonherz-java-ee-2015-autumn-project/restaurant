@@ -250,7 +250,7 @@ public class ShippingReportBean {
 		if (!annualQueryList.isEmpty()) {
 			order.setLabel(resources.getString("number_of_orders"));
 			for (OrderCountReportVo annual : annualQueryList) {
-				order.set(annual.getGroupped(), annual.getQuantity());
+				order.set(annual.getGroupped(), (annual.getQuantity()));
 			}
 
 			String title = resources.getString("annualquery") + " " + now.get(Calendar.YEAR);
@@ -308,8 +308,8 @@ public class ShippingReportBean {
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 
 			for (FinancialReportVo item : dailyFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() - (int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(), (int)(item.getPrice() * cost));
 			}
 
 			String title = resources.getString("dailyfinancialquery") + " " + now.get(Calendar.YEAR) + "."
@@ -347,8 +347,8 @@ public class ShippingReportBean {
 			order.setLabel(resources.getString("income"));
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 			for (FinancialReportVo item : weeklyFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() -(int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(),(int) (item.getPrice() * cost));
 			}
 			model.addSeries(order);
 			model.addSeries(orderWithCost);
@@ -379,8 +379,8 @@ public class ShippingReportBean {
 			order.setLabel(resources.getString("income"));
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 			for (FinancialReportVo item : monthlyFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() - (int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(),(int)( item.getPrice() * cost));
 			}
 
 			String title = resources.getString("monthlyfinancialquery") + " " + c.get(Calendar.YEAR) + "."
@@ -417,8 +417,8 @@ public class ShippingReportBean {
 			order.setLabel(resources.getString("income"));
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 			for (FinancialReportVo item : annualFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() - (int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(),(int)( item.getPrice() * cost));
 			}
 			String title = resources.getString("annualfinancialquery") + " " + now.get(Calendar.YEAR);
 			model.setTitle(title);
@@ -445,7 +445,7 @@ public class ShippingReportBean {
 		BarChartModel model = new BarChartModel();
 		ChartSeries order = new ChartSeries();
 		ChartSeries orderWithCost = new ChartSeries();
-		float cost = userSessionBean.getUser().getRestaurant().getCostOfService() / 100;
+		float cost = userSessionBean.getUser().getRestaurant().getCostOfService()/100;
 
 		overallFinancialQueryList = reportService
 				.overallFinancialQuery(userSessionBean.getUser().getRestaurant().getId());
@@ -454,8 +454,8 @@ public class ShippingReportBean {
 			order.setLabel(resources.getString("income"));
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 			for (FinancialReportVo item : overallFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() - (int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(), (int)(item.getPrice() * cost));
 			}
 			model.setTitle(resources.getString("overallfinancialquery"));
 			model.setAnimate(true);
@@ -493,7 +493,7 @@ public class ShippingReportBean {
 		ChartSeries payType = new ChartSeries();
 		dailyPayTypeQueryList = reportService.dailyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 		if (!dailyPayTypeQueryList.isEmpty()) {
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 
 			for (PayTypeReportVo item : dailyPayTypeQueryList) {
 				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
@@ -525,7 +525,7 @@ public class ShippingReportBean {
 		weeklyPayTypeQueryList = reportService.weeklyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 		if (!weeklyPayTypeQueryList.isEmpty()) {
 
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 
 			for (PayTypeReportVo item : weeklyPayTypeQueryList) {
 				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
@@ -556,9 +556,9 @@ public class ShippingReportBean {
 		monthlyPayTypeQueryList = reportService.monthlyPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 
 		if (!monthlyPayTypeQueryList.isEmpty()) {
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 			for (PayTypeReportVo item : monthlyPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 
 			String title = resources.getString("monthlypaytypequery") + " " + c.get(Calendar.YEAR) + "."
@@ -586,10 +586,10 @@ public class ShippingReportBean {
 		annualPayTypeQueryList = reportService.annualPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 		if (!annualPayTypeQueryList.isEmpty()) {
 
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 
 			for (PayTypeReportVo item : annualPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 
 			String title = resources.getString("annualpaytypequery") + " " + now.get(Calendar.YEAR);
@@ -616,10 +616,10 @@ public class ShippingReportBean {
 		overallPayTypeQueryList = reportService.overallPayTypeQuery(userSessionBean.getUser().getRestaurant().getId());
 		if (!overallPayTypeQueryList.isEmpty()) {
 
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 
 			for (PayTypeReportVo item : overallPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 			model.setTitle(resources.getString("overallpaytypequery"));
 			model.setAnimate(true);
@@ -710,8 +710,8 @@ public class ShippingReportBean {
 			order.setLabel(resources.getString("income"));
 			orderWithCost.setLabel(resources.getString("incomeWithCost"));
 			for (FinancialReportVo item : customFinancialQueryList) {
-				order.set(item.getDate(), item.getPrice() - item.getPrice() * cost);
-				orderWithCost.set(item.getDate(), item.getPrice() * cost);
+				order.set(item.getDate(), item.getPrice() - (int)(item.getPrice() * cost));
+				orderWithCost.set(item.getDate(), (int)(item.getPrice() * cost));
 			}
 
 			model.setAnimate(true);
@@ -751,7 +751,7 @@ public class ShippingReportBean {
 			payType.setLabel(resources.getString("paytype"));
 
 			for (PayTypeReportVo item : customPayTypeQueryList) {
-				payType.set(item.getPayType(), item.getPrice());
+				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
 			}
 
 			model.addSeries(payType);
