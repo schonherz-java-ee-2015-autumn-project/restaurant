@@ -46,6 +46,8 @@ public class Delivery extends BaseEntity {
 	@ManyToOne
 	private Restaurant restaurant;
 
+	private Date synced;
+
 	public String getCourier() {
 		return courier;
 	}
@@ -100,6 +102,14 @@ public class Delivery extends BaseEntity {
 
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	public Date getSynced() {
+		return synced;
+	}
+
+	public void setSynced(Date synced) {
+		this.synced = synced;
 	}
 
 }

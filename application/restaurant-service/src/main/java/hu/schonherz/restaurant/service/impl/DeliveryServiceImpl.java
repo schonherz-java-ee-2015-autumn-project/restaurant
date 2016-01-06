@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -88,15 +89,26 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	public void saveDelivery(DeliveryVo delivery) {
 		Validate.notNull(delivery);
 		Delivery entity = DeliveryConverter.toEntity(delivery);
+		Date newModDate = new Date();
+
+		entity.setSynced(null);
+		entity.setModDate(newModDate);
 
 		if (entity.getIsDeleted() == null) {
 			entity.setIsDeleted(false);
 		}
 
 		for (Order order : entity.getOrders()) {
-
 			Validate.notNull(order);
+			order.setModDate(newModDate);
+
 			for (Item item : order.getItems()) {
+				Validate.notNull(item);
+				Validate.notNull(item.getProduct());
+
+				item.setModDate(newModDate);
+				item.getProduct().setModDate(newModDate);
+
 				item.setProduct(productDao.save(item.getProduct()));
 			}
 			order.setItems(itemDao.save(order.getItems()));
