@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.restaurant.dao.DeliveryDao;
 import hu.schonherz.restaurant.dao.ItemDao;
@@ -128,6 +130,28 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	public void deleteDeliveryById(Long id) {
 		Validate.notNull(id);
 		deliveryDao.setIsDeletedById(id);
+	}
+
+	@Override
+	public List<DeliveryVo> getNonSyncedDeliveries() {
+		return DeliveryConverter.toVo(deliveryDao.findNotSynced());
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void refreshDelivery(DeliveryVo deliveryVo) {
+		Delivery entity = DeliveryConverter.toEntity(deliveryVo);
+
+		for (Order order : entity.getOrders()) {
+			for (Item item : order.getItems()) {
+				item.setProduct(productDao.save(item.getProduct()));
+			}
+			order.setItems(itemDao.save(order.getItems()));
+		}
+		entity.setOrders(orderDao.save(entity.getOrders()));
+
+		entity.setSynced(new Date());
+		deliveryDao.save(entity);
 	}
 
 }

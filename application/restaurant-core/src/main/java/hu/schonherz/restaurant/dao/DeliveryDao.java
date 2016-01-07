@@ -1,5 +1,7 @@
 package hu.schonherz.restaurant.dao;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,5 +28,8 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 	@Modifying
 	@Query("update Delivery d set d.isDeleted=true where d.id=?1")
 	void setIsDeletedById(Long id);
+
+	@Query("SELECT d from Delivery d WHERE d.synced IS NULL")
+	List<Delivery> findNotSynced();
 
 }

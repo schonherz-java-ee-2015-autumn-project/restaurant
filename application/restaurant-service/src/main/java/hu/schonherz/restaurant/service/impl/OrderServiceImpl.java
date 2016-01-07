@@ -39,12 +39,12 @@ public class OrderServiceImpl implements OrderServiceLocal, OrderServiceRemote {
 	@Override
 	public List<OrderVo> getDeliveries(int i, int pageSize, String sortField, int dir, String filter,
 			String filterColumnName) {
-		
+
 		Validate.notNull(pageSize);
 		Validate.notNull(sortField);
 		Validate.notNull(filter);
 		Validate.notNull(filterColumnName);
-		
+
 		Sort.Direction direction = dir == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(i, pageSize,
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
@@ -75,4 +75,10 @@ public class OrderServiceImpl implements OrderServiceLocal, OrderServiceRemote {
 		Validate.notNull(orderVo);
 		return OrderConverter.toVo(orderDao.save(OrderConverter.toEntity(orderVo)));
 	}
+
+	@Override
+	public OrderVo getOrderByGlobalId(Long globalId) {
+		return OrderConverter.toVo(orderDao.findByGlobalId(globalId));
+	}
+
 }

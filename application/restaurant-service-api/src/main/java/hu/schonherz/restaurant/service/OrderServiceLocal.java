@@ -16,4 +16,6 @@ public interface OrderServiceLocal {
 	OrderVo getOrderById(Long id);
 
 	OrderVo saveOrder(OrderVo orderVo);
+
+	OrderVo getOrderByGlobalId(Long globalId);
 }

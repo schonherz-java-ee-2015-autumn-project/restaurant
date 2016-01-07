@@ -23,4 +23,8 @@ public interface DeliveryServiceLocal {
 
 	void deleteDeliveryById(Long id);
 
+	List<DeliveryVo> getNonSyncedDeliveries();
+
+	void refreshDelivery(DeliveryVo deliveryVo);
+
 }
