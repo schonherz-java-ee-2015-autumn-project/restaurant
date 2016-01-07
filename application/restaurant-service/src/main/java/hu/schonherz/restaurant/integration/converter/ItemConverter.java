@@ -17,7 +17,7 @@ public class ItemConverter implements Serializable {
 		}
 
 		RemoteItemQuantityDTO res = new RemoteItemQuantityDTO();
-		res.setId(vo.getId());
+		res.setId(vo.getGlobalId());
 		res.setItemDTO(ProductConverter.toRemote(vo.getProduct()));
 		res.setQuantity(vo.getQuantity());
 		return res;
@@ -29,6 +29,30 @@ public class ItemConverter implements Serializable {
 		if (vos != null) {
 			for (ItemVo item : vos) {
 				res.add(toRemote(item));
+			}
+		}
+
+		return res;
+	}
+
+	public static ItemVo toLocal(RemoteItemQuantityDTO rdto) {
+		if (rdto == null) {
+			return null;
+		}
+
+		ItemVo res = new ItemVo();
+		res.setGlobalId(rdto.getId());
+		res.setProduct(ProductConverter.toLocal(rdto.getItemDTO()));
+		res.setQuantity(rdto.getQuantity());
+		return res;
+	}
+
+	public static List<ItemVo> toLocal(List<RemoteItemQuantityDTO> rdtos) {
+		List<ItemVo> res = new ArrayList<>();
+
+		if (rdtos != null) {
+			for (RemoteItemQuantityDTO dto : rdtos) {
+				res.add(toLocal(dto));
 			}
 		}
 

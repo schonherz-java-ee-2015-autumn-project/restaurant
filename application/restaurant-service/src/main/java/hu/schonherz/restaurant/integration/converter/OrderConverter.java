@@ -10,9 +10,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import hu.schonherz.administrator.DeliveryStateWeb;
 import hu.schonherz.administrator.RemoteOrderDTO;
 import hu.schonherz.restaurant.service.vo.OrderVo;
 
@@ -28,9 +25,9 @@ public class OrderConverter implements Serializable {
 		RemoteOrderDTO res = new RemoteOrderDTO();
 
 		res.setAddressToDeliver(vo.getAddress());
-		res.setDeliveryState(DeliveryStateWeb.fromValue(WordUtils.capitalize(vo.getOrderState().name())));
+		res.setDeliveryState(OrderStateConverter.toRemote(vo.getOrderState()));
 		res.setFullCost(vo.getTotalPrice());
-		res.setId(vo.getId());
+		res.setId(vo.getGlobalId());
 		res.setPayment(PayTypeConverter.toRemote(vo.getPayType()));
 		res.setDeadline(toGregorianXml(vo.getDeadline()));
 
@@ -43,6 +40,35 @@ public class OrderConverter implements Serializable {
 		if (vos != null) {
 			for (OrderVo order : vos) {
 				res.add(toRemote(order));
+			}
+		}
+
+		return res;
+	}
+
+	public static OrderVo toLocal(RemoteOrderDTO rdto) {
+		if (rdto == null) {
+			return null;
+		}
+
+		OrderVo res = new OrderVo();
+		res.setAddress(rdto.getAddressToDeliver());
+		res.setDeadline(rdto.getDeadline().toGregorianCalendar().getTime());
+		res.setGlobalId(rdto.getId());
+		res.setItems(ItemConverter.toLocal(rdto.getItems()));
+		res.setOrderState(OrderStateConverter.toLocal(rdto.getDeliveryState()));
+		res.setPayType(PayTypeConverter.toLocal(rdto.getPayment()));
+		res.setTotalPrice(rdto.getFullCost());
+
+		return res;
+	}
+
+	public static List<OrderVo> toLocal(List<RemoteOrderDTO> orders) {
+		List<OrderVo> res = new ArrayList<>();
+
+		if (orders != null) {
+			for (RemoteOrderDTO dto : orders) {
+				res.add(toLocal(dto));
 			}
 		}
 
@@ -62,16 +88,6 @@ public class OrderConverter implements Serializable {
 		}
 
 		return res;
-	}
-
-	public static OrderVo toLocal(RemoteOrderDTO rdto) {
-		// TODO
-		return null;
-	}
-
-	public static List<OrderVo> toLocal(List<RemoteOrderDTO> orders) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
