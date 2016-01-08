@@ -151,7 +151,8 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 	private List<RemoteCargoDTO> getTakenDeliveries(XMLGregorianCalendar calendar)
 			throws InvalidDateException_Exception {
 		List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar).stream()
-				.filter(crg -> crg.getCourierId() != null && crg.getState() != RemoteCargoState.FREE)
+				.filter(crg -> crg.getCourierId() != null && (crg.getState().equals(RemoteCargoState.DELIVERING)
+						|| crg.getState().equals(RemoteCargoState.TAKEN)))
 				.collect(Collectors.toList());
 		return cargos;
 	}
