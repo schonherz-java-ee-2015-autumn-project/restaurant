@@ -16,11 +16,17 @@ public class ItemConverter extends EntityVoConverter<ItemVo, Item> {
 
 	@Override
 	public ItemVo toVo(Item entity) {
+		if (entity == null) {
+			return null;
+		}
 		return mapper.map(entity, ItemVo.class);
 	}
 
 	@Override
 	public Item toEntity(ItemVo vo) {
+		if (vo == null) {
+			return null;
+		}
 		return mapper.map(vo, Item.class);
 	}
 

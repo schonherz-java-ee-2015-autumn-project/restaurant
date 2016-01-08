@@ -16,11 +16,17 @@ public class UserConverter extends EntityVoConverter<UserVo, User> {
 
 	@Override
 	public User toEntity(UserVo source) {
+		if (source == null) {
+			return null;
+		}
 		return mapper.map(source, User.class);
 	}
 
 	@Override
 	public UserVo toVo(User source) {
+		if (source == null) {
+			return null;
+		}
 		return mapper.map(source, UserVo.class);
 	}
 

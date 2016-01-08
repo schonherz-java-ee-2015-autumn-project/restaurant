@@ -16,11 +16,17 @@ public class RoleConverter extends EntityVoConverter<RoleVo, Role> {
 
 	@Override
 	public Role toEntity(RoleVo source) {
+		if (source == null) {
+			return null;
+		}
 		return mapper.map(source, Role.class);
 	}
 
 	@Override
 	public RoleVo toVo(Role source) {
+		if (source == null) {
+			return null;
+		}
 		return mapper.map(source, RoleVo.class);
 	}
 
