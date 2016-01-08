@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -109,22 +110,72 @@ public class ReportServiceImpl implements ReportServiceLocal, ReportServiceRemot
 
 	@Override
 	public List<PayTypeReportVo> weeklyPayTypeQuery(Long id) {
-		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+		return PayTypeReportConverter.toVo(orderDao.weeklyPayTypeQuery(id));
 	}
 
 	@Override
 	public List<PayTypeReportVo> monthlyPayTypeQuery(Long id) {
-		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+		return PayTypeReportConverter.toVo(orderDao.monthlyPayTypeQuery(id));
 	}
 
 	@Override
 	public List<PayTypeReportVo> annualPayTypeQuery(Long id) {
-		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+		return PayTypeReportConverter.toVo(orderDao.annualPayTypeQuery(id));
 	}
 
 	@Override
 	public List<PayTypeReportVo> overallPayTypeQuery(Long id) {
-		return PayTypeReportConverter.toVo(orderDao.dailyPayTypeQuery(id));
+		return PayTypeReportConverter.toVo(orderDao.overallPayTypeQuery(id));
+	}
+
+	@Override
+	public List<OrderCountReportVo> customDailyQuery(Date beginDate, Date endDate, Long id) {
+		return OrderCountReportConverter.toVo(orderDao.customDailyQuery(beginDate, endDate,id));
+
+	}
+
+	@Override
+	public List<OrderCountReportVo> customMonthQuery(Date beginDate, Date endDate, Long id) {
+		return OrderCountReportConverter.toVo(orderDao.customMonthQuery(beginDate, endDate,id));
+	}
+
+	@Override
+	public List<OrderCountReportVo> customOverallQuery(Date beginDate, Date endDate, Long id) {
+		return OrderCountReportConverter.toVo(orderDao.customOverallQuery(beginDate, endDate,id));
+	}
+
+	@Override
+	public List<FinancialReportVo> customDailyFinancialQuery(Date beginDate, Date endDate, Long id) {
+		return FinancialReportConverter.toVo(orderDao.customDailyFinancialQuery(beginDate, endDate, id));
+	}
+
+	@Override
+	public List<FinancialReportVo> customMonthFinancialQuery(Date beginDate, Date endDate, Long id) {
+		return FinancialReportConverter.toVo(orderDao.customMonthFinancialQuery(beginDate, endDate, id));
+
+	}
+
+	@Override
+	public List<FinancialReportVo> customOverallFinancialQuery(Date beginDate, Date endDate, Long id) {
+		return FinancialReportConverter.toVo(orderDao.customOverallFinancialQuery(beginDate, endDate, id));
+
+	}
+
+	@Override
+	public List<PayTypeReportVo> customDailyPayTypeQuery(Date beginDate, Date endDate, Long id) {
+		return PayTypeReportConverter.toVo(orderDao.customDailyPayTypeQuery(beginDate, endDate, id));
+
+	}
+
+	@Override
+	public List<PayTypeReportVo> customMonthPayTypeQuery(Date beginDate, Date endDate, Long id) {
+		return PayTypeReportConverter.toVo(orderDao.customMonthPayTypeQuery(beginDate, endDate, id));
+	}
+
+	@Override
+	public List<PayTypeReportVo> customOverallPayTypeQuery(Date beginDate, Date endDate, Long id) {
+		return PayTypeReportConverter.toVo(orderDao.customOverallPayTypeQuery(beginDate, endDate, id));
+
 	}
 
 	

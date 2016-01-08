@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.service;
 
+import java.util.Date;
 import java.util.List;
 
 import hu.schonherz.restaurant.service.vo.AddressReportVo;
@@ -28,4 +29,17 @@ public interface ReportServiceRemote {
 	public List<PayTypeReportVo>monthlyPayTypeQuery(Long id);
 	public List<PayTypeReportVo>annualPayTypeQuery(Long id);
 	public List<PayTypeReportVo>overallPayTypeQuery(Long id);
+	
+	public List<OrderCountReportVo>customDailyQuery(Date beginDate, Date endDate, Long id);
+	public List<OrderCountReportVo>customMonthQuery(Date beginDate, Date endDate, Long id);
+	public List<OrderCountReportVo>customOverallQuery(Date beginDate, Date endDate, Long id);
+
+	public List<FinancialReportVo>customDailyFinancialQuery(Date beginDate, Date endDate, Long id);
+	public List<FinancialReportVo>customMonthFinancialQuery(Date beginDate, Date endDate, Long id);
+	public List<FinancialReportVo>customOverallFinancialQuery(Date beginDate, Date endDate, Long id);
+
+	public List<PayTypeReportVo>customDailyPayTypeQuery(Date beginDate, Date endDate, Long id);
+	public List<PayTypeReportVo>customMonthPayTypeQuery(Date beginDate, Date endDate, Long id);
+	public List<PayTypeReportVo>customOverallPayTypeQuery(Date beginDate, Date endDate, Long id);
+
 }

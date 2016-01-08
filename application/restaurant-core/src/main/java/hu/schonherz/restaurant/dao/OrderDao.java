@@ -1,5 +1,6 @@
 package hu.schonherz.restaurant.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -59,6 +60,7 @@ public interface OrderDao extends JpaRepository<Order, Long> {
 	public List<FinancialReport> overallFinancialQuery(Long id);
 
 	@Query("Select New hu.schonherz.restaurant.dto.PayTypeReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?1 and o.orderState = 'DELIVERED' and date(o.deadline) = date(Current_Date) and Month(o.deadline)=Month(Current_Date) and YEAR(o.deadline)= YEAR(Current_Date) group by o.payType")
+
 	public List<PayTypeReport> dailyPayTypeQuery(Long id);
 
 	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?1 and o.orderState = 'DELIVERED' and week(o.deadline) = week(Current_Date) and Month(o.deadline)=Month(Current_Date) and YEAR(o.deadline)= YEAR(Current_Date) group by o.payType")
@@ -72,5 +74,32 @@ public interface OrderDao extends JpaRepository<Order, Long> {
 
 	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?1 and o.orderState = 'DELIVERED' group by o.payType")
 	public List<PayTypeReport> overallPayTypeQuery(Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.OrderCountReport(Day(o.deadline), count(o)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Day(o.deadline)")
+	public List<OrderCountReport> customDailyQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.OrderCountReport(Month(o.deadline), count(o)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Month(o.deadline)")
+	public List<OrderCountReport> customMonthQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.OrderCountReport(Year(o.deadline), count(o)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Year(o.deadline)")
+	public List<OrderCountReport> customOverallQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(Day(o.deadline), sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Day(o.deadline)")
+	public List<FinancialReport> customDailyFinancialQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(Month(o.deadline), sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Month(o.deadline)")
+	public List<FinancialReport> customMonthFinancialQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.FinancialReport(Year(o.deadline), sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by Year(o.deadline)")
+	public List<FinancialReport> customOverallFinancialQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.PayTypeReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by o.payType")
+	public List<PayTypeReport> customDailyPayTypeQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.PayTypeReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by o.payType")
+	public List<PayTypeReport> customMonthPayTypeQuery(Date beginDate, Date endDate, Long id);
+
+	@Query("Select New hu.schonherz.restaurant.dto.PayTypeReport(o.payType, sum(o.totalPrice)) From Delivery d join d.orders o join d.restaurant r where r.id =  ?3 and o.orderState = 'DELIVERED' and date(o.deadline) between ?1 and ?2 group by o.payType")
+	public List<PayTypeReport> customOverallPayTypeQuery(Date beginDate, Date endDate, Long id);
 
 }
