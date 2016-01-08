@@ -30,6 +30,7 @@ public class OrderConverter implements Serializable {
 		res.setId(vo.getGlobalId());
 		res.setPayment(PayTypeConverter.toRemote(vo.getPayType()));
 		res.setDeadline(toGregorianXml(vo.getDeadline()));
+		res.getItems().addAll(ItemConverter.toRemote(vo.getItems()));
 
 		return res;
 	}
