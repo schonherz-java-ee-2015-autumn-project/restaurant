@@ -96,9 +96,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 		entity.setSynced(null);
 		entity.setModDate(newModDate);
 
-		if (entity.getIsDeleted() == null) {
-			entity.setIsDeleted(false);
-		}
+		entity.setIsDeleted(false);
 
 		for (Order order : entity.getOrders()) {
 			Validate.notNull(order);
@@ -141,6 +139,8 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void refreshDelivery(DeliveryVo deliveryVo) {
 		Delivery entity = DeliveryConverter.toEntity(deliveryVo);
+
+		entity.setIsDeleted(false);
 
 		for (Order order : entity.getOrders()) {
 			for (Item item : order.getItems()) {
