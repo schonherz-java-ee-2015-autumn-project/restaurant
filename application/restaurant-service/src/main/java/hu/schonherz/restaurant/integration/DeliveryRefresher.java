@@ -83,6 +83,10 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		for (DeliveryVo taken : deliveries) {
 			DeliveryVo local = deliveryService.getDeliveryByGuid(taken.getGlobalId());
 
+			if (local.getIsDeleted()) {
+				continue;
+			}
+
 			local.setDeliveryState(taken.getDeliveryState());
 			local.setCourier(taken.getCourier());
 

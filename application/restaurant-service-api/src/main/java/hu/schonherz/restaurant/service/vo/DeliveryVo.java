@@ -23,6 +23,8 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	private Long globalId;
 
+	private Boolean isDeleted;
+
 	public DeliveryState getDeliveryState() {
 		return deliveryState;
 	}
@@ -69,6 +71,14 @@ public class DeliveryVo extends BaseVo implements Serializable {
 
 	public void setGlobalId(Long globalId) {
 		this.globalId = globalId;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
