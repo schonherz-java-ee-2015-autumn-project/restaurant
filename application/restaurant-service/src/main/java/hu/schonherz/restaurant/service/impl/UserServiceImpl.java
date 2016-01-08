@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 
 	@Autowired
 	private RoleDao roleDao;
-	
+
 	@Autowired
 	private RestaurantDao restaurantDao;
 
@@ -66,26 +66,29 @@ public class UserServiceImpl implements UserServiceLocal, UserServiceRemote {
 	public void save(UserVo user) {
 		Validate.notNull(user);
 		User u = userDao.findByUsername(user.getUsername());
-		Restaurant restaurant = null;
-		if (restaurantDao.findByName(user.getRestaurant().getName())==null){
+
+		Role role = roleDao.findByName("ROLE_USER");
+		if (role == null) {
+			role = new Role("ROLE_USER");
+			role = roleDao.save(role);
+		}
+
+		Restaurant restaurant = restaurantDao.findByName(user.getRestaurant().getName());
+		if (restaurant == null) {
 			restaurant = restaurantDao.save(RestaurantConverter.toEntity(user.getRestaurant()));
 		}
+
 		if (u == null) {
 			u = userConverter.toEntity(user);
-			Role role = roleDao.findByName("ROLE_USER");
-			if (role == null) {
-				role = new Role("ROLE_USER");
-				role = roleDao.save(role);
-			}
-			u.setRoles(Arrays.asList(role));
-			u.setRestaurant(restaurant);
-			userDao.save(u);
-		}else{
+		} else {
 			user.setId(u.getId());
 			u = userConverter.toEntity(user);
-			u.setRestaurant(restaurant);
-			userDao.save(u);
 		}
+
+		u.setRoles(Arrays.asList(role));
+		u.setRestaurant(restaurant);
+		userDao.save(u);
+
 	}
 
 }
