@@ -16,7 +16,7 @@ public class PayTypeConverter implements Serializable {
 		case MONEY:
 			return RemotePaymentMethod.CASH;
 		case NICECARD:
-			return RemotePaymentMethod.SZÉP_CARD;
+			return RemotePaymentMethod.SZEP_CARD;
 		case VOUCHER:
 			return RemotePaymentMethod.VOUCHER;
 		}
@@ -29,7 +29,7 @@ public class PayTypeConverter implements Serializable {
 			return PayType.MONEY;
 		case CREDIT_CARD:
 			return PayType.CREDITCARD;
-		case SZÉP_CARD:
+		case SZEP_CARD:
 			return PayType.NICECARD;
 		case VOUCHER:
 			return PayType.VOUCHER;
