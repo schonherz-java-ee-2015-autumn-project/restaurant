@@ -29,7 +29,7 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 	@Query("update Delivery d set d.isDeleted=true where d.id=?1")
 	void setIsDeletedById(Long id);
 
-	@Query("SELECT d from Delivery d WHERE d.synced IS NULL")
+	@Query("SELECT d from Delivery d WHERE d.synced IS NULL AND (d.globalId IS NOT NULL OR d.isDeleted=0)")
 	List<Delivery> findNotSynced();
 
 }
