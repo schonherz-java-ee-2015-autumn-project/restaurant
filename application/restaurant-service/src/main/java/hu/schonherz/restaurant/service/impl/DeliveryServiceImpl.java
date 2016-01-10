@@ -65,7 +65,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 				new Sort(new org.springframework.data.domain.Sort.Order(direction, sortField)));
 		Page<Delivery> entities;
 
-		entities = deliveryDao.findByRestaurantId(restId, pageRequest);
+		entities = deliveryDao.findByRestaurantIdAndIsDeletedFalse(restId, pageRequest);
 
 		return DeliveryConverter.toVo(entities.getContent());
 	}
@@ -78,7 +78,7 @@ public class DeliveryServiceImpl implements DeliveryServiceLocal, DeliveryServic
 	@Override
 	public int getDeliveryCountByRestaurantId(Long restId) {
 		Validate.notNull(restId);
-		return (int) deliveryDao.countByRestaurantId(restId);
+		return (int) deliveryDao.countByRestaurantIdAndIsDeletedFalse(restId);
 	}
 
 	@Override

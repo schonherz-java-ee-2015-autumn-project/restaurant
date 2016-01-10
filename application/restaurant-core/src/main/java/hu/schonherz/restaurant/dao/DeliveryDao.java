@@ -21,9 +21,9 @@ public interface DeliveryDao extends JpaRepository<Delivery, Long> {
 
 	Delivery findByGlobalId(Long globalId);
 
-	Page<Delivery> findByRestaurantId(Long restId, Pageable pageable);
+	Page<Delivery> findByRestaurantIdAndIsDeletedFalse(Long restId, Pageable pageable);
 
-	long countByRestaurantId(Long restId);
+	long countByRestaurantIdAndIsDeletedFalse(Long restId);
 
 	@Modifying
 	@Query("update Delivery d set d.isDeleted=true where d.id=?1")

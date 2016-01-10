@@ -48,7 +48,7 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 		String filterColumnName = "";
 
 		if (sortField == null) {
-			sortField = "globalId";
+			sortField = "id";
 		}
 
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
@@ -72,7 +72,7 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 		}
 
 		for (DeliveryListingVo listingVo : data) {
-			if (String.valueOf(listingVo.getGlobalId()).equals(rowKey)) {
+			if (String.valueOf(listingVo.getId()).equals(rowKey)) {
 				return listingVo;
 			}
 		}
@@ -81,7 +81,7 @@ public class LazyDeliveryListingModel extends LazyDataModel<DeliveryListingVo> {
 
 	@Override
 	public Object getRowKey(DeliveryListingVo object) {
-		return object.getGlobalId();
+		return object.getId();
 	}
 
 	public DeliveryServiceLocal getDeliveryService() {

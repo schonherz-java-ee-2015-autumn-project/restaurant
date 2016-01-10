@@ -13,14 +13,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Where;
-
 /**
  * Created by tothd on 2015. 12. 16..
  */
 @Entity
 @Table(name = "deliveries")
-@Where(clause = "is_deleted=0")
 public class Delivery extends BaseEntity {
 
 	@Column(name = "courier")

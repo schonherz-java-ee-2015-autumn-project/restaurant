@@ -110,7 +110,7 @@ public class NewDeliveryController implements Serializable {
 			Long longId = Long.valueOf(deliveryIdParameter);
 			DeliveryVo tmp = deliveryService.getDeliveryById(longId);
 			if (tmp.getRestaurant().equals(userSessionBean.getUser().getRestaurant())
-					&& tmp.getDeliveryState().equals(DeliveryState.FREE)) {
+					&& tmp.getDeliveryState().equals(DeliveryState.FREE) && !tmp.getIsDeleted()) {
 				return tmp;
 			}
 		} catch (Exception e) {
