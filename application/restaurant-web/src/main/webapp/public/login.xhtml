@@ -5,6 +5,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/template/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
+	
+	<ui:define name="pageTitle">#{out.login}</ui:define>
 
 	<ui:define name="head-extra">
 		<h:outputStylesheet library="default" name="css/form.css" />
