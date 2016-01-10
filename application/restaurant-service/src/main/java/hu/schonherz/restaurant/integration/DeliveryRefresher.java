@@ -114,6 +114,7 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 				updateDelivery(notSyncedDeliveries.get(i), savedCargo);
 				deliveryService.refreshDelivery(notSyncedDeliveries.get(i));
 			} catch (Exception e) {
+				e.printStackTrace();
 				logger.warn(String.format("Exception when syncing delivery(%d)", notSyncedDeliveries.get(i).getId()));
 			}
 		}

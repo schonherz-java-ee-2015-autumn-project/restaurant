@@ -182,8 +182,10 @@ public class NewDeliveryController implements Serializable {
 				delivery.getOrders().add(order);
 			} else {
 				Long idTmp = selectedOrder.getId();
+				Long globalIdTmp = selectedOrder.getGlobalId();
 				BeanUtils.copyProperties(selectedOrder, order);
 				selectedOrder.setId(idTmp);
+				selectedOrder.setGlobalId(globalIdTmp);
 
 				for (ItemVo itemVo : selectedOrder.getItems()) {
 					itemVo.setOfOrder(selectedOrder);
@@ -289,8 +291,10 @@ public class NewDeliveryController implements Serializable {
 				BeanUtils.copyProperties(containerItem, tmp);
 			} else if (selectedItem != null) {
 				Long idTemp = selectedItem.getId();
+				Long globalIdTemp = selectedItem.getGlobalId();
 				BeanUtils.copyProperties(selectedItem, item);
 				selectedItem.setId(idTemp);
+				selectedItem.setGlobalId(globalIdTemp);
 			} else {
 				orderItems.add(item);
 			}
