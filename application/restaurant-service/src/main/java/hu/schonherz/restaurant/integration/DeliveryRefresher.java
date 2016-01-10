@@ -19,9 +19,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import hu.schonherz.administrator.InvalidDateException_Exception;
-import hu.schonherz.administrator.InvalidFieldValuesException_Exception;
 import hu.schonherz.administrator.RemoteCargoDTO;
 import hu.schonherz.administrator.RemoteCargoState;
 import hu.schonherz.administrator.RestaurantService;
@@ -41,6 +42,8 @@ import hu.schonherz.restaurant.service.vo.ProductVo;
 @Local(RefresherLocal.class)
 @Remote(RefresherRemote.class)
 public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
+
+	private static Logger logger = LoggerFactory.getLogger(DeliveryRefresher.class);
 
 	SynchronizationService synchronizationService;
 	RestaurantService restService;
@@ -67,9 +70,8 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
 			syncTakenDeliveries(calendar);
 
-		} catch (DatatypeConfigurationException | InvalidDateException_Exception
-				| InvalidFieldValuesException_Exception e) {
-			throw new RefresherException();
+		} catch (DatatypeConfigurationException | InvalidDateException_Exception e) {
+			throw new RefresherException(e);
 		} catch (Exception e) {
 			throw new RefresherException("Other exception", e);
 		}
@@ -83,7 +85,8 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		for (DeliveryVo taken : deliveries) {
 			DeliveryVo local = deliveryService.getDeliveryByGuid(taken.getGlobalId());
 
-			if (local.getIsDeleted()) {
+			if (local == null || local.getIsDeleted()) {
+				logger.warn("Invalid delivery got from administration");
 				continue;
 			}
 
@@ -99,16 +102,20 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		}
 	}
 
-	private void syncNewOrModifiedDeliveries() throws InvalidFieldValuesException_Exception {
+	private void syncNewOrModifiedDeliveries() {
 		List<DeliveryVo> notSyncedDeliveries = deliveryService.getNonSyncedDeliveries();
 		List<RemoteCargoDTO> remotes = DeliveryConverter.toRemote(notSyncedDeliveries);
 
 		for (int i = 0; i < remotes.size(); i++) {
-			RemoteCargoDTO rdto = remotes.get(i);
-			RemoteCargoDTO savedCargo = restService.saveCargo(rdto);
+			try {
+				RemoteCargoDTO rdto = remotes.get(i);
+				RemoteCargoDTO savedCargo = restService.saveCargo(rdto);
 
-			updateDelivery(notSyncedDeliveries.get(i), savedCargo);
-			deliveryService.refreshDelivery(notSyncedDeliveries.get(i));
+				updateDelivery(notSyncedDeliveries.get(i), savedCargo);
+				deliveryService.refreshDelivery(notSyncedDeliveries.get(i));
+			} catch (Exception e) {
+				logger.warn(String.format("Exception when syncing delivery(%d)", notSyncedDeliveries.get(i).getId()));
+			}
 		}
 
 	}
@@ -163,7 +170,6 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("rest init");
 		Properties prop = new Properties();
 		try {
 			prop.load(this.getClass().getClassLoader().getResourceAsStream("wsdllocation.properties"));

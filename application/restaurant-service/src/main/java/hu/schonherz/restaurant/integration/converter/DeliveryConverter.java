@@ -22,6 +22,7 @@ public class DeliveryConverter implements Serializable {
 		res.getOrders().addAll(OrderConverter.toRemote(vo.getOrders()));
 		res.setState(DeliveryStateConverter.toRemote(vo.getDeliveryState()));
 		res.setCourierId(null);
+		res.setIsDeleted(vo.getIsDeleted());
 
 		return res;
 	}
@@ -44,6 +45,7 @@ public class DeliveryConverter implements Serializable {
 		}
 
 		DeliveryVo res = new DeliveryVo();
+		res.setIsDeleted(rdto.isIsDeleted());
 		res.setCourier(rdto.getCourierName());
 		res.setDeliveryState(DeliveryStateConverter.toLocal(rdto.getState()));
 		res.setGlobalId(rdto.getId());
