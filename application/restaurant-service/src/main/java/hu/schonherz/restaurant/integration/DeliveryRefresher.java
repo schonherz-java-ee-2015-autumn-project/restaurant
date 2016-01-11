@@ -109,7 +109,13 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 		for (int i = 0; i < remotes.size(); i++) {
 			try {
 				RemoteCargoDTO rdto = remotes.get(i);
-				RemoteCargoDTO savedCargo = restService.saveCargo(rdto);
+				RemoteCargoDTO savedCargo;
+
+				if (rdto.getId() == null) {
+					savedCargo = restService.saveCargo(rdto);
+				} else {
+					savedCargo = restService.modifyCargo(rdto);
+				}
 
 				updateDelivery(notSyncedDeliveries.get(i), savedCargo);
 				deliveryService.refreshDelivery(notSyncedDeliveries.get(i));
