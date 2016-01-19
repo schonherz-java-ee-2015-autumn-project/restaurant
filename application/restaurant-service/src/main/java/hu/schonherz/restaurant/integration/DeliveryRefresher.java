@@ -170,7 +170,7 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 			throws InvalidDateException_Exception {
 		List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar).stream()
 				.filter(crg -> crg.getCourierId() != null && (crg.getState().equals(RemoteCargoState.DELIVERING)
-						|| crg.getState().equals(RemoteCargoState.TAKEN)))
+						|| crg.getState().equals(RemoteCargoState.TAKEN) || crg.getState().equals(RemoteCargoState.DELIVERED)))
 				.collect(Collectors.toList());
 		return cargos;
 	}
