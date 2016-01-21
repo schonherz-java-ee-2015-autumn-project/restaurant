@@ -2,6 +2,7 @@ package hu.schonherz.restaurant.integration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -93,9 +94,13 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 			local.setDeliveryState(taken.getDeliveryState());
 			local.setCourier(taken.getCourier());
 
+			local.setOrders(new ArrayList<>(local.getOrders().size()));
 			for (OrderVo takenOrder : taken.getOrders()) {
 				OrderVo localOrder = orderService.getOrderByGlobalId(takenOrder.getGlobalId());
-				localOrder.setOrderState(takenOrder.getOrderState());
+				if (localOrder != null) {
+					localOrder.setOrderState(takenOrder.getOrderState());
+					local.getOrders().add(localOrder);
+				}
 			}
 
 			deliveryService.refreshDelivery(local);
@@ -170,7 +175,8 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 			throws InvalidDateException_Exception {
 		List<RemoteCargoDTO> cargos = synchronizationService.getCargosByDate(calendar).stream()
 				.filter(crg -> crg.getCourierId() != null && (crg.getState().equals(RemoteCargoState.DELIVERING)
-						|| crg.getState().equals(RemoteCargoState.TAKEN) || crg.getState().equals(RemoteCargoState.DELIVERED)))
+						|| crg.getState().equals(RemoteCargoState.TAKEN)
+						|| crg.getState().equals(RemoteCargoState.DELIVERED)))
 				.collect(Collectors.toList());
 		return cargos;
 	}
