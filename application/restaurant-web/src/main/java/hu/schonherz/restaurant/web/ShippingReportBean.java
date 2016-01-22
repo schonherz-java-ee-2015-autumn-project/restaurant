@@ -18,10 +18,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
-import org.primefaces.model.map.MapModel;
-
 import hu.schonherz.restaurant.service.ReportServiceLocal;
-import hu.schonherz.restaurant.service.vo.AddressReportVo;
 import hu.schonherz.restaurant.service.vo.FinancialReportVo;
 import hu.schonherz.restaurant.service.vo.OrderCountReportVo;
 import hu.schonherz.restaurant.service.vo.PayTypeReportVo;
@@ -39,20 +36,35 @@ public class ShippingReportBean {
 	Calendar e = Calendar.getInstance();
 	Calendar f = Calendar.getInstance();
 
+	@SuppressWarnings("unused")
 	private BarChartModel dailyQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel weeklyQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel monthlyQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel annualQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel overallQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel dailyFinancialQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel weeklyFinancialQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel monthlyFinancialQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel annualFinancialQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel overallFinancialQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel dailyPayTypeQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel weeklyPayTypeQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel monthlyPayTypeQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel annualPayTypeQueryModel;
+	@SuppressWarnings("unused")
 	private BarChartModel overallPayTypeQueryModel;
 	private BarChartModel customQueryModel;
 	private BarChartModel customFinancialModel;
@@ -61,14 +73,14 @@ public class ShippingReportBean {
 	Date beginDate;
 	Date endDate;
 
-	private MapModel geoModel;
+//	private MapModel geoModel;
 
 	private List<OrderCountReportVo> dailyQueryList;
 	private List<OrderCountReportVo> weeklyQueryList;
 	private List<OrderCountReportVo> monthlyQueryList;
 	private List<OrderCountReportVo> annualQueryList;
 	private List<OrderCountReportVo> overallQueryList;
-	private List<AddressReportVo> addressQueryList;
+//	private List<AddressReportVo> addressQueryList;
 	private List<FinancialReportVo> dailyFinancialQueryList;
 	private List<FinancialReportVo> weeklyFinancialQueryList;
 	private List<FinancialReportVo> monthlyFinancialQueryList;

@@ -7,6 +7,11 @@ import java.io.Serializable;
  */
 public class ProductVo extends BaseVo implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5535267322700043724L;
+
 	private String name;
 
 	private Integer price;

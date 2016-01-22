@@ -1,11 +1,15 @@
 package hu.schonherz.restaurant.service.vo;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class FinancialReportVo {
+public class FinancialReportVo implements Serializable{
 
 	
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2967225348545379704L;
 	Long price;
 	Object date;
 	public Long getPrice() {
