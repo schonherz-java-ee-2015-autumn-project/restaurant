@@ -99,6 +99,7 @@ public class DeliveryRefresher implements RefresherLocal, RefresherRemote {
 				OrderVo localOrder = orderService.getOrderByGlobalId(takenOrder.getGlobalId());
 				if (localOrder != null) {
 					localOrder.setOrderState(takenOrder.getOrderState());
+					localOrder.setPayType(takenOrder.getPayType());
 					local.getOrders().add(localOrder);
 				}
 			}

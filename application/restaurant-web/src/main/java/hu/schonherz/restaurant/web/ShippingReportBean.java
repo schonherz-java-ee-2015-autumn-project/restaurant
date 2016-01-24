@@ -159,8 +159,8 @@ public class ShippingReportBean {
 			customPayTypeModel = createCustomPayTypeQuery(option, beginDate, endDate);
 
 		} catch (Exception e) {
-			addMessage(resources.getString("error_message"));
-			e.printStackTrace();
+		addMessage(resources.getString("error_message"));
+				e.printStackTrace();
 		}
 	}
 
@@ -760,7 +760,7 @@ public class ShippingReportBean {
 		}
 		if (!customPayTypeQueryList.isEmpty()) {
 
-			payType.setLabel(resources.getString("paytype"));
+			payType.setLabel(resources.getString("payType"));
 
 			for (PayTypeReportVo item : customPayTypeQueryList) {
 				payType.set(resources.getString("PayType." + item.getPayType().name()), item.getPrice());
